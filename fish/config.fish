@@ -1,4 +1,5 @@
 
+# Auto start tmux
 # Adapted from https://github.com/fish-shell/fish-shell/issues/4434#issuecomment-332626369 
 # only run in interactive (not automated SSH for example) 
 if status is-interactive 
