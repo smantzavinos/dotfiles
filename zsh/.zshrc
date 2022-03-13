@@ -110,5 +110,10 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# This is required for GitHub CLI autocomplete
+# See: https://cli.github.com/manual/gh_completion
+autoload -U compinit
+compinit -i
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
