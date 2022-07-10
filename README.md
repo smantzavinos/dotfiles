@@ -29,3 +29,17 @@ Install (fisher plugin)[https://github.com/jorgebucaran/fisher]. Run fisher upda
 ```
 fisher update
 ```
+
+## emacs
+### windows
+
+Link emacs config file. Run the following from the home directory.
+```
+mkdir .emacs.d
+mklink /H .emacs.d\init.el dotfiles\.emacs.d\init.el
+```
+
+Also need to make sure that the `HOME` environment variable is set to `C:\Users\<user_name>`.
+
+Change the start directory by setting it in the properties of the exe file.
+```
