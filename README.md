@@ -42,4 +42,10 @@ mklink /H .emacs.d\init.el dotfiles\.emacs.d\init.el
 Also need to make sure that the `HOME` environment variable is set to `C:\Users\<user_name>`.
 
 Change the start directory by setting it in the properties of the exe file.
+
+### linux (ubuntu)
+
+Link emacs config file. Run the following from the home directory.
+```
+ln -sd dotfiles/.emacs.d .emacs.d
 ```
