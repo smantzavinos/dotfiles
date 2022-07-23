@@ -22,8 +22,15 @@
 
 ;; Set up modus theme
 
+;; icon support (all the icons)
+(use-package all-the-icons
+  :if (display-graphic-p))
 
 ;; doom modeline
+;; crashing on windows
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init (doom-modeline-mode 1))
 
 ;; which key
 (use-package which-key)
@@ -52,6 +59,28 @@
   (general-create-definer sm/ctrl-c-keys
     :prefix "C-c"))
 
+(global-display-line-numbers-mode t)
+
+;; tab management
+(use-package hydra)
+
+;; (defhydra hydra-tabs (global-map "<f3>")
+;;   "tabs"
+;;   ("c" tab-bar-new-tab "create")
+;;   ("m" tab-next "next")
+;;   ("n" tab-previous) "previous"))
+
+;; (sm/leader-key-def
+;;   "t"   '(:ignore t :which-key "tab")
+;;   "tc"  'hydra-tabs/tab-bar-new-tab
+;;   "tm"  'tab-next
+;;   "tn"  'tab-previous)
+
+(defhydra hydra-zoom (global-map "<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
+
 ;; git
 (use-package magit
   :bind ("C-M-;" . magit-status)
@@ -73,6 +102,9 @@
   "gf"  'magit-fetch
   "gF"  'magit-fetch-all
   "gr"  'magit-rebase)
+
+(use-package git-gutter)
+(global-git-gutter-mode +1)
 
 ;; projectile
 (defun sm/switch-project-action ()
@@ -155,10 +187,6 @@
   (delete 'lispy evil-collection-mode-list)
   (delete 'org-present evil-collection-mode-list)
   (evil-collection-init))
-
-;; icon support (all the icons)
-(use-package all-the-icons
-  :if (display-graphic-p))
 
 ;; ivy
 (use-package counsel)
