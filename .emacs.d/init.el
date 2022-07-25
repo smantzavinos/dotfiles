@@ -100,17 +100,19 @@
 ;; tab management
 (use-package hydra)
 
-;; (defhydra hydra-tabs (global-map "<f3>")
-;;   "tabs"
-;;   ("c" tab-bar-new-tab "create")
-;;   ("m" tab-next "next")
-;;   ("n" tab-previous) "previous"))
+(defhydra hydra-tabs (global-map "<f3>")
+  "tabs"
+  ("c" tab-bar-new-tab "create")
+  ("m" tab-next "next")
+  ("n" tab-previous "previous")
+  ("r" tab-bar-rename-tab "rename"))
 
-;; (sm/leader-key-def
-;;   "t"   '(:ignore t :which-key "tab")
-;;   "tc"  'hydra-tabs/tab-bar-new-tab
-;;   "tm"  'tab-next
-;;   "tn"  'tab-previous)
+(sm/leader-key-def
+  "t"   '(:ignore t :which-key "tab")
+  "tc"  'hydra-tabs/tab-bar-new-tab
+  "tm"  'hydra-tabs/tab-next
+  "tn"  'hydra-tabs/tab-previous
+  "tr"  'tab-bar-rename-tab)
 
 (defhydra hydra-zoom (global-map "<f2>")
   "zoom"
