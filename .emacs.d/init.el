@@ -20,17 +20,53 @@
 ;; Remap escape
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Set up modus theme
+(setq inhibit-startup-message t)
+
+;; Use visible bell
+;; from: https://lupan.pl/dotemacs/
+(setq visible-bell t)
 
 ;; icon support (all the icons)
 (use-package all-the-icons
   :if (display-graphic-p))
+
+(set-face-attribute `default nil :font "Consolas NF")
+
+(load-theme 'tango-dark)
+
+;; Set up modus theme
+(use-package modus-themes)
+(load-theme 'modus-vivendi)
+
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-ayu-mirage t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  ;; (doom-themes-neotree-config)
+  ;; or for treemacs users
+  ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  ;; (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 ;; doom modeline
 ;; crashing on windows
 ;; (use-package doom-modeline
 ;;   :ensure t
 ;;   :init (doom-modeline-mode 1))
+
+(use-package smart-mode-line
+  :config
+  (setq sml/no-confirm-load-theme t
+        sml/theme 'respectful)
+  (sml/setup))
 
 ;; which key
 (use-package which-key)
@@ -228,22 +264,100 @@
 (global-set-key (kbd "C-c t") 'counsel-load-theme)
 (global-set-key (kbd "C-c F") 'counsel-org-file)
 
+;; from: https://lupan.pl/dotemacs/
+(use-package smartparens
+  :hook ((prog-mode . smartparens-mode)
+         (emacs-lisp-mode . smartparens-strict-mode))
+  :init
+  (setq sp-base-key-bindings 'sp)
+  :config
+  (define-key smartparens-mode-map [M-backspace] #'backward-kill-word)
+  (define-key smartparens-mode-map [M-S-backspace] #'sp-backward-unwrap-sexp)
+  (require 'smartparens-config))
+
+;; multiple cursors package
+(use-package multiple-cursors
+  :bind (("C-c n" . mc/mark-next-like-this)
+         ("C-c p" . mc/mark-previous-like-this)))
+
+;; Fix trailing spaces but only in modified lines
+(use-package ws-butler
+  :hook (prog-mode . ws-butler-mode))
+
+;; company mode
+;; from: https://lupan.pl/dotemacs/
+(use-package company
+  :bind (:map prog-mode-map
+         ("C-i" . company-indent-or-complete-common)
+         ("C-M-i" . counsel-company))
+  :hook (emacs-lisp-mode . company-mode))
+
+;; enable company mode in all buffers
+(add-hook 'after-init-hook 'global-company-mode)
+
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode))
+
+;; lsp-mode
+;; from: https://lupan.pl/dotemacs/
+(use-package lsp-mode
+  :hook ((c-mode c++-mode d-mode go-mode js-mode kotlin-mode python-mode typescript-mode
+          vala-mode web-mode)
+         . lsp)
+  :init
+  (setq lsp-keymap-prefix "H-l"
+        lsp-rust-analyzer-proc-macro-enable t)
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :init
+  (setq lsp-ui-doc-position 'at-point
+        lsp-ui-doc-show-with-mouse nil)
+  :bind (("C-c d" . lsp-ui-doc-show)
+         ("C-c I" . lsp-ui-imenu)))
+
+(use-package flycheck
+  :defer)
 
 ;; C++ dev. lsp.
+;; from: https://lupan.pl/dotemacs/
+(use-package cc-mode
+  :bind (:map c-mode-map
+         ("C-i" . company-indent-or-complete-common)
+         :map c++-mode-map
+         ("C-i" . company-indent-or-complete-common))
+  :init
+  (setq-default c-basic-offset 8))
+
+;; web mode
+;; from: https://lupan.pl/dotemacs/
+(use-package web-mode
+  :mode "\\.\\([jt]sx\\)\\'")
+
+(use-package js
+  :bind (:map js-mode-map
+         ([remap js-find-symbol] . xref-find-definitions))
+  :init
+  (setq js-indent-level 4))
+
+(use-package typescript-mode
+  :defer)
 
 ;; yas-snippet
+;; from: https://lupan.pl/dotemacs/
+(setq-default abbrev-mode 1)
+(use-package yasnippet
+  :defer 2
+  :config
+  (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :defer)
+(use-package ivy-yasnippet
+  :bind ("C-c y" . ivy-yasnippet))
 
-;; general.el leader key setup
-
-
-(setq inhibit-startup-message t)
-
-;; Use visible bell
-(setq visible-bell t)
-
-(set-face-attribute `default nil :font "Consolas NF")
-
-(load-theme 'tango-dark)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
