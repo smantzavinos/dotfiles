@@ -142,6 +142,9 @@
   "gF"  'magit-fetch-all
   "gr"  'magit-rebase)
 
+(use-package evil-commentary)
+(evil-commentary-mode)
+
 (use-package git-gutter)
 (global-git-gutter-mode +1)
 
