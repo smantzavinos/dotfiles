@@ -114,6 +114,21 @@
   "tn"  'hydra-tabs/tab-previous
   "tr"  'tab-bar-rename-tab)
 
+(defhydra hydra-windows (global-map "<f3>")
+  "windows"
+  ("s" split-window-below "split")
+  ("v" split-window-right "vsplit")
+  ("j" evil-window-down "down")
+  ("k" evil-window-up "up")
+  ("l" evil-window-right "right")
+  ("h" evil-window-left "left")
+  ("o" delete-other-windows "o"))
+
+(sm/leader-key-def
+  "w"   '(:ignore t :which-key "window")
+  "wj"  'hydra-winodws/evil-window-down
+  "wk"  'hydra-winodws/evil-window-up)
+
 (defhydra hydra-zoom (global-map "<f2>")
   "zoom"
   ("g" text-scale-increase "in")
