@@ -108,6 +108,7 @@
   ("m" tab-next "next")
   ("n" tab-previous "previous")
   ("r" tab-bar-rename-tab "rename")
+  ("d" tab-bar-close-tab "delete")
   ("q" nil "cancel"))
 
 (sm/leader-key-def
