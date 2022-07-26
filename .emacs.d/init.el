@@ -1,4 +1,15 @@
 
+(setq inhibit-startup-message t)
+
+(tool-bar-mode -1)
+
+;; Use visible bell
+;; from: https://lupan.pl/dotemacs/
+(setq visible-bell t)
+
+;; Remap escape
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 ;; Install use-package
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -16,15 +27,6 @@
 ;; Always install packages if they are missing
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
-
-;; Remap escape
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(setq inhibit-startup-message t)
-
-;; Use visible bell
-;; from: https://lupan.pl/dotemacs/
-(setq visible-bell t)
 
 ;; icon support (all the icons)
 (use-package all-the-icons
@@ -105,7 +107,8 @@
   ("c" tab-bar-new-tab "create")
   ("m" tab-next "next")
   ("n" tab-previous "previous")
-  ("r" tab-bar-rename-tab "rename"))
+  ("r" tab-bar-rename-tab "rename")
+  ("q" nil "cancel"))
 
 (sm/leader-key-def
   "t"   '(:ignore t :which-key "tab")
@@ -122,12 +125,12 @@
   ("k" evil-window-up "up")
   ("l" evil-window-right "right")
   ("h" evil-window-left "left")
-  ("o" delete-other-windows "o"))
+  ("d" evil-window-delete "delete")
+  ("o" delete-other-windows "delete others")
+  ("q" nil "cancel"))
 
 (sm/leader-key-def
-  "w"   '(:ignore t :which-key "window")
-  "wj"  'hydra-winodws/evil-window-down
-  "wk"  'hydra-winodws/evil-window-up)
+  "w"   'hydra-windows/body)
 
 (defhydra hydra-zoom (global-map "<f2>")
   "zoom"
