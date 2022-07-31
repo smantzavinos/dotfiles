@@ -170,6 +170,11 @@
   "gF"  'magit-fetch-all
   "gr"  'magit-rebase)
 
+(sm/leader-key-def
+  "b"   '(:ignore t :which-key "buffers")
+  "bb"  'counsel-switch-buffer
+  "bd"  'kill-buffer)
+
 (use-package evil-commentary)
 (evil-commentary-mode)
 
