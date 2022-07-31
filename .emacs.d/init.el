@@ -10,19 +10,26 @@
 ;; Remap escape
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; Install straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 ;; Install use-package
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(package-initialize)
+(straight-use-package 'use-package)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
+;; Automatically install missing packages
+(use-package el-patch
+  :straight t)
 
 ;; Always install packages if they are missing
 (require 'use-package-ensure)
@@ -253,6 +260,18 @@
 
 ;; ivy
 (use-package counsel)
+
+
+(straight-use-package 'prescient)
+(straight-use-package 'ivy-prescient
+		      :config
+		      (ivy-prescient-mode 1))
+(straight-use-package 'company-prescient
+		      :config
+		      (company-prescient-mode 1))
+;; (straight-use-package 'selectrum-prescient
+;; 		      :config
+;; 		      (selectrum-prescient-mode 1))
 
 ;; Ivy-based interface to standard commands
 (global-set-key (kbd "C-s") 'swiper-isearch)
