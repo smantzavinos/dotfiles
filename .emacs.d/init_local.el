@@ -9,4 +9,7 @@
 (setq user-init-file (concat (getenv "HOME") "/dotfiles/.emacs.d/init.el"))
 (setq default-directory (getenv "HOME"))
 
+;; Directory to look for org files in to add to agenda
+(setq org-agenda-files (directory-files-recursively (concat (getenv "ORG_ROOT") "/tasks") "\\.org$"))
+
 (load user-init-file)
