@@ -173,7 +173,7 @@
   "tn"  'hydra-tabs/tab-previous
   "tr"  'tab-bar-rename-tab)
 
-(defhydra hydra-windows (global-map "<f3>")
+(defhydra hydra-windows ()
   "windows"
   ("s" split-window-below "split")
   ("v" split-window-right "vsplit")
@@ -183,6 +183,8 @@
   ("h" evil-window-left "left")
   ("d" evil-window-delete "delete")
   ("o" delete-other-windows "delete others")
+  ("C-m" tab-next "next tab")
+  ("C-n" tab-previous "previous tab")
   ("q" nil "cancel"))
 
 (sm/leader-key-def
@@ -222,6 +224,11 @@
   "b"   '(:ignore t :which-key "buffers")
   "bb"  'counsel-switch-buffer
   "bd"  'kill-buffer)
+
+(sm/leader-key-def
+  "f"   '(:ignore t :which-key "files")
+  "fd"  (find-file user-init-file)
+  "ff"  'counsel-find-file)
 
 (use-package evil-commentary)
 (evil-commentary-mode)
