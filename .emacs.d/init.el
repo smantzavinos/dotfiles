@@ -230,6 +230,10 @@
   "fd"  (find-file user-init-file)
   "ff"  'counsel-find-file)
 
+(sm/leader-key-def
+  "o"   '(:ignore t :which-key "org")
+  "oa"  'org-agenda)
+
 (use-package evil-commentary)
 (evil-commentary-mode)
 
