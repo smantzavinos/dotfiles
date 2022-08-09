@@ -31,21 +31,8 @@ fisher update
 ```
 
 ## emacs
-### windows
 
-Link emacs config file. Run the following from the home directory.
-```
-mkdir .emacs.d
-mklink /H .emacs.d\init.el dotfiles\.emacs.d\init.el
-```
+Install the preferred font: [Consolas NF](https://github.com/whitecolor/my-nerd-fonts/tree/master/Consolas%20NF)
 
-Also need to make sure that the `HOME` environment variable is set to `C:\Users\<user_name>`.
+Copy the `.emacs.d/init_local.el` file from this repo to `~/.emacs.d/init.el` and configure the values for the local system paths.
 
-Change the start directory by setting it in the properties of the exe file.
-
-### linux (ubuntu)
-
-Link emacs config file. Run the following from the home directory.
-```
-ln -sd dotfiles/.emacs.d .emacs.d
-```
