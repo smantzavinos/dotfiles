@@ -10,6 +10,9 @@
 ;; Remap escape
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+;; Truncate lines by default (wrap lines)
+(set-default 'truncate-lines t)
+
 ;; Install straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
