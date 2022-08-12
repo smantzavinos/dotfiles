@@ -263,7 +263,7 @@
   (setq projectile-switch-project-action #'sm/switch-project-action))
 
 (use-package counsel-projectile
-  :disabled
+  :straight t
   :after projectile
   :config
   (counsel-projectile-mode))
