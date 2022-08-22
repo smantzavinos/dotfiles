@@ -230,7 +230,7 @@
 
 (sm/leader-key-def
   "f"   '(:ignore t :which-key "files")
-  "fd"  (find-file user-init-file)
+  "fd"  (lambda () (interactive) (find-file user-init-file))
   "ff"  'counsel-find-file)
 
 (sm/leader-key-def
