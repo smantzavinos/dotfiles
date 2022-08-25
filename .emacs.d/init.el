@@ -54,8 +54,8 @@
 (load-theme 'tango-dark)
 
 ;; Set up modus theme
-(use-package modus-themes)
-(load-theme 'modus-vivendi)
+;; (use-package modus-themes)
+;; (load-theme 'modus-vivendi)
 
 (use-package doom-themes
   :ensure t
