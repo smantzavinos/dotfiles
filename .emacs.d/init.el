@@ -13,6 +13,8 @@
 ;; Truncate lines by default (wrap lines)
 (set-default 'truncate-lines t)
 
+(set-default-coding-systems 'utf-8)
+
 ;; Install straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -445,6 +447,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(use-package excorporate)
+
 ;; Treemacs setup
 (use-package treemacs
   :straight t
