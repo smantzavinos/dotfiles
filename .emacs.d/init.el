@@ -234,9 +234,19 @@
   "bb"  'counsel-switch-buffer
   "bd"  'kill-buffer)
 
+(defun sm/find-file-in-directory (dir)
+  "Interactively launch find-file in the given directory."
+  (interactive)
+  (find-file dir))
+
 (sm/leader-key-def
   "f"   '(:ignore t :which-key "files")
   "fd"  (lambda () (interactive) (find-file user-init-file))
+  "fn"  (lambda () (interactive) (sm/find-file-in-directory sm/notes-directory))
+  "fp"  (lambda () (interactive) (sm/find-file-in-directory (file-name-concat sm/notes-directory "1_projects")))
+  "fa"  (lambda () (interactive) (sm/find-file-in-directory (file-name-concat sm/notes-directory "2_areas")))
+  "fr"  (lambda () (interactive) (sm/find-file-in-directory (file-name-concat sm/notes-directory "3_resources")))
+  "ft"  (lambda () (interactive) (sm/find-file-in-directory (file-name-concat sm/notes-directory "4_archive")))
   "ff"  'counsel-find-file)
 
 (sm/leader-key-def
