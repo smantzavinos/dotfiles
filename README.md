@@ -25,7 +25,7 @@ Load new fish config with:
 source ~/.config/fish/config.fish
 ```
 
-Install (fisher plugin)[https://github.com/jorgebucaran/fisher]. Run fisher update to install plugins listed in fish_plugins.
+Install [fisher plugin](https://github.com/jorgebucaran/fisher). Run fisher update to install plugins listed in fish_plugins.
 ```
 fisher update
 ```
