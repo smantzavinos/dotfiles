@@ -5,6 +5,9 @@
 (setenv "HOME" "C:/path/to/home/dir")
 (setenv "ORG_ROOT" "C:/path/to/notes/org")
 
+(defvar sm/notes-directory "c:/path/to/notes"
+  "Root directory of PARA style notes.")
+
 (setq user-emacs-directory (concat (getenv "HOME") "/dotfiles/.emacs.d"))
 (setq user-init-file (concat (getenv "HOME") "/dotfiles/.emacs.d/init.el"))
 (setq default-directory (getenv "HOME"))
