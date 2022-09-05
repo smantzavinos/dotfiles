@@ -16,6 +16,8 @@
 ;; Install straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
+
+
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
@@ -231,7 +233,8 @@
 (sm/leader-key-def
   "f"   '(:ignore t :which-key "files")
   "fd"  (lambda () (interactive) (find-file user-init-file))
-  "ff"  'counsel-find-file)
+  "ff"  'counsel-find-file
+  "fp"  (lambda () (interactive) (cd "~/notes/1_projects/") (counsel-find-file)))
 
 (sm/leader-key-def
   "o"   '(:ignore t :which-key "org")
