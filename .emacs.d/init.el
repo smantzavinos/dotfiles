@@ -153,6 +153,10 @@
   (delete 'org-present evil-collection-mode-list)
   (evil-collection-init))
 
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
+
 ;; General
 (use-package general
   :config
