@@ -157,6 +157,8 @@
   :config
   (global-evil-surround-mode 1))
 
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . auto)))
+
 ;; General
 (use-package general
   :config
