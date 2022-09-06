@@ -222,6 +222,8 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package git-auto-commit-mode)
+
 ;; handles ssh credentials (for magit) on windows (and maybe other platforms?)
 (use-package ssh-agency)
 
