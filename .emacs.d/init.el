@@ -91,7 +91,13 @@
   (load-theme `org-beautify t))
 
 ;; Org agenda files
-(setq org-agenda-files (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$"))
+(defun sm/reload-org-agenda-files ()
+  "Reloads org agenda files. Can be run after project files change."
+  ;; Interactive so it can be called from General
+  (interactive)
+  (setq org-agenda-files (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$")))
+
+(sm/reload-org-agenda-files)
 
 ;; doom modeline
 ;; crashing on windows
@@ -270,7 +276,8 @@
 
 (sm/leader-key-def
   "o"   '(:ignore t :which-key "org")
-  "oa"  'org-agenda)
+  "oa"  'org-agenda
+  "or"  'sm/reload-org-agenda-files)
 
 (use-package evil-commentary)
 (evil-commentary-mode)
