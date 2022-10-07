@@ -36,3 +36,33 @@ Install the preferred font: [Consolas NF](https://github.com/whitecolor/my-nerd-
 
 Copy the `.emacs.d/init_local.el` file from this repo to `~/.emacs.d/init.el` and configure the values for the local system paths.
 
+
+### Enabling emacs auto-commit
+
+#### As a file-local variable
+
+Set a file local variable (requires Emacs 24 or newer)
+```
+;; -*- eval: (git-auto-commit-mode 1) -*-
+```
+
+#### As a directory-local variable
+
+Create a ~.dir-locals.el~ file in the directory where you want
+git-auto-commit-mode to be enabled. This will also apply to any
+subdirectories, so be careful. For more information see the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html#Directory-Variables][Per-Directory
+Local Variables]] section in the Emacs manual. Then put one of the following
+snippets of code in there:
+
+(requires Emacs 24 or newer)
+```
+((nil . ((eval git-auto-commit-mode 1))))
+```
+
+
+#### As a hook
+
+To enable git-auto-commit-mode each time a ~certain-hook~ runs:
+```
+(add-hook 'certain-hook 'git-auto-commit-mode)
+```
