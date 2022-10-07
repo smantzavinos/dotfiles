@@ -82,6 +82,23 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+(use-package material-theme
+  :config
+  (load-theme 'material t))
+
+(use-package org-beautify-theme
+  :config
+  (load-theme `org-beautify t))
+
+;; Org agenda files
+(defun sm/reload-org-agenda-files ()
+  "Reloads org agenda files. Can be run after project files change."
+  ;; Interactive so it can be called from General
+  (interactive)
+  (setq org-agenda-files (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$")))
+
+(sm/reload-org-agenda-files)
+
 ;; doom modeline
 ;; crashing on windows
 ;; (use-package doom-modeline
@@ -182,16 +199,14 @@
   ("c" tab-bar-new-tab "create")
   ("m" tab-next "next")
   ("n" tab-previous "previous")
+  ("M-m" (lambda () (interactive) (tab-bar-move-tab 1)) "right")
+  ("M-n" (lambda () (interactive) (tab-bar-move-tab -1)) "left")
   ("r" tab-bar-rename-tab "rename")
   ("d" tab-bar-close-tab "delete")
   ("q" nil "cancel"))
 
 (sm/leader-key-def
-  "t"   '(:ignore t :which-key "tab")
-  "tc"  'hydra-tabs/tab-bar-new-tab
-  "tm"  'hydra-tabs/tab-next
-  "tn"  'hydra-tabs/tab-previous
-  "tr"  'tab-bar-rename-tab)
+  "t"   'hydra-tabs/body)
 
 (defhydra hydra-windows ()
   "windows"
@@ -265,7 +280,8 @@
 
 (sm/leader-key-def
   "o"   '(:ignore t :which-key "org")
-  "oa"  'org-agenda)
+  "oa"  'org-agenda
+  "or"  'sm/reload-org-agenda-files)
 
 (use-package evil-commentary)
 (evil-commentary-mode)
@@ -288,8 +304,8 @@
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  (when (file-directory-p "~/Projects/Code")
-    (setq projectile-project-search-path '("~/Projects/Code")))
+  (when (file-directory-p "c:/Development")
+    (setq projectile-project-search-path '("c:/Development")))
   (setq projectile-switch-project-action #'sm/switch-project-action))
 
 (use-package counsel-projectile
