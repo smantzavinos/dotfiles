@@ -82,13 +82,13 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package material-theme
-  :config
-  (load-theme 'material t))
+;; (use-package material-theme
+;;   :config
+;;   (load-theme 'material t))
 
-(use-package org-beautify-theme
-  :config
-  (load-theme `org-beautify t))
+;; (use-package org-beautify-theme
+;;   :config
+;;   (load-theme `org-beautify t))
 
 ;; Org agenda files
 (defun sm/reload-org-agenda-files ()
