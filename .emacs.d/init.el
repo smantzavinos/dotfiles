@@ -105,6 +105,18 @@
 ;;   :ensure t
 ;;   :init (doom-modeline-mode 1))
 
+;; Dired config
+(with-eval-after-load 'dired
+  (require 'dired-x)
+  ;; Set dired-x global variables here.  For example:
+  ;; (setq dired-guess-shell-gnutar "gtar")
+  )
+(add-hook 'dired-mode-hook
+	  (lambda ()
+	    ;; Set dired-x buffer-local variables here.
+	    (setq dired-omit-extensions (append dired-omit-extensions '("~undo-tree~")))
+            (dired-omit-mode 1)))
+
 (use-package smart-mode-line
   :config
   (setq sml/no-confirm-load-theme t
