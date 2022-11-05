@@ -70,3 +70,20 @@ To enable git-auto-commit-mode each time a ~certain-hook~ runs:
 ```
 (add-hook 'certain-hook 'git-auto-commit-mode)
 ```
+
+
+# OS Config
+## Remap caps lock to control
+### Windows
+Run the `Windows\remap_caps_to_ctrl.reg` regisrty editor script.
+
+Windows PowerToys can be used to do this as well, but I have found the registry editor script to be more reliable.
+
+### Ubuntu
+Install gnome-tweak-tool
+``` bash
+sudo apt install gnome-tweaks
+```
+Launch Tweaks
+Keyboard & Mouse -> Additional Layout Options -> Caps Lock behavior -> Make Caps Lock and additional Ctrl
+
