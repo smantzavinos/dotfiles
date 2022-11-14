@@ -91,13 +91,23 @@
 ;;   (load-theme `org-beautify t))
 
 ;; Org agenda files
-(defun sm/reload-org-agenda-files ()
-  "Reloads org agenda files. Can be run after project files change."
+(defun sm/reload-org-agenda-files-projects ()
+  "Reloads org agenda files in 1_projects directory. Can be run after file list changes."
   ;; Interactive so it can be called from General
   (interactive)
-  (setq org-agenda-files (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$")))
+  (setq org-agenda-files
+	(append
+	 (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$"))))
 
-(sm/reload-org-agenda-files)
+(defun sm/reload-org-agenda-files-areas ()
+  "Reloads org agenda files using 2_areas directory. Can be run after project file list changes."
+  ;; Interactive so it can be called from General
+  (interactive)
+  (setq org-agenda-files
+	(append
+	 (directory-files-recursively (f-join sm/notes-directory "2_areas") "\\.org$"))))
+
+(sm/reload-org-agenda-files-projects)
 
 ;; doom modeline
 ;; crashing on windows
@@ -293,7 +303,9 @@
 (sm/leader-key-def
   "o"   '(:ignore t :which-key "org")
   "oa"  'org-agenda
-  "or"  'sm/reload-org-agenda-files)
+  "or"   '(:ignore t :which-key "reload agenda files")
+  "orp"  'sm/reload-org-agenda-files-projects
+  "ora"  'sm/reload-org-agenda-files-areas)
 
 (use-package evil-commentary)
 (evil-commentary-mode)
