@@ -33,6 +33,7 @@ fisher update
 ## emacs
 
 Install the preferred font: [Consolas NF](https://github.com/whitecolor/my-nerd-fonts/tree/master/Consolas%20NF)
+(Ubunutu font install: Copy the font to the `~/.fonts` directory)
 
 Copy the `.emacs.d/init_local.el` file from this repo to `~/.emacs.d/init.el` and configure the values for the local system paths.
 
