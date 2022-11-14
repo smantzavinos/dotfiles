@@ -109,6 +109,10 @@
 
 (sm/reload-org-agenda-files-projects)
 
+(setq org-log-into-drawer t)
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c@)")))
+
 ;; doom modeline
 ;; crashing on windows
 ;; (use-package doom-modeline
@@ -313,6 +317,16 @@
 (use-package git-gutter)
 (global-git-gutter-mode +1)
 
+;; Ripgrep integration in emacs
+(use-package deadgrep)
+
+;; find file in project
+(use-package find-file-in-project
+  :init
+  (setq ffip-use-rust-fd t)
+  :config
+  (ivy-mode 1))
+
 ;; projectile
 (defun sm/switch-project-action ()
   "Switch to a workspace with the project name and start `magit-status'."
@@ -339,12 +353,13 @@
   (counsel-projectile-mode))
 
 (sm/leader-key-def
-  "pf"  'projectile-find-file
+  "pf"  'find-file-in-project
+  "pr"  'ffip-find-files-resume
   "ps"  'projectile-switch-project
-  "pF"  'consult-ripgrep
+  "pg"  'deadgrep
   "pp"  'projectile-find-file
   "pc"  'projectile-compile-project
-  "pd"  'projectile-dired)
+  "pd"  'find-directory-in-project-by-selected)
 
 (use-package undo-tree
   :init
