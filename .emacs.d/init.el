@@ -56,8 +56,6 @@
 ;; Treat all themes as safe
 (setq custom-safe-themes t)
 
-(load-theme 'tango-dark)
-
 ;; Set up modus theme
 ;; (use-package modus-themes)
 ;; (load-theme 'modus-vivendi)
