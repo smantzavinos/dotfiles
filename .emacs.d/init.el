@@ -675,4 +675,3 @@
   :straight t
   :config
   (require 'dap-cpptools))
-
