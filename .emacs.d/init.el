@@ -90,6 +90,14 @@
 ;;   :config
 ;;   (load-theme `org-beautify t))
 
+;; Helper function to remove incorrect line endings from files (^M).
+;; Specifically it removes the \r line endings that windows may add
+(defun dos2unix ()
+  "Replace DOS eolns CR LF with Unix eolns CR"
+  (interactive)
+    (goto-char (point-min))
+      (while (search-forward "\r" nil t) (replace-match "")))
+
 ;; Org agenda files
 (defun sm/reload-org-agenda-files-projects ()
   "Reloads org agenda files in 1_projects directory. Can be run after file list changes."
@@ -107,11 +115,24 @@
 	(append
 	 (directory-files-recursively (f-join sm/notes-directory "2_areas") "\\.org$"))))
 
+(defun sm/reload-org-agenda-files-combined ()
+  "Reloads org agenda files using 2_areas directory. Can be run after project file list changes."
+  ;; Interactive so it can be called from General
+  (interactive)
+  (setq org-agenda-files
+	(append
+	 (directory-files-recursively (f-join sm/notes-directory "1_projects") "\\.org$")
+	 (directory-files-recursively (f-join sm/notes-directory "2_areas") "\\.org$"))))
+
 (sm/reload-org-agenda-files-projects)
 
 (setq org-log-into-drawer t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t)))
 
 ;; doom modeline
 ;; crashing on windows
@@ -309,13 +330,16 @@
   "oa"  'org-agenda
   "or"   '(:ignore t :which-key "reload agenda files")
   "orp"  'sm/reload-org-agenda-files-projects
-  "ora"  'sm/reload-org-agenda-files-areas)
+  "ora"  'sm/reload-org-agenda-files-areas
+  "orc"  'sm/reload-org-agenda-files-combined)
 
 (use-package evil-commentary)
 (evil-commentary-mode)
 
 (use-package git-gutter)
 (global-git-gutter-mode +1)
+
+(use-package gnuplot)
 
 ;; Ripgrep integration in emacs
 (use-package deadgrep)
