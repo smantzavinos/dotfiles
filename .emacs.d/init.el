@@ -18,8 +18,6 @@
 ;; Install straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
-
-
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
@@ -57,8 +55,6 @@
 
 ;; Treat all themes as safe
 (setq custom-safe-themes t)
-
-(load-theme 'tango-dark)
 
 ;; Set up modus theme
 ;; (use-package modus-themes)
