@@ -324,10 +324,19 @@
 (sm/leader-key-def
   "o"   '(:ignore t :which-key "org")
   "oa"  'org-agenda
-  "or"   '(:ignore t :which-key "reload agenda files")
-  "orp"  'sm/reload-org-agenda-files-projects
-  "ora"  'sm/reload-org-agenda-files-areas
-  "orc"  'sm/reload-org-agenda-files-combined)
+  "or"  '(:ignore t :which-key "reload agenda files")
+  "orp" 'sm/reload-org-agenda-files-projects
+  "ora" 'sm/reload-org-agenda-files-areas
+  "orc" 'sm/reload-org-agenda-files-combined)
+
+;; ivy
+(use-package counsel)
+
+(use-package prescient)
+(use-package ivy-prescient
+    :straight t
+    :config
+    (ivy-prescient-mode 1))
 
 (use-package evil-commentary)
 (evil-commentary-mode)
@@ -384,16 +393,6 @@
 (use-package undo-tree
   :init
   (global-undo-tree-mode 1))
-
-;; ivy
-(use-package counsel)
-
-
-(use-package prescient)
-(use-package ivy-prescient
-    :straight t
-    :config
-    (ivy-prescient-mode 1))
 
 ;; (straight-use-package 'company-prescient)
     ;; :config
