@@ -494,6 +494,8 @@
   :bind (("C-c d" . lsp-ui-doc-show)
          ("C-c I" . lsp-ui-imenu)))
 
+(use-package lsp-treemacs)
+
 (use-package flycheck
   :defer)
 
