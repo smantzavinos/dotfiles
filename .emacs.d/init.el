@@ -229,6 +229,11 @@
     :prefix "SPC"
     :global-prefix "C-SPC")
 
+  (general-create-definer sm/leader-key-def-backslash
+    :keymaps '(normal visual emacs)
+    :prefix "\\"
+    :global-prefix "\\")
+
   (general-create-definer sm/ctrl-c-keys
     :prefix "C-c"))
 
@@ -639,6 +644,9 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
+
+(sm/leader-key-def-backslash
+  "e" 'treemacs)
 
 (use-package treemacs-evil
   :straight t
