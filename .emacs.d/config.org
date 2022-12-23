@@ -46,7 +46,7 @@
   (require 'use-package-ensure)
   (setq use-package-always-ensure t)
 #+end_src
-* Rest
+* Utility
 #+begin_src emacs-lisp
   ;; icon support (all the icons)
   (use-package all-the-icons
@@ -63,6 +63,9 @@
 
   ;; File path utility library
   (use-package f)
+#+end_src
+* Themes
+#+begin_src emacs-lisp
 
   ;; Treat all themes as safe
   (setq custom-safe-themes t)
@@ -77,7 +80,7 @@
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-dracula t)
+    (load-theme 'doom-palenight t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -97,6 +100,9 @@
   ;;   :config
   ;;   (load-theme `org-beautify t))
 
+#+end_src
+* Rest
+#+begin_src emacs-lisp
   ;; Helper function to remove incorrect line endings from files (^M).
   ;; Specifically it removes the \r line endings that windows may add
   (defun dos2unix ()
@@ -329,7 +335,7 @@
 
   (sm/leader-key-def
     "f"   '(:ignore t :which-key "files")
-    "fd"  (lambda () (interactive) (find-file user-init-file))
+    "fd"  (lambda () (interactive) (find-file user-config-file))
     "fn"  (lambda () (interactive) (sm/find-file-in-directory sm/notes-directory))
     "fp"  (lambda () (interactive) (sm/find-file-in-directory (f-join sm/notes-directory "1_projects")))
     "fa"  (lambda () (interactive) (sm/find-file-in-directory (f-join sm/notes-directory "2_areas")))

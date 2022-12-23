@@ -9,6 +9,7 @@
 
 (setq user-emacs-directory (concat (getenv "HOME") "/dotfiles/.emacs.d"))
 (setq user-init-file (concat (getenv "HOME") "/dotfiles/.emacs.d/init.el"))
+(setq user-config-file (concat (getenv "HOME") "/dotfiles/.emacs.d/config.org"))
 (setq default-directory (getenv "HOME"))
 
 (load user-init-file)
