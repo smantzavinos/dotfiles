@@ -63,6 +63,8 @@
 
   ;; File path utility library
   (use-package f)
+
+  (use-package restart-emacs)
 #+end_src
 * Themes
 #+begin_src emacs-lisp
