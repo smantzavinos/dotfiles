@@ -145,7 +145,8 @@
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((dot . t)))
+   '((dot . t)
+     (plantuml . t)))
 
   ;; doom modeline
   ;; crashing on windows

@@ -44,6 +44,9 @@ To get additional icons working I also had to execute `all-the-icons-install-fon
 ### Dependencies
 ripgrep
 fd
+gnuplot
+graphviz
+plantuml
 
 ### Enabling emacs auto-commit
 

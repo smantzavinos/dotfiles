@@ -12,4 +12,8 @@
 (setq user-config-file (concat (getenv "HOME") "/dotfiles/.emacs.d/config.org"))
 (setq default-directory (getenv "HOME"))
 
+;; Set path to plantuml.jar file to render plantuml source blocks.
+;; If installed with chocolatey on Windows, the following line is likely correct
+;; (setq org-plantuml-jar-path "C:/ProgramData/chocolatey/lib/plantuml/tools/plantuml.jar")
+
 (load user-init-file)
