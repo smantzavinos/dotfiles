@@ -92,6 +92,11 @@
     (interactive)
     (cd dir)
     (counsel-find-file))
+
+  (defun reload-config ()
+    "Reload the config file"
+    (interactive)
+    (org-babel-load-file (concat user-emacs-directory "/config.org")))
 #+end_src
 * Themes
 #+begin_src emacs-lisp
