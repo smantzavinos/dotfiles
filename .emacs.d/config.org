@@ -548,6 +548,14 @@
     :config
     (company-prescient-mode))
 
+  ;; Recommended from: https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
+  (setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
   ;; lsp-mode
   ;; from: https://lupan.pl/dotemacs/
   (use-package lsp-mode
@@ -556,9 +564,22 @@
 	   . lsp)
     :init
     (setq lsp-keymap-prefix "H-l"
-	  lsp-rust-analyzer-proc-macro-enable t)
+	  lsp-rust-analyzer-proc-macro-enable t
+	  lsp-log-io t)
+	  ;; lsp-clients-clangd-executable "C:/Program Files/LLVM/bin/clangd.exe")
     :config
     (lsp-enable-which-key-integration t))
+
+  ;; Recommended from: https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+    (require 'dap-cpptools)
+    (yas-global-mode))
+
+  (use-package dap-mode
+    :straight t
+    :config
+    (require 'dap-cpptools))
 
   (use-package lsp-ui
     :init
@@ -612,11 +633,6 @@
   (add-hook 'c++-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'c++-mode-hook 'yas-minor-mode) 
-
-  (use-package dap-mode
-    :straight t
-    :config
-    (require 'dap-cpptools))
 #+end_src
 * Misc
 #+begin_src emacs-lisp
