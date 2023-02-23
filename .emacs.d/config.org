@@ -5,9 +5,18 @@
 
   (tool-bar-mode -1)
 
+  ;; Better mouse scrolling
+  ;; Note: this setting doesnt seem to be working.
+  ;; Source: https://stackoverflow.com/questions/445873/how-can-i-make-emacs-mouse-scrolling-slower-and-smoother
+  (setq mouse-wheel-scroll-amount '(0.03))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq ring-bell-function 'ignore)
+
   ;; Use visible bell
   ;; from: https://lupan.pl/dotemacs/
   (setq visible-bell t)
+
+  (global-display-line-numbers-mode t)
 
   ;; Remap escape
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -65,6 +74,24 @@
   (use-package f)
 
   (use-package restart-emacs)
+
+  ;; which key
+  (use-package which-key)
+  (which-key-mode)
+
+  ;; Helper function to remove incorrect line endings from files (^M).
+  ;; Specifically it removes the \r line endings that windows may add
+  (defun dos2unix ()
+    "Replace DOS eolns CR LF with Unix eolns CR"
+    (interactive)
+      (goto-char (point-min))
+	(while (search-forward "\r" nil t) (replace-match "")))
+
+  (defun sm/find-file-in-directory (dir)
+    "Interactively launch counsel-find-file in the given directory."
+    (interactive)
+    (cd dir)
+    (counsel-find-file))
 #+end_src
 * Themes
 #+begin_src emacs-lisp
@@ -103,15 +130,8 @@
   ;;   (load-theme `org-beautify t))
 
 #+end_src
-* Rest
+* Org mode setup
 #+begin_src emacs-lisp
-  ;; Helper function to remove incorrect line endings from files (^M).
-  ;; Specifically it removes the \r line endings that windows may add
-  (defun dos2unix ()
-    "Replace DOS eolns CR LF with Unix eolns CR"
-    (interactive)
-      (goto-char (point-min))
-	(while (search-forward "\r" nil t) (replace-match "")))
 
   ;; Org agenda files
   (defun sm/reload-org-agenda-files-projects ()
@@ -148,8 +168,13 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)
-     (plantuml . t)))
+     (plantuml . t)
+     (python . t)))
 
+  (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . auto)))
+#+end_src
+* Modeline
+#+begin_src emacs-lisp
   ;; doom modeline
   ;; crashing on windows
   (use-package doom-modeline
@@ -173,21 +198,9 @@
     (setq sml/no-confirm-load-theme t
 	  sml/theme 'respectful)
     (sml/setup))
-
-  ;; which key
-  (use-package which-key)
-  (which-key-mode)
-
-  ;; Better mouse scrolling
-  ;; Note: this setting doesnt seem to be working.
-  ;; Source: https://stackoverflow.com/questions/445873/how-can-i-make-emacs-mouse-scrolling-slower-and-smoother
-  (setq mouse-wheel-scroll-amount '(0.03))
-  (setq mouse-wheel-progressive-speed nil)
-  (setq ring-bell-function 'ignore)
-
-  ;; Many settins from:
-  ;; https://github.com/daviwil/dotfiles/blob/9776d65c4486f2fa08ec60a06e86ecb6d2c40085/Emacs.org#git
-
+#+end_src
+* Evil mode
+#+begin_src emacs-lisp
   ;; evil mode
   (defun sm/evil-hook ()
     (dolist (mode '(custom-mode
@@ -236,9 +249,23 @@
   (use-package evil-surround
     :config
     (global-evil-surround-mode 1))
+#+end_src
+* Git
+#+begin_src emacs-lisp
+  ;; git
+  (use-package magit
+    :bind ("C-M-;" . magit-status)
+    :commands (magit-status magit-get-current-branch)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-  (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . auto)))
+  (use-package git-auto-commit-mode)
 
+  ;; handles ssh credentials (for magit) on windows (and maybe other platforms?)
+  (use-package ssh-agency)
+#+end_src
+* Shortcuts
+#+begin_src emacs-lisp
   ;; General
   (use-package general
     :config
@@ -257,11 +284,10 @@
     (general-create-definer sm/ctrl-c-keys
       :prefix "C-c"))
 
-  (global-display-line-numbers-mode t)
-
-  ;; tab management
   (use-package hydra)
-
+#+end_src
+** Tabs
+#+begin_src emacs-lisp
   (defhydra hydra-tabs (global-map "<f3>")
     "tabs"
     ("c" tab-bar-new-tab "create")
@@ -275,7 +301,9 @@
 
   (sm/leader-key-def
     "t"   'hydra-tabs/body)
-
+#+end_src
+** Windows
+#+begin_src emacs-lisp
   (defhydra hydra-windows ()
     "windows"
     ("s" split-window-below "split")
@@ -292,24 +320,16 @@
 
   (sm/leader-key-def
     "w"   'hydra-windows/body)
-
+#+end_src
+** Zoom
+#+begin_src emacs-lisp
   (defhydra hydra-zoom (global-map "<f2>")
     "zoom"
     ("g" text-scale-increase "in")
     ("l" text-scale-decrease "out"))
-
-  ;; git
-  (use-package magit
-    :bind ("C-M-;" . magit-status)
-    :commands (magit-status magit-get-current-branch)
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-  (use-package git-auto-commit-mode)
-
-  ;; handles ssh credentials (for magit) on windows (and maybe other platforms?)
-  (use-package ssh-agency)
-
+#+end_src
+** Git
+#+begin_src emacs-lisp
   (sm/leader-key-def
     "g"   '(:ignore t :which-key "git")
     "gs"  'magit-status
@@ -324,18 +344,16 @@
     "gf"  'magit-fetch
     "gF"  'magit-fetch-all
     "gr"  'magit-rebase)
-
+#+end_src
+** Buffers
+#+begin_src emacs-lisp
   (sm/leader-key-def
     "b"   '(:ignore t :which-key "buffers")
     "bb"  'counsel-switch-buffer
     "bd"  'kill-buffer)
-
-  (defun sm/find-file-in-directory (dir)
-    "Interactively launch counsel-find-file in the given directory."
-    (interactive)
-    (cd dir)
-    (counsel-find-file))
-
+#+end_src
+** Notes
+#+begin_src emacs-lisp
   (sm/leader-key-def
     "f"   '(:ignore t :which-key "files")
     "fd"  (lambda () (interactive) (find-file user-config-file))
@@ -353,6 +371,15 @@
     "orp" 'sm/reload-org-agenda-files-projects
     "ora" 'sm/reload-org-agenda-files-areas
     "orc" 'sm/reload-org-agenda-files-combined)
+#+end_src
+** Rest
+#+begin_src emacs-lisp
+#+end_src
+* Completion
+#+begin_src emacs-lisp
+
+  ;; Many settins from:
+  ;; https://github.com/daviwil/dotfiles/blob/9776d65c4486f2fa08ec60a06e86ecb6d2c40085/Emacs.org#git
 
   ;; ivy
   (use-package counsel)
@@ -362,6 +389,9 @@
       :straight t
       :config
       (ivy-prescient-mode 1))
+#+end_src
+* Misc
+#+begin_src emacs-lisp
 
   (use-package evil-commentary)
   (evil-commentary-mode)
@@ -374,6 +404,9 @@
   ;; Ripgrep integration in emacs
   (use-package deadgrep)
 
+#+end_src
+* Projects
+#+begin_src emacs-lisp
   ;; find file in project
   (use-package find-file-in-project
     :init
@@ -415,6 +448,9 @@
     "pc"  'projectile-compile-project
     "pd"  'find-directory-in-project-by-selected)
 
+#+end_src
+* Misc
+#+begin_src emacs-lisp
   (use-package undo-tree
     :init
     (global-undo-tree-mode 1))
@@ -463,6 +499,9 @@
   (global-set-key (kbd "C-c t") 'counsel-load-theme)
   (global-set-key (kbd "C-c F") 'counsel-org-file)
 
+#+end_src
+* Programming
+#+begin_src emacs-lisp
   ;; from: https://lupan.pl/dotemacs/
   (use-package smartparens
     :hook ((prog-mode . smartparens-mode)
@@ -475,9 +514,9 @@
     (require 'smartparens-config))
 
   ;; multiple cursors package
-  (use-package multiple-cursors
-    :bind (("C-c n" . mc/mark-next-like-this)
-	   ("C-c p" . mc/mark-previous-like-this)))
+  ;; (use-package multiple-cursors
+  ;;   :bind (("C-c n" . mc/mark-next-like-this)
+  ;; 	 ("C-c p" . mc/mark-previous-like-this)))
 
   ;; Fix trailing spaces but only in modified lines
   (use-package ws-butler
@@ -490,6 +529,11 @@
 	   ("C-i" . company-indent-or-complete-common)
 	   ("C-M-i" . counsel-company))
     :hook (emacs-lisp-mode . company-mode))
+
+  ;; TODO: Enable and test
+  ;; A company front-end with icons
+  ;; (use-package company-box
+  ;;   :hook (company-mode . company-box-mode))
 
   ;; enable company mode in all buffers
   (add-hook 'after-init-hook 'global-company-mode)
@@ -559,6 +603,19 @@
   (use-package ivy-yasnippet
     :bind ("C-c y" . ivy-yasnippet))
 
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'c++-mode-hook 'yas-minor-mode) 
+
+  (use-package dap-mode
+    :straight t
+    :config
+    (require 'dap-cpptools))
+#+end_src
+* Misc
+#+begin_src emacs-lisp
+
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -575,6 +632,9 @@
 
   (use-package excorporate)
 
+#+end_src
+* Treemacs
+#+begin_src emacs-lisp
   ;; Treemacs setup
   (use-package treemacs
     :straight t
@@ -699,9 +759,4 @@
     :after (treemacs)
     :ensure t
     :config (treemacs-set-scope-type 'Tabs))
-
-  (use-package dap-mode
-    :straight t
-    :config
-    (require 'dap-cpptools))
 #+end_src
