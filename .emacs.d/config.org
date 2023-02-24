@@ -576,19 +576,29 @@
     (require 'dap-cpptools)
     (yas-global-mode))
 
-  (use-package dap-mode
-    :straight t
-    :config
-    (require 'dap-cpptools))
-
   (use-package lsp-ui
     :init
     (setq lsp-ui-doc-position 'at-point
-	  lsp-ui-doc-show-with-mouse nil)
+	  lsp-ui-doc-show-with-mouse t
+          lsp-ui-peek-enable t)
     :bind (("C-c d" . lsp-ui-doc-show)
 	   ("C-c I" . lsp-ui-imenu)))
 
+  (use-package lsp-ivy)
+
   (use-package lsp-treemacs)
+
+  (use-package dap-mode
+    :straight t
+    :config
+    (require 'dap-cpptools)
+    (require 'dap-lldb)
+    (require 'dap-gdb-lldb))
+
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  (dap-tooltip-mode 1)
+  (dap-ui-controls-mode 1)
 
   (use-package flycheck
     :defer)
@@ -633,6 +643,19 @@
   (add-hook 'c++-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'c++-mode-hook 'yas-minor-mode) 
+#+end_src
+** Programming shortcuts
+#+begin_src emacs-lisp
+  (sm/leader-key-def
+    "c"   '(:ignore t :which-key "code")
+    "cl"   '(:ignore t :which-key "lsp")
+    "cls"  'lsp-ivy-workspace-symbol
+    "cli"  'lsp-find-definition
+    "clh"  'lsp-find-declaration
+    "clg"  'lsp-ui-doc-glance
+    "clm"  'lsp-ui-imenu
+    "clr"  'lsp-ui-peek-find-references)
+
 #+end_src
 * Misc
 #+begin_src emacs-lisp
