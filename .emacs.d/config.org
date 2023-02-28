@@ -580,13 +580,9 @@
     :init
     (setq lsp-ui-doc-position 'at-point
 	  lsp-ui-doc-show-with-mouse t
-          lsp-ui-peek-enable t)
+	  lsp-ui-peek-enable t)
     :bind (("C-c d" . lsp-ui-doc-show)
 	   ("C-c I" . lsp-ui-imenu)))
-
-  (use-package lsp-ivy)
-
-  (use-package lsp-treemacs)
 
   (use-package dap-mode
     :straight t
@@ -594,6 +590,10 @@
     (require 'dap-cpptools)
     (require 'dap-lldb)
     (require 'dap-gdb-lldb))
+
+  (use-package lsp-ivy)
+
+  (use-package lsp-treemacs)
 
   (dap-mode 1)
   (dap-ui-mode 1)
@@ -643,6 +643,36 @@
   (add-hook 'c++-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'c++-mode-hook 'yas-minor-mode) 
+#+end_src
+** Compilation
+#+begin_src emacs-lisp
+  ;; (use-package fancy-compilation
+  ;;   :init
+  ;;   (setq fancy-compilation-override-colors nil)
+  ;;   :commands (fancy-compilation-mode))
+
+  ;; (with-eval-after-load 'compile
+  ;;   (fancy-compilation-mode))
+
+  ;; (defun sm/compile ()
+  ;;   "Compile out of source"
+  ;;   (interactive)
+  ;;   (let ((default-directory (concat (projectile-project-root) "../build/inr_dev5/Clang-RD")))
+  ;;     (call-interactively #'compile)))
+
+  ;; This is not correctly detecting the cmake project type.
+  ;; For now have to set type to cmake in dir local variable.
+  (with-eval-after-load 'projectile
+   (projectile-register-project-type 'cmake '("CMakeLists.txt")
+				     :project-file "CMakeLists.txt"
+				     :compile "ninja"
+				     :test "ctest"))
+
+   ;; Add cmake build error regex to compiler error alist
+   (add-to-list 'compilation-error-regexp-alist 'cmake)
+   (add-to-list 'compilation-error-regexp-alist-alist
+		'(cmake "\\(^[[:alnum:]]\\:\\\\[[:alnum:]\\\\-_]+.[[:lower:]]+\\)(\\([[:digit:]]\\{1,6\\}\\),\\([[:digit:]]\\{1,6\\}\\)): error:"
+		  1 2 3))
 #+end_src
 ** Programming shortcuts
 #+begin_src emacs-lisp
