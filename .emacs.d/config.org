@@ -520,6 +520,9 @@
     (define-key smartparens-mode-map [M-S-backspace] #'sp-backward-unwrap-sexp)
     (require 'smartparens-config))
 
+  (setq c-default-style "bsd"
+	c-basic-offset 4)
+
   ;; multiple cursors package
   ;; (use-package multiple-cursors
   ;;   :bind (("C-c n" . mc/mark-next-like-this)
