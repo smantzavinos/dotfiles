@@ -18,6 +18,8 @@
 
   (global-display-line-numbers-mode t)
 
+  (global-visual-line-mode 1)
+
   ;; Remap escape
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
