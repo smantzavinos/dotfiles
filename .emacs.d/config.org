@@ -666,6 +666,17 @@
   (add-hook 'c++-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'c++-mode-hook 'yas-minor-mode) 
+
+  (use-package qml-mode
+    :config
+    (setq c-default-style "bsd")
+    (setq c-basic-offset 4)
+    (setq indent-tabs-mode nil))
+
+  (autoload 'qml-mode "qml-mode" "Editing Qt Declarative." t)
+  (add-to-list 'auto-mode-alist '("\\.qml$" . qml-mode))
+
+  (add-to-list 'lsp-language-id-configuration '(qml-mode . "qml"))
 #+end_src
 ** Compilation
 #+begin_src emacs-lisp
