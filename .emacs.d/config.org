@@ -117,6 +117,15 @@
 	(with-current-buffer buffer
 	    (when (equal default-directory dir)
 	    (my-reload-dir-locals-for-current-buffer))))))
+
+  (defun sm/copy-compile-commands ()
+    "Copies the compile_commands.json from build directory to project directory (overwriting)."
+    (interactive)
+    (copy-file
+     (concat projectile-project-compilation-dir "/compile_commands.json")
+     (concat (projectile-project-root) "/compile_commands.json")
+     t))
+
 #+end_src
 * Themes
 #+begin_src emacs-lisp
