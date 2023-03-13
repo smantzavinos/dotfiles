@@ -116,7 +116,7 @@
 	(dolist (buffer (buffer-list))
 	(with-current-buffer buffer
 	    (when (equal default-directory dir)
-	    (my-reload-dir-locals-for-current-buffer))))))
+	    (sm/reload-dir-locals-for-current-buffer))))))
 
   (defun sm/copy-compile-commands ()
     "Copies the compile_commands.json from build directory to project directory (overwriting)."
@@ -199,10 +199,13 @@
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c@)")))
 
+  (use-package ob-powershell)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)
      (plantuml . t)
+     (powershell . t)
      (python . t)))
 
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . auto)))
