@@ -251,6 +251,10 @@
 		    term-mode))
     (add-to-list 'evil-emacs-state-modes mode)))
 
+  ;; Remap C-u (universal argument) to C-i
+  (global-set-key (kbd "C-i") 'universal-argument)
+  (define-key universal-argument-map (kbd "C-i") 'universal-argument-more)
+
   (use-package evil
     :init
     (setq evil-want-integration t)
