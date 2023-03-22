@@ -576,8 +576,8 @@
 
   ;; TODO: Enable and test
   ;; A company front-end with icons
-  ;; (use-package company-box
-  ;;   :hook (company-mode . company-box-mode))
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
 
   ;; enable company mode in all buffers
   (add-hook 'after-init-hook 'global-company-mode)
