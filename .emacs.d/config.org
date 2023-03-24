@@ -70,7 +70,7 @@
 	       `(default ((t (:font "JetBrains Mono Light"))))
 	       `(fixed-pitch ((t (:inherit (default)))))
 	       `(fixed-pitch-serif ((t (:inherit (default)))))
-	       `(variable-pitch ((t (:font "Arial")))))))
+	       `(variable-pitch ((t (:font "JetBrains Mono Light")))))))
 
   ;; File path utility library
   (use-package f)
