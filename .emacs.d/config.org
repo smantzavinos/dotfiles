@@ -198,6 +198,8 @@
   (setq org-log-into-drawer t)
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c@)")))
+  ;; Org src block indentation
+  (setq org-edit-src-content-indentation 0)
 
   (use-package ob-powershell)
 
