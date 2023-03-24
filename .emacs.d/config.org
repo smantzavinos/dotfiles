@@ -201,12 +201,17 @@
 
   (use-package ob-powershell)
 
+  (require `ob-js)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)
+     (emacs-lisp . t)
      (plantuml . t)
      (powershell . t)
-     (python . t)))
+     (python . t)
+     (shell . t)
+     (js . t)))
 
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . auto)))
 #+end_src
