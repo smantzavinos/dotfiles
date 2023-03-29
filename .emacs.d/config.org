@@ -729,6 +729,9 @@
 ;;   (let ((default-directory (concat (projectile-project-root) "../build/inr_dev5/Clang-RD")))
 ;;     (call-interactively #'compile)))
 
+;; Compilation buffer auto scroll
+(setq compilation-scroll-output t)
+
 ;; This is not correctly detecting the cmake project type.
 ;; For now have to set type to cmake in dir local variable.
 (with-eval-after-load 'projectile
