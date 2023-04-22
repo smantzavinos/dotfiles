@@ -454,6 +454,13 @@
 (use-package deadgrep)
 
 #+end_src
+** asdf
+#+begin_src emacs-lisp
+(use-package asdf
+  :straight (:host github :repo "tabfugnic/asdf.el" :files ("asdf.el"))
+  :ensure t
+  :config (asdf-enable))
+#+end_src
 * Projects
 #+begin_src emacs-lisp
 ;; find file in project
