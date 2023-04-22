@@ -574,6 +574,23 @@
 (use-package ws-butler
   :hook (prog-mode . ws-butler-mode))
 
+;; yas-snippet
+;; from: https://lupan.pl/dotemacs/
+(setq-default abbrev-mode 1)
+(use-package yasnippet
+  :defer 2
+  :config
+  (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :defer)
+(use-package ivy-yasnippet
+  :bind ("C-c y" . ivy-yasnippet))
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'company-mode)
+(add-hook 'c++-mode-hook 'yas-minor-mode) 
+
 ;; company mode
 ;; from: https://lupan.pl/dotemacs/
 (use-package company
@@ -684,23 +701,6 @@
 
 (use-package typescript-mode
   :defer)
-
-;; yas-snippet
-;; from: https://lupan.pl/dotemacs/
-(setq-default abbrev-mode 1)
-(use-package yasnippet
-  :defer 2
-  :config
-  (yas-global-mode 1))
-(use-package yasnippet-snippets
-  :defer)
-(use-package ivy-yasnippet
-  :bind ("C-c y" . ivy-yasnippet))
-
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'company-mode)
-(add-hook 'c++-mode-hook 'yas-minor-mode) 
 
 (use-package qml-mode
   :config
