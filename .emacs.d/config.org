@@ -702,6 +702,8 @@
 (use-package typescript-mode
   :defer)
 
+(use-package dockerfile-mode)
+
 (use-package qml-mode
   :config
   (setq c-default-style "bsd")
