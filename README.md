@@ -41,6 +41,8 @@ Update: I now prefer [JetBrains Mono](https://www.jetbrains.com/lp/mono/).
 
 To get additional icons working I also had to execute `all-the-icons-install-fonts` command and manually install the fonts it downloaded (it asks you where to save the downloaded fonts).
 
+For variable width fonts, install (ET Bembo)[https://github.com/DavidBarts/ET_Bembo] Font.
+
 ### Dependencies
 ripgrep
 fd
