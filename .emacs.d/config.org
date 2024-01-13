@@ -795,7 +795,7 @@
 (autoload 'qml-mode "qml-mode" "Editing Qt Declarative." t)
 (add-to-list 'auto-mode-alist '("\\.qml$" . qml-mode))
 
-(add-to-list 'lsp-language-id-configuration '(qml-mode . "qml"))
+;; (add-to-list 'lsp-language-id-configuration '(qml-mode . "qml"))
 #+end_src
 ** nix
 #+begin_src emacs-lisp
@@ -804,11 +804,11 @@
 (use-package nix-mode
   :mode "\\.nix\\'")
 
-(add-to-list 'lsp-language-id-configuration '(nix-mode . "nix"))
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection '("rnix-lsp"))
-                  :major-modes '(nix-mode)
-                  :server-id 'nix))
+;; (add-to-list 'lsp-language-id-configuration '(nix-mode . "nix"))
+;; (lsp-register-client
+;;  (make-lsp-client :new-connection (lsp-stdio-connection '("rnix-lsp"))
+;;                   :major-modes '(nix-mode)
+;;                   :server-id 'nix))
 #+end_src
 ** Compilation
 #+begin_src emacs-lisp
