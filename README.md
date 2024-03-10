@@ -39,7 +39,7 @@ Install the preferred font: [Consolas NF](https://github.com/whitecolor/my-nerd-
 Update: I now prefer [JetBrains Mono](https://www.jetbrains.com/lp/mono/). 
 (Ubunutu font install: Copy the font to the `~/.fonts` directory)
 
-To get additional icons working I also had to execute `all-the-icons-install-fonts` command and manually install the fonts it downloaded (it asks you where to save the downloaded fonts).
+To get additional icons working I also had to execute `all-the-icons-install-fonts` and `nerd-icons-install-fonts` command and manually install the fonts it downloaded (it asks you where to save the downloaded fonts).
 
 For variable width fonts, install (ET Bembo)[https://github.com/DavidBarts/ET_Bembo] Font.
 
