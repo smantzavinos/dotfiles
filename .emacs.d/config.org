@@ -67,10 +67,10 @@
 (add-hook 'emacs-startup-hook
 	  (lambda ()
 	    (custom-set-faces
-	     `(default ((t (:font "JetBrains Mono Light"))))
+	     `(default ((t (:font "JetBrainsMono Nerd Font"))))
 	     `(fixed-pitch ((t (:inherit (default)))))
 	     `(fixed-pitch-serif ((t (:inherit (default)))))
-	     `(variable-pitch ((t (:font "JetBrains Mono Light")))))))
+	     `(variable-pitch ((t (:font "JetBrainsMono Nerd Font")))))))
 
 ;; File path utility library
 (use-package f)
