@@ -2,9 +2,11 @@
 ;; https://emacs.stackexchange.com/questions/12881/how-do-i-set-a-different-location-for-the-dot-emacs-emacs-file-on-windows-7
 
 ;; Place this file in C:\Users\Username\AppData\Roaming and point to the appropriate files
-(setenv "HOME" "C:/path/to/home/dir")
+;; (setenv "HOME" "C:/path/to/home/dir")
+(setenv "HOME" "/home/spiros")
 
-(defvar sm/notes-directory "c:/path/to/notes"
+;; (defvar sm/notes-directory "c:/path/to/notes"
+(defvar sm/notes-directory "/home/spiros/notes"
   "Root directory of PARA style notes.")
 
 (setq user-emacs-directory (concat (getenv "HOME") "/dotfiles/.emacs.d"))
