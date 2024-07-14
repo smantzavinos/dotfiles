@@ -67,12 +67,10 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (custom-set-faces
-             `(default ((t (:family "JetBrainsMono Nerd Font" :height ,my-default-font-size))))
+             `(default ((t (:family "JetBrainsMono NF" :height ,my-default-font-size))))
              `(fixed-pitch ((t (:inherit (default)))))
              `(fixed-pitch-serif ((t (:inherit (default)))))
-             `(variable-pitch ((t (:family "JetBrainsMono Nerd Font" :height ,my-default-font-size)))))))
-
-
+             `(variable-pitch ((t (:family "JetBrainsMono NF" :height ,my-default-font-size)))))))
 
 ;; File path utility library
 (use-package f)
@@ -234,10 +232,10 @@
 ;;   (org-default  ((nil (:inherit variable-pitch)))))
 
 ;; (add-hook 'org-mode-hook 'variable-pitch-mode)
-(add-hook 'org-mode-hook 'my-org-mode-hook)
-(defun my-org-mode-hook ()
-  (variable-pitch-mode 1)
-  (setq buffer-face-mode-face 'variable-pitch))
+;; (add-hook 'org-mode-hook 'my-org-mode-hook)
+;; (defun my-org-mode-hook ()
+;;   (variable-pitch-mode 1)
+;;   (setq buffer-face-mode-face 'variable-pitch))
 
 #+end_src
 ** Org Mode general
