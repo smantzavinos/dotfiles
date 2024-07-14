@@ -65,12 +65,14 @@
 
 ;; (set-face-attribute `default nil :font "Consolas NF")
 (add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (custom-set-faces
-	     `(default ((t (:font "JetBrainsMono Nerd Font"))))
-	     `(fixed-pitch ((t (:inherit (default)))))
-	     `(fixed-pitch-serif ((t (:inherit (default)))))
-	     `(variable-pitch ((t (:font "JetBrainsMono Nerd Font")))))))
+          (lambda ()
+            (custom-set-faces
+             `(default ((t (:family "JetBrainsMono Nerd Font" :height ,my-default-font-size))))
+             `(fixed-pitch ((t (:inherit (default)))))
+             `(fixed-pitch-serif ((t (:inherit (default)))))
+             `(variable-pitch ((t (:family "JetBrainsMono Nerd Font" :height ,my-default-font-size)))))))
+
+
 
 ;; File path utility library
 (use-package f)
