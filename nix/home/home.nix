@@ -1,4 +1,9 @@
-{config, pkgs, ...}: {
+{config, pkgs, ...}:
+
+# let
+#   s3driveModule = import (builtins.toFile ./apps/s3drive/s3drive.nix);
+# in
+{
     home.username = "spiros";
     home.homeDirectory = "/home/spiros";
     home.stateVersion = "23.11"; # To figure this out you can comment out the line and see what version it expected.
@@ -8,6 +13,13 @@
     nixpkgs.config = {
         allowUnfree = true;
     };
+
+    imports = [
+      /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+      # s3driveModule
+    ];
+
+    programs.s3drive = { enable = true; };
 
     home.packages = [
       # utils
@@ -46,6 +58,8 @@
       pkgs.emacs-all-the-icons-fonts
       pkgs.material-icons
       pkgs.weather-icons
+
+      # (config.programs.s3drive.package)
     ];
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
