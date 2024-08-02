@@ -1,8 +1,5 @@
 {config, pkgs, ...}:
 
-# let
-#   s3driveModule = import (builtins.toFile ./apps/s3drive/s3drive.nix);
-# in
 {
     home.username = "spiros";
     home.homeDirectory = "/home/spiros";
@@ -15,8 +12,9 @@
     };
 
     imports = [
-      /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
-      # s3driveModule
+      # Note: Test on new system to confirm relative path does not cause issues
+      apps/s3drive/s3drive.nix
+      # /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
     ];
 
     programs.s3drive = { enable = true; };
@@ -58,8 +56,6 @@
       pkgs.emacs-all-the-icons-fonts
       pkgs.material-icons
       pkgs.weather-icons
-
-      # (config.programs.s3drive.package)
     ];
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
