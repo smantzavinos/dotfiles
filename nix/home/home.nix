@@ -1,4 +1,6 @@
-{config, pkgs, ...}: {
+{config, pkgs, ...}:
+
+{
     home.username = "spiros";
     home.homeDirectory = "/home/spiros";
     home.stateVersion = "23.11"; # To figure this out you can comment out the line and see what version it expected.
@@ -17,6 +19,14 @@
     nixpkgs.config = {
         allowUnfree = true;
     };
+
+    imports = [
+      # Note: Test on new system to confirm relative path does not cause issues
+      apps/s3drive/s3drive.nix
+      # /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+    ];
+
+    programs.s3drive = { enable = true; };
 
     home.packages = [
       # utils
