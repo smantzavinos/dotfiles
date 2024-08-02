@@ -13,18 +13,18 @@
 
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
-      apps/s3drive/s3drive.nix
-      # /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+      # apps/s3drive/s3drive.nix
+      /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
 
-      apps/aider/aider.nix
-      # /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
+      # apps/aider/aider.nix
+      /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
     ];
 
     programs.s3drive = { enable = true; };
 
-    aider = {
+    programs.aider = {
       enable = true;
-      projectDir = "/home/spiros/dotfiles/nix/apps";
+      # projectDir = "/home/spiros/dotfiles/nix/apps";
     };
 
     home.packages = [
