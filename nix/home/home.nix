@@ -6,15 +6,6 @@
     home.stateVersion = "23.11"; # To figure this out you can comment out the line and see what version it expected.
     programs.home-manager.enable = true;
 
-    imports = [
-      ./apps/aider.nix
-    ];
-
-    aider = {
-      enable = true;
-      projectDir = "/home/spiros/dotfiles/nix/apps";
-    };
-
     # Allow unfree packages
     nixpkgs.config = {
         allowUnfree = true;
@@ -24,9 +15,17 @@
       # Note: Test on new system to confirm relative path does not cause issues
       apps/s3drive/s3drive.nix
       # /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+
+      apps/aider/aider.nix
+      # /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
     ];
 
     programs.s3drive = { enable = true; };
+
+    aider = {
+      enable = true;
+      projectDir = "/home/spiros/dotfiles/nix/apps";
+    };
 
     home.packages = [
       # utils
