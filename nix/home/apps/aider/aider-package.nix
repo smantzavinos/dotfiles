@@ -36,7 +36,7 @@ python3Packages.buildPythonPackage rec {
     fsspec
     gitdb
     gitpython
-    grep-ast
+    # grep-ast
     h11
     httpcore
     httpx
