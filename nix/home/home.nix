@@ -20,7 +20,7 @@
       /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
     ];
 
-    programs.s3drive = { enable = true; };
+    programs.s3drive = { enable = false; };
 
     programs.aider = {
       enable = true;
@@ -50,9 +50,9 @@
       # apps
       pkgs.google-chrome
       pkgs.libreoffice
-      pkgs.onedrive
-      pkgs.onedrivegui
-      pkgs.cryptomator
+      #pkgs.onedrive
+      #pkgs.onedrivegui
+      #pkgs.cryptomator
 
       # epic games
       # pkgs.lutris
