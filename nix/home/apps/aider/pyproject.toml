@@ -5,7 +5,7 @@ description = "A project to install aider tool"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.11"
 configargparse = "*"
 GitPython = "*"
 jsonschema = "*"
@@ -33,5 +33,5 @@ importlib-metadata = "<8.0.0"
 numpy = "<2"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0", "hatchling"]
 build-backend = "poetry.core.masonry.api"

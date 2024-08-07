@@ -40,6 +40,7 @@
       pkgs.glxinfo
       pkgs.pciutils
       pkgs.dpkg
+      pkgs.poetry
 
       # zsh
       pkgs.zsh-powerlevel10k
