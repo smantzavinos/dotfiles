@@ -40,6 +40,8 @@
       pkgs.glxinfo
       pkgs.pciutils
       pkgs.dpkg
+      pkgs.tree
+      pkgs.aichat
 
       # zsh
       pkgs.zsh-powerlevel10k
