@@ -282,7 +282,13 @@
         plugin = vim-tmux-navigator;
       }
     ];
-    };
+  };
+
+  programs.kitty = {
+    enable = true;
+    theme = "Dracula";
+    # font = "JetBrainsMono Nerd Font";
+  };
 
   programs.alacritty = {
     enable = true;
