@@ -6,7 +6,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.xserver =  {
-    xkbOptions = "ctrl:nocaps";
+    xkb.options = "ctrl:nocaps";
   };
 
   environment.systemPackages = with pkgs; [
