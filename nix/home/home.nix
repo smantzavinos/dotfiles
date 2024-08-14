@@ -1,4 +1,4 @@
-{config, pkgs, ...}:
+{config, pkgs, inputs, ...}:
 
 {
     home.username = "spiros";
@@ -17,15 +17,15 @@
       /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
 
       # apps/aider/aider.nix
-      /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
+      # /home/spiros/dotfiles/nix/home/apps/aider/aider.nix
     ];
 
     programs.s3drive = { enable = false; };
 
-    programs.aider = {
-      enable = true;
-      # projectDir = "/home/spiros/dotfiles/nix/apps";
-    };
+    # programs.aider = {
+    #   enable = true;
+    #   # projectDir = "/home/spiros/dotfiles/nix/apps";
+    # };
 
     home.packages = [
       # utils
@@ -66,6 +66,9 @@
       pkgs.emacs-all-the-icons-fonts
       pkgs.material-icons
       pkgs.weather-icons
+
+
+      inputs.aider-flake.packages.x86_64-linux.default
     ];
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install

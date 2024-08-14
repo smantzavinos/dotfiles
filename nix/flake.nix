@@ -40,6 +40,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    aider-flake = {
+      url = "github:smantzavinos/aider_flake";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -49,6 +52,7 @@
         inherit system;
         config.allowUnfree = true;
       };
+      # aider-flake = self.inputs.aider-flake
     in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -61,7 +65,11 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             # home-manager.users.spiros = import /home/spiros/dotfiles/nix/home/home.nix;
-            home-manager.users.spiros = import home/home.nix;
+            home-manager.users.spiros = import home/home.nix {
+              inherit config;
+              inherit pkgs;
+              inherit inputs;
+            };
           }
           ./system_shared.nix
           # ./systems/precision_t5600.nix
