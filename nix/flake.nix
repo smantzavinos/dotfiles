@@ -45,14 +45,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@attrs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-      # aider-flake = self.inputs.aider-flake
     in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -64,12 +63,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # home-manager.users.spiros = import /home/spiros/dotfiles/nix/home/home.nix;
-            home-manager.users.spiros = import home/home.nix {
-              inherit config;
-              inherit pkgs;
-              inherit inputs;
-            };
+            home-manager.users.spiros = import /home/spiros/dotfiles/nix/home/home.nix;
+            home-manager.extraSpecialArgs = attrs;
           }
           ./system_shared.nix
           # ./systems/precision_t5600.nix
