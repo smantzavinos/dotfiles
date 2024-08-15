@@ -41,7 +41,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     aider-flake = {
-      url = "github:smantzavinos/aider_flake";
+      url = "github:smantzavinos/aider_flake/7e250ffac1caa357e9f3386d74cb736093dc09b4";
     };
   };
 
