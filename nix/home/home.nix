@@ -48,7 +48,7 @@
       #pkgs.cryptomator
 
       # epic games
-      (if config.flags.enableEpicGames then [
+      (if config.flags ? enableEpicGames && config.flags.enableEpicGames then [
         pkgs.lutris
         pkgs.wineWowPackages.full
       ] else [])
