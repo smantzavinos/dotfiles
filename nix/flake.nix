@@ -58,7 +58,7 @@
         inherit system;
         modules = [
           /etc/nixos/configuration.nix
-          # /etc/nixos/hardware-configuration.nix
+          /etc/nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -67,7 +67,7 @@
             home-manager.extraSpecialArgs = attrs;
           }
           ./system_shared.nix
-          # ./systems/precision_t5600.nix
+          ./systems/precision_t5600.nix
         ];
       };
     };
