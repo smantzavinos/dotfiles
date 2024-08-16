@@ -1,4 +1,4 @@
-{config, pkgs, aider-flake, ...}:
+{config, pkgs, aider-flake, flags, ...}:
 
 {
     home.username = "spiros";
@@ -48,7 +48,7 @@
       #pkgs.cryptomator
 
       # epic games
-      (if config.flags ? enableEpicGames && config.flags.enableEpicGames then [
+      (if flags.enableEpicGames then [
         pkgs.lutris
         pkgs.wineWowPackages.full
       ] else [])
