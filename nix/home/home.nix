@@ -48,8 +48,10 @@
       #pkgs.cryptomator
 
       # epic games
-      # pkgs.lutris
-      # pkgs.wineWowPackages.full
+      (if config.flags.enableEpicGames then [
+        pkgs.lutris
+        pkgs.wineWowPackages.full
+      ] else [])
 
     # fonts
       pkgs.nerdfonts
