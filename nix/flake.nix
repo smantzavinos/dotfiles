@@ -53,7 +53,7 @@
         config.allowUnfree = true;
       };
       flags = {
-        enableEpicGames = false;
+        enableEpicGames = false; # Set this to false to disable Epic Games by default
       };
     in
     let
