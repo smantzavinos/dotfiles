@@ -63,7 +63,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.spiros = import /home/spiros/dotfiles/nix/home/home.nix;
+            home-manager.users.spiros = import ./home/home.nix;
             home-manager.extraSpecialArgs = attrs;
           }
           ./system_shared.nix
