@@ -50,9 +50,11 @@ flycheck_*.el
 
 # projectiles files
 .projectile
+projectile.cache
 
 # directory configuration
 .dir-locals.el
 
 # network security
 /network-security.data
+.aider*
