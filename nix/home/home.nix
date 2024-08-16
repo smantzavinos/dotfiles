@@ -48,10 +48,6 @@
       #pkgs.cryptomator
 
       # epic games
-      (if flags.enableEpicGames then [
-        pkgs.lutris
-        pkgs.wineWowPackages.full
-      ] else [])
 
     # fonts
       pkgs.nerdfonts
@@ -62,7 +58,10 @@
 
       # flakes passed in from top level flake.nix
       aider-flake.packages.x86_64-linux.default
-    ];
+    ] ++ (if flags.enableEpicGames then [
+      pkgs.lutris
+      pkgs.wineWowPackages.full
+    ] else []);
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
