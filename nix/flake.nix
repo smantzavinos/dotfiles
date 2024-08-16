@@ -52,6 +52,16 @@
         inherit system;
         config.allowUnfree = true;
       };
+      flags = {
+        enableEpicGames = true;
+      };
+    in
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -64,7 +74,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.spiros = import ./home/home.nix;
-            home-manager.extraSpecialArgs = attrs;
+            home-manager.extraSpecialArgs = attrs // { inherit flags; };
           }
           ./system_shared.nix
           # ./systems/precision_t5600.nix
