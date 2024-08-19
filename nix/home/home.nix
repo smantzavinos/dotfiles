@@ -44,9 +44,16 @@
       pkgs.google-chrome
       pkgs.libreoffice
       pkgs.drawio
-      #pkgs.onedrive
-      #pkgs.onedrivegui
-      #pkgs.cryptomator
+    ] ++ (if flags.enableEpicGames then [
+      pkgs.lutris
+      pkgs.wineWowPackages.full
+    ] else []) ++ (if flags.enableNextCloudServer then [ pkgs.nextcloud29 ] else []) ++ (if flags.enableOneDrive then [
+      pkgs.onedrive
+    ] else []) ++ (if flags.enableOneDriveGUI then [
+      pkgs.onedrivegui
+    ] else []) ++ (if flags.enableCryptomator then [
+      pkgs.cryptomator
+    ] else []);
       pkgs.nextcloud-client
 
       # epic games

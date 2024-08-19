@@ -51,6 +51,9 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        enableOneDrive = false; # Set this to false to disable OneDrive by default
+        enableOneDriveGUI = false; # Set this to false to disable OneDrive GUI by default
+        enableCryptomator = false; # Set this to false to disable Cryptomator by default
       };
       flags = {
         enableEpicGames = false; # Set this to false to disable Epic Games by default
