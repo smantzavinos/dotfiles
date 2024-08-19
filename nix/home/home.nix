@@ -18,64 +18,62 @@
     ];
 
 
-    # Base packages
-    basePackages = [
-      # utils
-      pkgs.cowsay
-      pkgs.gh
-      pkgs.fd
-      pkgs.ripgrep
-      pkgs.lshw
-      pkgs.fzf
-      pkgs.nix-prefetch-github
-      pkgs.jq
-      pkgs.glxinfo
-      pkgs.pciutils
-      pkgs.dpkg
-      pkgs.tree
-      pkgs.aichat
-      pkgs.degit
+    home.packages = let
+      basePackages = [
+        # utils
+        pkgs.cowsay
+        pkgs.gh
+        pkgs.fd
+        pkgs.ripgrep
+        pkgs.lshw
+        pkgs.fzf
+        pkgs.nix-prefetch-github
+        pkgs.jq
+        pkgs.glxinfo
+        pkgs.pciutils
+        pkgs.dpkg
+        pkgs.tree
+        pkgs.aichat
+        pkgs.degit
 
-      # zsh
-      pkgs.zsh-powerlevel10k
-      pkgs.zplug
-      pkgs.oh-my-zsh
-      pkgs.fzf-zsh
+        # zsh
+        pkgs.zsh-powerlevel10k
+        pkgs.zplug
+        pkgs.oh-my-zsh
+        pkgs.fzf-zsh
 
-      # apps
-      pkgs.google-chrome
-      pkgs.libreoffice
-      pkgs.drawio
-      pkgs.nextcloud-client
+        # apps
+        pkgs.google-chrome
+        pkgs.libreoffice
+        pkgs.drawio
+        pkgs.nextcloud-client
 
-      # fonts
-      pkgs.nerdfonts
-      pkgs.font-awesome
-      pkgs.emacs-all-the-icons-fonts
-      pkgs.material-icons
-      pkgs.weather-icons
+        # fonts
+        pkgs.nerdfonts
+        pkgs.font-awesome
+        pkgs.emacs-all-the-icons-fonts
+        pkgs.material-icons
+        pkgs.weather-icons
 
-      # flakes passed in from top level flake.nix
-      aider-flake.packages.x86_64-linux.default
-    ];
+        # flakes passed in from top level flake.nix
+        aider-flake.packages.x86_64-linux.default
+      ];
 
-    # Conditional packages
-    epicGamesPackages = if flags.enableEpicGames then [
-      pkgs.lutris
-      pkgs.wineWowPackages.full
-    ] else [];
+      epicGamesPackages = if flags.enableEpicGames then [
+        pkgs.lutris
+        pkgs.wineWowPackages.full
+      ] else [];
 
-    oneDrivePackages = if flags.enableOneDrive then [
-      pkgs.onedrive
-      pkgs.onedrivegui
-      pkgs.cryptomator
-    ] else [];
+      oneDrivePackages = if flags.enableOneDrive then [
+        pkgs.onedrive
+        pkgs.onedrivegui
+        pkgs.cryptomator
+      ] else [];
 
-    nextCloudServerPackages = if flags.enableNextCloudServer then [
-      pkgs.nextcloud29
-    ] else [];
-
-    home.packages = 
+      nextCloudServerPackages = if flags.enableNextCloudServer then [
+        pkgs.nextcloud29
+      ] else [];
+    in
       basePackages ++ 
       epicGamesPackages ++ 
       oneDrivePackages ++ 
