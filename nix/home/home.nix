@@ -47,7 +47,7 @@
       #pkgs.onedrive
       #pkgs.onedrivegui
       #pkgs.cryptomator
-      (if flags.enableNextCloudServer then [ pkgs.nextcloud29 ] else [])
+    ] ++ (if flags.enableNextCloudServer then [ pkgs.nextcloud29 ] else []) ++ [
       pkgs.nextcloud-client
 
       # epic games
