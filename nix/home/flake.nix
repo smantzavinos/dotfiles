@@ -28,6 +28,9 @@
                 pkgs = import nixpkgs { system = "x86_64-linux"; };
 
                 modules = [ ./home.nix ];
+                home.username = "spiros";
+                home.homeDirectory = "/home/spiros";
+                home.stateVersion = "23.11"; 
             };
         };
     };
