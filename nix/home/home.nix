@@ -1,4 +1,4 @@
-{config, pkgs, aider-flake, flags, ...}:
+{config, pkgs, aider-flake, whisper-input, flags, ...}:
 
 {
     home.username = "spiros";
@@ -55,7 +55,7 @@
 
       # flakes passed in from top level flake.nix
       aider-flake.packages.x86_64-linux.default
-      whisper-input.packages.${system}.default
+      # whisper-input.packages.x86_64-linux.default
 
     ] ++ (if flags.enableEpicGames then [
       pkgs.lutris
