@@ -39,6 +39,7 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
     whisper-input = {
       url = "github:Quoteme/whisper-input";
     };
