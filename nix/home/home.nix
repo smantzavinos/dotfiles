@@ -47,7 +47,6 @@
       #pkgs.onedrive
       #pkgs.onedrivegui
       #pkgs.cryptomator
-    ] ++ [
       pkgs.nextcloud-client
 
       # epic games
