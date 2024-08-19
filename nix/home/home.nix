@@ -43,6 +43,7 @@
       # apps
       pkgs.google-chrome
       pkgs.libreoffice
+      pkgs.drawio
       #pkgs.onedrive
       #pkgs.onedrivegui
       #pkgs.cryptomator
