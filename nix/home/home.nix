@@ -33,6 +33,7 @@
       pkgs.dpkg
       pkgs.tree
       pkgs.aichat
+      pkgs.degit
 
       # zsh
       pkgs.zsh-powerlevel10k
