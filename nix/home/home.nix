@@ -66,7 +66,11 @@
       pkgs.nextcloud29
     ] else [];
 
-    home.packages = basePackages ++ epicGamesPackages ++ oneDrivePackages ++ nextCloudServerPackages;
+    home.packages = 
+      basePackages ++ 
+      epicGamesPackages ++ 
+      oneDrivePackages ++ 
+      nextCloudServerPackages;
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
