@@ -47,7 +47,7 @@
       #pkgs.onedrive
       #pkgs.onedrivegui
       #pkgs.cryptomator
-      pkgs.nextcloud29
+      (if flags.enableNextCloudServer then pkgs.nextcloud29 else null)
       pkgs.nextcloud-client
 
       # epic games

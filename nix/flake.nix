@@ -54,6 +54,7 @@
       };
       flags = {
         enableEpicGames = false; # Set this to false to disable Epic Games by default
+        enableNextCloudServer = false; # Set this to false to disable NextCloud Server by default
       };
     in
     let
