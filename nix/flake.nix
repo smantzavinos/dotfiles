@@ -67,7 +67,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.spiros = home-manager.lib.homeManagerConfiguration {
                 pkgs = import ./home/flake.nix;
-                modules = [ ./home/home.nix ];
+                # modules = [ ./home/home.nix ];
             };
             home-manager.extraSpecialArgs = attrs // { inherit flags; };
           }

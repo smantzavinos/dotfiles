@@ -36,7 +36,8 @@
                 modules = [ ./home.nix ];
                 home.username = "spiros";
                 home.homeDirectory = "/home/spiros";
-                home.stateVersion = "23.11"; 
+                home.stateVersion = "23.11";
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
             };
         };
     };
