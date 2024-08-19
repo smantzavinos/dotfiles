@@ -144,6 +144,7 @@
       "original": {
         "owner": "Quoteme",
         "repo": "whisper-input",
+        "rev": "2ddac6100928297dab028446ef8dc9b17325b833",
         "type": "github"
       }
     }

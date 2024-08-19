@@ -57,6 +57,7 @@
 
         # flakes passed in from top level flake.nix
         aider-flake.packages.x86_64-linux.default
+        whisper-input.defaultPackage.x86_64-linux
       ];
 
       epicGamesPackages = if flags.enableEpicGames then [
