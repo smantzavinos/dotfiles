@@ -39,6 +39,8 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    whisper-input = {
+      url = "github:Quoteme/whisper-input";
     };
     aider-flake = {
       url = "github:smantzavinos/aider_flake/7e250ffac1caa357e9f3386d74cb736093dc09b4";
