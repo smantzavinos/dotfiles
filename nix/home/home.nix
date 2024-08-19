@@ -20,6 +20,7 @@
 
     # Base packages
     basePackages = [
+      # utils
       pkgs.cowsay
       pkgs.gh
       pkgs.fd
@@ -34,19 +35,27 @@
       pkgs.tree
       pkgs.aichat
       pkgs.degit
+
+      # zsh
       pkgs.zsh-powerlevel10k
       pkgs.zplug
       pkgs.oh-my-zsh
       pkgs.fzf-zsh
+
+      # apps
       pkgs.google-chrome
       pkgs.libreoffice
       pkgs.drawio
       pkgs.nextcloud-client
+
+      # fonts
       pkgs.nerdfonts
       pkgs.font-awesome
       pkgs.emacs-all-the-icons-fonts
       pkgs.material-icons
       pkgs.weather-icons
+
+      # flakes passed in from top level flake.nix
       aider-flake.packages.x86_64-linux.default
     ];
 
