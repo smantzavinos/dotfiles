@@ -55,6 +55,8 @@
 
       # flakes passed in from top level flake.nix
       aider-flake.packages.x86_64-linux.default
+      whisper-input.packages.${system}.default
+
     ] ++ (if flags.enableEpicGames then [
       pkgs.lutris
       pkgs.wineWowPackages.full
