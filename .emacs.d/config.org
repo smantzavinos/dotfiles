@@ -730,10 +730,10 @@
   :bind (("C-c d" . lsp-ui-doc-show)
 	 ("C-c I" . lsp-ui-imenu)))
 
-;; (use-package dap-mode
-;;   :straight t
-;;   :config
-;;   (require 'dap-cpptools)
+(use-package dap-mode
+  :straight t
+  :config
+  (require 'dap-cpptools))
 ;;   (require 'dap-lldb)
 ;;   (require 'dap-gdb-lldb))
 
@@ -796,6 +796,10 @@
 (add-to-list 'auto-mode-alist '("\\.qml$" . qml-mode))
 
 ;; (add-to-list 'lsp-language-id-configuration '(qml-mode . "qml"))
+#+end_src
+** svelte
+#+begin_src emacs-lisp
+(use-package svelte-mode)
 #+end_src
 ** nix
 #+begin_src emacs-lisp
