@@ -63,7 +63,7 @@
     ] ++ (if flags.enableEpicGames then [
       pkgs.lutris
       pkgs.wineWowPackages.full
-    ] ++ (if flags.enableNextCloudServer then [ pkgs.nextcloud29 ] else []);
+    ] else []) ++ (if flags.enableNextCloudServer then [ pkgs.nextcloud29 ] else []);
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
