@@ -51,11 +51,11 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        enableOneDriveSuite = false; # Set this to false to disable OneDrive, OneDrive GUI, and Cryptomator by default
       };
       flags = {
         enableEpicGames = false; # Set this to false to disable Epic Games by default
         enableNextCloudServer = false; # Set this to false to disable NextCloud Server by default
+        enableOneDrive = false; # Set this to false to disable OneDrive, OneDrive GUI, and cryptomator
       };
     in
     let
