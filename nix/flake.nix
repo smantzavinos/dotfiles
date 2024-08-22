@@ -40,6 +40,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-flake = {
+      url = "path:/path/to/your/home-manager-flake"; # Adjust the path to your home-manager flake
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     whisper-input = {
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
@@ -78,7 +82,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.spiros = import ./home/home.nix;
+            home-manager.users.spiros = home-manager-flake.homeConfigurations."spiros".activationPackage;
             home-manager.extraSpecialArgs = attrs // { inherit flags; };
           }
           ./system_shared.nix
