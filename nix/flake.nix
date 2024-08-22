@@ -82,7 +82,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.spiros = home-manager-flake.homeConfigurations."spiros".activationPackage;
+            home-manager.users.spiros = attrs.home-manager-flake.homeConfigurations."spiros".activationPackage;
             home-manager.extraSpecialArgs = attrs // { inherit flags; };
           }
           ./system_shared.nix
