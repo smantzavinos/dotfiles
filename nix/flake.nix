@@ -41,7 +41,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-flake = {
-      url = "path:/path/to/your/home-manager-flake"; # Adjust the path to your home-manager flake
+      url = "path:./home/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-flake = {
