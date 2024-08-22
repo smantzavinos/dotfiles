@@ -44,6 +44,10 @@
       url = "path:/path/to/your/home-manager-flake"; # Adjust the path to your home-manager flake
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-flake = {
+      url = "path:/path/to/your/home-manager-flake"; # Adjust the path to your home-manager flake
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     whisper-input = {
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
