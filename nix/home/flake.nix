@@ -2,10 +2,17 @@
     description = "My Home Manager Flake";
 
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+        # nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
         home-manager = {
             url = "github:nix-community/home-manager/release-23.11";
             inputs.nixpkgs.follows = "nixpkgs";
+        };
+        whisper-input = {
+          url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
+        };
+        aider-flake = {
+          url = "github:smantzavinos/aider_flake/7e250ffac1caa357e9f3386d74cb736093dc09b4";
         };
     };
 
@@ -17,7 +24,7 @@
         # nixosConfigurations = {
         #     my-system = nixpkgs.lib.nixosSystem {
         #         system = "x86_64-linux";
-        #         modules = [ ./system.nix ];
+        #        modules = [ ./system.nix ];
         #     };
         # };
 
