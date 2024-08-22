@@ -41,7 +41,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-flake = {
-      url = "path:./home/flake.nix";
+      url = "path:./home";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     whisper-input = {
