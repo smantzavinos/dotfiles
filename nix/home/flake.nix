@@ -32,15 +32,9 @@
         "spiros" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
           modules = [ ./home.nix ];
-          specialArgs = { inherit whisper-input aider-flake; };
+          extraSpecialArgs = { inherit whisper-input aider-flake; };
         };
       };
-    };
-}
-
-                modules = [ ./home.nix ];
-            };
-        };
     };
 }
 
