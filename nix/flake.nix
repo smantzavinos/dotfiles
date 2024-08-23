@@ -73,6 +73,32 @@
               }
             ];
         };
+
+        vbox = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules =
+            let
+              overriddenFlags = flags // {
+                enableEpicGames = false;
+              };
+
+              sharedModule = import ./system_shared.nix {
+                inherit pkgs;
+                flags = overriddenFlags;
+              };
+            in [
+              sharedModule
+              # TODO: Replace with local
+              /etc/nixos/configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.spiros = import ./home/home.nix;
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+              }
+            ];
+        };
       };
     };
 }
