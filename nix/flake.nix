@@ -48,10 +48,6 @@
               imports = [ ./system_shared.nix ];
               config._module.args.flags = flags;
             }
-            {
-              imports = [ ./system_shared.nix ];
-              config._module.args.flags = flags;
-            }
             # ./systems/precision_t5600.nix
           ];
         };
@@ -59,7 +55,11 @@
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ./system_shared.nix
+            # ./system_shared.nix
+            {
+              imports = [ ./system_shared.nix ];
+              config._module.args.flags = flags;
+            }
             ./systems/msi_gs66.nix
             home-manager.nixosModules.home-manager
             {
