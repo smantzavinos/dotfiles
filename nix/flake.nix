@@ -1,35 +1,3 @@
-# {
-#   description = "NixOS configuration for Spiros' system";
-
-#   # inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-#   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-
-#   outputs = { self, nixpkgs, home-manager, ... }@inputs:
-#     let
-#       system = "x86_64-linux";
-#       overlays = import ./overlays.nix;
-#       pkgs = import nixpkgs {
-#         inherit system;
-#         overlays = [ overlays ];
-#       };
-#     in
-#     {
-#       nixosConfigurations = {
-#         hostname = pkgs.lib.nixosSystem {
-#           system = "x86_64-linux";
-#           modules = [
-#             /etc/nixos/configuration.nix
-#             /etc/nixos/hardware-configuration.nix
-#             # ./home/spiros/dotfiles/system_shared.nix
-#             # ./home/spiros/dotfiles/systems/precision_t5600.nix
-#             ./system_shared.nix
-#             ./systems/precision_t5600.nix
-#           ];
-#         };
-#       };
-#     };
-# }
-
 {
   description = "NixOS configuration";
 
@@ -56,9 +24,9 @@
         config.allowUnfree = true;
       };
       flags = {
-        enableEpicGames = false; # Set this to false to disable Epic Games by default
-        enableNextCloudServer = false; # Set this to false to disable NextCloud Server by default
-        enableOneDrive = false; # Set this to false to disable OneDrive, OneDrive GUI, and cryptomator
+        enableEpicGames = false;
+        enableNextCloudServer = false;by default
+        enableOneDrive = false;and cryptomator
       };
     in
     let
