@@ -23,7 +23,6 @@
         inherit system;
         config.allowUnfree = true;
       };
-      callPackage = pkgs.callPackage;
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
@@ -45,10 +44,11 @@
               home-manager.users.spiros = import ./home/home.nix;
               home-manager.extraSpecialArgs = attrs // { inherit flags; };
             }
-            {
-              imports = [ ./system_shared.nix ];
-              config._module.args.flags = flags;
-            }
+            # {
+            #   imports = [ ./system_shared.nix ];
+            #   config._module.args.flags = flags;
+            # }
+            ./system_shared.nix
             # ./systems/precision_t5600.nix
           ];
         };
@@ -56,9 +56,11 @@
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            {
-              imports = [ pkgs.callPackage ./system_shared.nix { inherit flags; } ];
-            }
+            # {
+            #   imports = [ pkgs.callPackage ./system_shared.nix { inherit flags; } ];
+            # }
+            # pkgs.callPackage ./system_shared.nix { inherit flags; }
+            ./system_shared.nix
             ./systems/msi_gs66.nix
             home-manager.nixosModules.home-manager
             {
