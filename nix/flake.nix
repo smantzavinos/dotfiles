@@ -23,6 +23,7 @@
         inherit system;
         config.allowUnfree = true;
       };
+      callPackage = path: args: import path (args // { inherit pkgs; });
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
