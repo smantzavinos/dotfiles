@@ -23,7 +23,6 @@
         inherit system;
         config.allowUnfree = true;
       };
-      callPackage = path: args: import path (args // { inherit pkgs; });
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
@@ -57,7 +56,7 @@
           inherit system;
           modules = [
             {
-              imports = [ callPackage ./system_shared.nix { inherit flags; } ];
+              imports = [ pkgs.callPackage ./system_shared.nix { inherit flags; } ];
             }
             ./systems/msi_gs66.nix
             home-manager.nixosModules.home-manager
