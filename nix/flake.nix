@@ -25,8 +25,8 @@
       };
       flags = {
         enableEpicGames = false;
-        enableNextCloudServer = false;by default
-        enableOneDrive = false;and cryptomator
+        enableNextCloudServer = false;
+        enableOneDrive = false;
       };
     in
     let
@@ -37,21 +37,38 @@
       };
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          /etc/nixos/configuration.nix
-          # /etc/nixos/hardware-configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.spiros = import ./home/home.nix;
-            home-manager.extraSpecialArgs = attrs // { inherit flags; };
-          }
-          ./system_shared.nix
-          # ./systems/precision_t5600.nix
-        ];
+      nixosConfigurations = {
+        nixos = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            /etc/nixos/configuration.nix
+            /etc/nixos/hardware-configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.spiros = import ./home/home.nix;
+              home-manager.extraSpecialArgs = attrs // { inherit flags; };
+            }
+            ./system_shared.nix
+            # ./systems/precision_t5600.nix
+          ];
+        };
+
+        msi_gs66 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./system_shared.nix
+            ./systems/msi_gs66.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.spiros = import ./home/home.nix;
+              home-manager.extraSpecialArgs = attrs // { inherit flags; };
+            }
+          ];
+        };
       };
     };
 }
