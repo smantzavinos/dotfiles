@@ -5,6 +5,12 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+
+
+
+  # Original /etc/nixos/configuration.nix below here
+  #####################################################################
+
   # imports =
   #   [ # Include the results of the hardware scan.
   #      ./hardware-configuration.nix
