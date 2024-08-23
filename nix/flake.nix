@@ -30,13 +30,6 @@
         enableSteam = false;
       };
     in
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    in
     {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
@@ -51,7 +44,14 @@
               home-manager.users.spiros = import ./home/home.nix;
               home-manager.extraSpecialArgs = attrs // { inherit flags; };
             }
-            ./system_shared.nix
+            {
+              imports = [ ./system_shared.nix ];
+              config._module.args.flags = flags;
+            }
+            {
+              imports = [ ./system_shared.nix ];
+              config._module.args.flags = flags;
+            }
             # ./systems/precision_t5600.nix
           ];
         };
