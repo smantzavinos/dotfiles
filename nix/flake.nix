@@ -29,6 +29,9 @@
         enableOneDrive = false;
         enableSteam = false;
       };
+      # sharedModule = pkgs.callPackage ./system_shared.nix {
+      #     inherit pkgs flags;
+      # };
     in
     {
       nixosConfigurations = {
@@ -36,7 +39,7 @@
           inherit system;
           modules = [
             /etc/nixos/configuration.nix
-            /etc/nixos/hardware-configuration.nix
+            # /etc/nixos/hardware-configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -55,21 +58,27 @@
 
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [
-            # {
-            #   imports = [ pkgs.callPackage ./system_shared.nix { inherit flags; } ];
-            # }
-            # pkgs.callPackage ./system_shared.nix { inherit flags; }
-            ./system_shared.nix
-            ./systems/msi_gs66.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.spiros = import ./home/home.nix;
-              home-manager.extraSpecialArgs = attrs // { inherit flags; };
-            }
-          ];
+          modules =
+            let
+              overriddenFlags = flags // {
+                enableEpicGames = false;
+              };
+
+              sharedModule = import ./system_shared.nix {
+                inherit pkgs;
+                flags = overriddenFlags;
+              };
+            in [
+              sharedModule
+              ./systems/msi_gs66.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.spiros = import ./home/home.nix;
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+              }
+            ];
         };
       };
     };

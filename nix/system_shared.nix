@@ -1,5 +1,5 @@
 
-{ pkgs, ... }:
+{ pkgs, flags, ... }:
 
 {
   # Enable flakes
@@ -23,11 +23,8 @@
   users.users.spiros.extraGroups = [ "docker" ];
 
   programs.steam = {
-    enable = false;
+    enable = flags.enableSteam;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    # enable = false;
-    # remotePlay.openFirewall = flags.enableSteam;
-    # dedicatedServer.openFirewall = flags.enableSteam;
   };
 }
