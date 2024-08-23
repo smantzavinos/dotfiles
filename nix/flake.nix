@@ -29,9 +29,6 @@
         enableOneDrive = false;
         enableSteam = false;
       };
-      # sharedModule = pkgs.callPackage ./system_shared.nix {
-      #     inherit pkgs flags;
-      # };
     in
     {
       nixosConfigurations = {
@@ -47,10 +44,6 @@
               home-manager.users.spiros = import ./home/home.nix;
               home-manager.extraSpecialArgs = attrs // { inherit flags; };
             }
-            # {
-            #   imports = [ ./system_shared.nix ];
-            #   config._module.args.flags = flags;
-            # }
             ./system_shared.nix
             # ./systems/precision_t5600.nix
           ];
