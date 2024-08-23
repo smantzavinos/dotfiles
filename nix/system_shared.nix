@@ -23,8 +23,8 @@
   users.users.spiros.extraGroups = [ "docker" ];
 
   programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
+    enable = flags.enableSteam;
+    remotePlay.openFirewall = flags.enableSteam;
+    dedicatedServer.openFirewall = flags.enableSteam;
   };
 }

@@ -27,6 +27,7 @@
         enableEpicGames = false;
         enableNextCloudServer = false;
         enableOneDrive = false;
+        enableSteam = false;
       };
     in
     let
