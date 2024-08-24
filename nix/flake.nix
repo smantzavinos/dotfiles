@@ -40,12 +40,27 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    whisper-input = {
+      url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
+    };
     aider-flake = {
       url = "github:smantzavinos/aider_flake/7e250ffac1caa357e9f3386d74cb736093dc09b4";
     };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@attrs:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      flags = {
+        enableEpicGames = false; # Set this to false to disable Epic Games by default
+        enableNextCloudServer = false; # Set this to false to disable NextCloud Server by default
+        enableOneDrive = false; # Set this to false to disable OneDrive, OneDrive GUI, and cryptomator
+      };
+    in
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -64,7 +79,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.spiros = import ./home/home.nix;
-            home-manager.extraSpecialArgs = attrs;
+            home-manager.extraSpecialArgs = attrs // { inherit flags; };
           }
           ./system_shared.nix
           # ./systems/precision_t5600.nix

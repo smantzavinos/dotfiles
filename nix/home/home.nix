@@ -1,4 +1,4 @@
-{config, pkgs, aider-flake, ...}:
+{config, pkgs, aider-flake, whisper-input, flags, ...}:
 
 {
     home.username = "spiros";
@@ -18,51 +18,69 @@
     ];
 
 
-    home.packages = [
-      # utils
-      pkgs.cowsay
-      pkgs.gh
-      pkgs.fd
-      pkgs.ripgrep
-      pkgs.lshw
-      pkgs.fzf
-      pkgs.nix-prefetch-github
-      pkgs.jq
-      pkgs.glxinfo
-      pkgs.pciutils
-      pkgs.dpkg
-      pkgs.tree
-      pkgs.aichat
+    home.packages = let
+      basePackages = [
+        # utils
+        pkgs.cowsay
+        pkgs.gh
+        pkgs.fd
+        pkgs.ripgrep
+        pkgs.lshw
+        pkgs.fzf
+        pkgs.nix-prefetch-github
+        pkgs.jq
+        pkgs.glxinfo
+        pkgs.pciutils
+        pkgs.dpkg
+        pkgs.tree
+        pkgs.aichat
+        pkgs.degit
 
-      # zsh
-      pkgs.zsh-powerlevel10k
-      pkgs.zplug
-      pkgs.oh-my-zsh
-      pkgs.fzf-zsh
+        # zsh
+        pkgs.zsh-powerlevel10k
+        pkgs.zplug
+        pkgs.oh-my-zsh
+        pkgs.fzf-zsh
 
-      # apps
-      pkgs.google-chrome
-      pkgs.libreoffice
-      #pkgs.onedrive
-      #pkgs.onedrivegui
-      #pkgs.cryptomator
-      pkgs.libhdhomerun
-      pkgs.hdhomerun-config-gui
+        # apps
+        pkgs.google-chrome
+        pkgs.libreoffice
+        pkgs.drawio
+        pkgs.nextcloud-client
+        pkgs.libhdhomerun
+        pkgs.hdhomerun-config-gui
 
-      # epic games
-      # pkgs.lutris
-      # pkgs.wineWowPackages.full
+        # fonts
+        pkgs.nerdfonts
+        pkgs.font-awesome
+        pkgs.emacs-all-the-icons-fonts
+        pkgs.material-icons
+        pkgs.weather-icons
 
-    # fonts
-      pkgs.nerdfonts
-      pkgs.font-awesome
-      pkgs.emacs-all-the-icons-fonts
-      pkgs.material-icons
-      pkgs.weather-icons
+        # flakes passed in from top level flake.nix
+        aider-flake.packages.x86_64-linux.default
+        whisper-input.defaultPackage.x86_64-linux
+      ];
 
-      # flakes passed in from top level flake.nix
-      aider-flake.packages.x86_64-linux.default
-    ];
+      epicGamesPackages = if flags.enableEpicGames then [
+        pkgs.lutris
+        pkgs.wineWowPackages.full
+      ] else [];
+
+      oneDrivePackages = if flags.enableOneDrive then [
+        pkgs.onedrive
+        pkgs.onedrivegui
+        pkgs.cryptomator
+      ] else [];
+
+      nextCloudServerPackages = if flags.enableNextCloudServer then [
+        pkgs.nextcloud29
+      ] else [];
+    in
+      basePackages ++ 
+      epicGamesPackages ++ 
+      oneDrivePackages ++ 
+      nextCloudServerPackages;
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;

@@ -43,4 +43,7 @@
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  # Enable Epic Games on Precision T5600
+  flags.enableEpicGames = true;
 }
