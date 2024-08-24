@@ -35,6 +35,7 @@
         pkgs.tree
         pkgs.aichat
         pkgs.degit
+        pkgs.htop-vim
 
         # zsh
         pkgs.zsh-powerlevel10k
