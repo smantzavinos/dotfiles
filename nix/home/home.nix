@@ -46,6 +46,8 @@
       #pkgs.onedrive
       #pkgs.onedrivegui
       #pkgs.cryptomator
+      pkgs.libhdhomerun
+      pkgs.hdhomerun-config-gui
 
       # epic games
       # pkgs.lutris
