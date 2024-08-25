@@ -48,8 +48,6 @@
         pkgs.libreoffice
         pkgs.drawio
         pkgs.nextcloud-client
-        pkgs.libhdhomerun
-        pkgs.hdhomerun-config-gui
 
         # fonts
         pkgs.nerdfonts
@@ -72,6 +70,11 @@
         pkgs.onedrive
         pkgs.onedrivegui
         pkgs.cryptomator
+      ] else [];
+
+      plexServerPackages = if flags.enablePlexCloudServer then [
+        pkgs.libhdhomerun
+        pkgs.hdhomerun-config-gui
       ] else [];
 
       nextCloudServerPackages = if flags.enableNextCloudServer then [

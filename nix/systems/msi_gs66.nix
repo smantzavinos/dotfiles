@@ -5,8 +5,40 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+  };
 
+  # hdhomerun ports
+  networking = {
+    firewall = {
+      enable = false;
+      allowedTCPPorts = [ 65001 ];
+      allowedUDPPorts = [ 1900 5353 65001 ];
 
+      # Allowing multicast DNS and UPnP traffic
+      # extraCommands = ''
+      #   iptables -A INPUT -p udp -m udp --dport 1900 -j ACCEPT
+      #   iptables -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
+      #   iptables -A INPUT -m pkttype --pkt-type multicast -j ACCEPT
+      # '';
+
+      extraCommands = ''
+        # Allow multicast traffic
+        iptables -A INPUT -p igmp -j ACCEPT
+        iptables -A INPUT -d 239.0.0.0/8 -j ACCEPT
+        iptables -A INPUT -p udp --dport 1900 -j ACCEPT
+
+        # Allow Plex to communicate with HDHomeRun
+        iptables -A INPUT -p udp --dport 32400 -j ACCEPT
+        iptables -A INPUT -p udp --dport 32410 -j ACCEPT
+        iptables -A INPUT -p udp --dport 32412 -j ACCEPT
+        iptables -A INPUT -p udp --dport 32413 -j ACCEPT
+        iptables -A INPUT -p udp --dport 32414 -j ACCEPT
+      '';
+    };
+  };
 
   # Original /etc/nixos/configuration.nix below here
   #####################################################################
