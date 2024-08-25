@@ -54,7 +54,7 @@
           modules =
             let
               overriddenFlags = flags // {
-                enableEpicGames = false;
+                enablePlexServer = true;
               };
 
               sharedModule = import ./system_shared.nix {
