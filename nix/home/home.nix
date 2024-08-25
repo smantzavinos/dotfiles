@@ -36,6 +36,7 @@
         pkgs.aichat
         pkgs.degit
         pkgs.htop-vim
+        pkgs.wireshark
 
         # zsh
         pkgs.zsh-powerlevel10k
