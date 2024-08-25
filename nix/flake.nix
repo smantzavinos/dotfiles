@@ -49,6 +49,35 @@
           ];
         };
 
+        t5600 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules =
+            let
+              overriddenFlags = flags // {
+                enableEpicGames = true;
+                enableOneDrive = true;
+                enableSteam = true;
+              };
+
+              sharedModule = import ./system_shared.nix {
+                inherit pkgs;
+                flags = overriddenFlags;
+              };
+            in [
+              sharedModule
+              /etc/nixos/configuration.nix
+              /etc/nixos/hardware-configuration.nix
+              ./systems/precision_t5600.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.spiros = import ./home/home.nix;
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+              }
+            ];
+        };
+
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules =
