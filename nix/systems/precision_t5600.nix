@@ -3,7 +3,7 @@
 
 {
   # Enable OpenGL
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     # driSupport = true;
     # driSupport32Bit = true;
@@ -45,5 +45,5 @@
   };
 
   # Enable Epic Games on Precision T5600
-  flags.enableEpicGames = true;
+  # flags.enableEpicGames = true;
 }
