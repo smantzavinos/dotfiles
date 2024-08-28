@@ -37,6 +37,7 @@
         pkgs.degit
         pkgs.htop-vim
         pkgs.wireshark
+	pkgs.lazygit
 
         # zsh
         pkgs.zsh-powerlevel10k
