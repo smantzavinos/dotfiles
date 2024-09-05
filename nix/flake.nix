@@ -28,25 +28,63 @@
         enableNextCloudServer = false;
         enableOneDrive = false;
         enableSteam = false;
+        enableDevTools = false;
       };
     in
     {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [
-            /etc/nixos/configuration.nix
-            # /etc/nixos/hardware-configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.spiros = import ./home/home.nix;
-              home-manager.extraSpecialArgs = attrs // { inherit flags; };
-            }
-            ./system_shared.nix
-            # ./systems/precision_t5600.nix
+          modules =
+            let
+              overriddenFlags = flags // {
+                enableDevTools = false;
+              };
+
+              sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
+            in [
+              sharedModule
+              /etc/nixos/configuration.nix
+              # /etc/nixos/hardware-configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.spiros = import ./home/home.nix;
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+              }
+              # (import ./system_shared.nix { inherit pkgs flags; })
+              # sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
+              # ./systems/precision_t5600.nix
           ];
+        };
+
+        x1 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules =
+            let
+              overriddenFlags = flags // {
+                enableOneDrive = true;
+                enableDevTools = true;
+              };
+
+              sharedModule = import ./system_shared.nix {
+                inherit pkgs;
+                flags = overriddenFlags;
+              };
+            in [
+              sharedModule
+              /etc/nixos/configuration.nix
+              /etc/nixos/hardware-configuration.nix
+              ./systems/lenovo_x1_extreme.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.spiros = import ./home/home.nix;
+                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+              }
+            ];
         };
 
         t5600 = nixpkgs.lib.nixosSystem {
