@@ -44,6 +44,9 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  # Enable Epic Games on Precision T5600
-  # flags.enableEpicGames = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
 }
