@@ -28,9 +28,10 @@
   virtualisation.docker.enable = true;
   users.users.spiros.extraGroups = [ "docker" ];
 
-  programs.steam = {
-    enable = flags.enableSteam;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
+  # programs.steam = {
+  #   enable = flags.enableSteam; # NOTE: Accessing flags on Lenovo X1 Extreme was failing here.
+                                  #       Seems to be working fine on other systems.
+  #   remotePlay.openFirewall = true;
+  #   dedicatedServer.openFirewall = true;
+  # };
 }
