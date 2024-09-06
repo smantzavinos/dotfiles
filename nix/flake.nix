@@ -51,7 +51,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
               }
               # (import ./system_shared.nix { inherit pkgs flags; })
               # sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
@@ -82,7 +82,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -95,6 +95,7 @@
                 enableEpicGames = true;
                 enableOneDrive = true;
                 enableSteam = true;
+                enableDevTools = true;
               };
 
               sharedModule = import ./system_shared.nix {
@@ -111,7 +112,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -136,7 +137,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -146,7 +147,7 @@
           modules =
             let
               overriddenFlags = flags // {
-                enableEpicGames = false;
+                enableDevTools = true;
               };
 
               sharedModule = import ./system_shared.nix {
@@ -162,7 +163,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { inherit flags; };
+                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
               }
             ];
         };
