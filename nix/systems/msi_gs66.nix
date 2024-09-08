@@ -8,6 +8,9 @@
   services.plex = {
     enable = true;
     openFirewall = true;
+    user = "spiros";
+    # TODO: Drive should be mapped by uuid
+    dataDir = "/run/media/spiros/TOURO/PlexMediaServer";
   };
 
   # hdhomerun ports

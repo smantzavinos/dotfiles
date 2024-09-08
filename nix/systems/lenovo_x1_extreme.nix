@@ -14,6 +14,7 @@
   services.plex = {
     enable = true;
     openFirewall = true;
+    user = "spiros";
   };
 
   # hdhomerun ports
