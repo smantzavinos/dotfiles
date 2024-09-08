@@ -37,6 +37,7 @@
         pkgs.degit
         pkgs.htop-vim
         pkgs.wireshark
+        pkgs.lazygit
 
         # zsh
         pkgs.zsh-powerlevel10k
@@ -62,6 +63,11 @@
         whisper-input.defaultPackage.x86_64-linux
       ];
 
+      devToolPackages = if flags.enableDevTools then [
+        pkgs.plandex
+        pkgs.plandex-server
+      ] else [];
+
       epicGamesPackages = if flags.enableEpicGames then [
         pkgs.lutris
         pkgs.wineWowPackages.full
@@ -83,7 +89,8 @@
       ] else [];
     in
       basePackages ++ 
-      epicGamesPackages ++ 
+      devToolPackages ++
+      epicGamesPackages ++
       oneDrivePackages ++ 
       nextCloudServerPackages;
 
