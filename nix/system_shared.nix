@@ -15,11 +15,11 @@
     git
   ];
 
-  networking.firewall.enable = false;
+  # networking.firewall.enable = false;
 
   # hdhomerun ports
-  networking.firewall.allowedTCPPorts = [ 65001 ];
-  networking.firewall.allowedUDPPorts = [ 65001 ];
+  # networking.firewall.allowedTCPPorts = [ 65001 ];
+  # networking.firewall.allowedUDPPorts = [ 65001 ];
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

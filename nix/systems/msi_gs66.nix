@@ -13,35 +13,75 @@
     dataDir = "/run/media/spiros/TOURO/PlexMediaServer";
   };
 
-  # hdhomerun ports
-  networking = {
-    firewall = {
-      enable = false;
-      allowedTCPPorts = [ 65001 ];
-      allowedUDPPorts = [ 1900 5353 65001 ];
+  # networking.firewall = {
+  #   enable = true;
+  #   allowedTCPPorts = [ 32400 ];
+  #   allowedUDPPorts = [ 1900 5353 65001 ];
 
-      # Allowing multicast DNS and UPnP traffic
-      # extraCommands = ''
-      #   iptables -A INPUT -p udp -m udp --dport 1900 -j ACCEPT
-      #   iptables -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
-      #   iptables -A INPUT -m pkttype --pkt-type multicast -j ACCEPT
-      # '';
+  #   # Allow all traffic on the local network
+  #   extraCommands = ''
+  #     iptables -A INPUT -i eth0 -s 192.168.0.0/24 -j ACCEPT
+  #   '';
+  # };
 
-      extraCommands = ''
-        # Allow multicast traffic
-        iptables -A INPUT -p igmp -j ACCEPT
-        iptables -A INPUT -d 239.0.0.0/8 -j ACCEPT
-        iptables -A INPUT -p udp --dport 1900 -j ACCEPT
+  networking.firewall = {
+    enable = false;
+    allowedTCPPorts = [ 32400 443 ];  # Include 443 for HTTPS/TLS connections
+    allowedUDPPorts = [ 1900 5353 32410 32412 32413 32414 32469 65001 ];  # Plex discovery ports and SSDP
 
-        # Allow Plex to communicate with HDHomeRun
-        iptables -A INPUT -p udp --dport 32400 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32410 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32412 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32413 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32414 -j ACCEPT
-      '';
+    # Allow all traffic on the local network
+    extraCommands = ''
+      iptables -A INPUT -i eth0 -s 192.168.0.0/24 -j ACCEPT
+      iptables -A INPUT -i lo -j ACCEPT
+      ip6tables -A INPUT -i eth0 -s fd29:1cdd:dd43::/64 -j ACCEPT
+      ip6tables -A INPUT -i lo -j ACCEPT
+    '';
+  };
+
+
+  # Enable Avahi for mDNS
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
     };
   };
+
+  # hdhomerun ports
+  # networking = {
+  #   firewall = {
+  #     enable = false;
+  #     allowedTCPPorts = [ 65001 ];
+  #     allowedUDPPorts = [ 1900 5353 65001 ];
+
+  #     # Allowing multicast DNS and UPnP traffic
+  #     # extraCommands = ''
+  #     #   iptables -A INPUT -p udp -m udp --dport 1900 -j ACCEPT
+  #     #   iptables -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
+  #     #   iptables -A INPUT -m pkttype --pkt-type multicast -j ACCEPT
+  #     # '';
+
+  #     extraCommands = ''
+  #       # Allow multicast traffic
+  #       iptables -A INPUT -p igmp -j ACCEPT
+  #       iptables -A INPUT -d 239.0.0.0/8 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 1900 -j ACCEPT
+
+  #       # Allow Plex to communicate with HDHomeRun
+  #       iptables -A INPUT -p udp --dport 32400 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32410 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32412 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32413 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32414 -j ACCEPT
+  #     '';
+  #   };
+  # };
 
   # Original /etc/nixos/configuration.nix below here
   #####################################################################
