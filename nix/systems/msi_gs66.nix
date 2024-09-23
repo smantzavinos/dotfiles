@@ -5,6 +5,21 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+
+  boot.supportedFilesystems = [ "btrfs" ];
+
+  fileSystems."/mnt/raid1" = {
+    device = "UUID=22328eb1-44f7-4550-8e91-eeb4549a7692";
+    fsType = "btrfs";
+    options = [ "compress=zstd" "degraded" "nofail" ];
+    mountPoint = "/mnt/raid1";
+  };
+
+  boot.kernelParams = [ "btrfs-degraded" ];
+
+
+
+
   services.plex = {
     enable = true;
     openFirewall = true;
@@ -192,6 +207,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
     git
+    btrfs-progs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
