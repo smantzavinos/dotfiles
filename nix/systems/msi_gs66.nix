@@ -38,8 +38,7 @@
     enable = true;
     openFirewall = true;
     user = "spiros";
-    # TODO: Drive should be mapped by uuid
-    dataDir = "/run/media/spiros/TOURO/PlexMediaServer";
+    dataDir = "/mnt/raid1/PlexMediaServer";
   };
 
   # networking.firewall = {
