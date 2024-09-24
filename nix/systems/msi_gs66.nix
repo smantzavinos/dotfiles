@@ -8,11 +8,11 @@
 
   # LUKS configuration for encrypted devices
   boot.initrd.luks.devices = {
-    sdc1_crypt = {
+    raid1_drive1 = {
       device = "/dev/disk/by-uuid/190975db-2523-41e1-a3dd-99259db3fa06";
       preLVM = true;
     };
-    sdd1_crypt = {
+    raid1_drive2 = {
       device = "/dev/disk/by-uuid/1d74f573-6e2b-4ecf-9a0c-0fe6e84a4af8";
       preLVM = true;
     };
@@ -25,6 +25,7 @@
     options = [ "compress=zstd" "degraded" "nofail" ];
     mountPoint = "/mnt/raid1";
   };
+
 
   # Kernel params to allow degraded RAID
   boot.kernelParams = [ "btrfs-degraded" "rootdelay=10" ];
