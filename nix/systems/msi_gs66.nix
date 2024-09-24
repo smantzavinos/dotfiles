@@ -6,16 +6,29 @@
 
 {
 
-  boot.supportedFilesystems = [ "btrfs" ];
+  # LUKS configuration for encrypted devices
+  boot.initrd.luks.devices = {
+    sdc1_crypt = {
+      device = "/dev/disk/by-uuid/190975db-2523-41e1-a3dd-99259db3fa06";
+      preLVM = true;
+    };
+    sdd1_crypt = {
+      device = "/dev/disk/by-uuid/1d74f573-6e2b-4ecf-9a0c-0fe6e84a4af8";
+      preLVM = true;
+    };
+  };
 
+  # Mount the decrypted Btrfs RAID 1
   fileSystems."/mnt/raid1" = {
-    device = "UUID=22328eb1-44f7-4550-8e91-eeb4549a7692";
+    device = "UUID=e8b3cd29-8d42-4a11-aeeb-7a359a54b4ed";
     fsType = "btrfs";
     options = [ "compress=zstd" "degraded" "nofail" ];
     mountPoint = "/mnt/raid1";
   };
 
-  boot.kernelParams = [ "btrfs-degraded" ];
+  # Kernel params to allow degraded RAID
+  boot.kernelParams = [ "btrfs-degraded" "rootdelay=10" ];
+
 
 
 
@@ -245,7 +258,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
