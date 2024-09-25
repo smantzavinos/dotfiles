@@ -164,6 +164,38 @@
 ;;   (load-theme `org-beautify t))
 
 #+end_src
+* Dashboard
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  ;; Add perspective-el to the dashboard
+  (setq dashboard-items '((recents  . 5)
+                          (projects . 5)
+                          (bookmarks . 5)
+                          (perspectives . 5)))
+
+  (defun dashboard-insert-perspectives (list-size)
+    (insert (format "\n\n%s\n" (propertize "Perspectives:" 'face 'font-lock-comment-face)))
+    (dolist (persp (persp-names))
+      (insert (format "%s\n" persp))))
+
+  (add-to-list 'dashboard-item-generators '(perspectives . dashboard-insert-perspectives)))
+#+end_src
+* Perspectives
+#+begin_src emacs-lisp
+;; Perspective.el setup
+;; (setq persp-save-dir "~/.local/share/emacs/perspectives/")
+(setq persp-save-dir "~/dotfile/.emacs.d/perspectives/")
+(use-package perspective
+  :bind
+  ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
+  :init
+  (persp-mode))
+#+end_src
 * Org mode setup
 ** Org Mode styling
 #+begin_src emacs-lisp
