@@ -6,6 +6,8 @@
     home.stateVersion = "23.11"; # To figure this out you can comment out the line and see what version it expected.
     programs.home-manager.enable = true;
 
+    home.sessionVariables.EDITOR = "vim";
+
     # Allow unfree packages
     nixpkgs.config = {
         allowUnfree = true;
@@ -38,6 +40,9 @@
         pkgs.htop-vim
         pkgs.wireshark
         pkgs.lazygit
+        pkgs.age
+        pkgs.ssh-to-age
+        pkgs.sops
 
         # zsh
         pkgs.zsh-powerlevel10k

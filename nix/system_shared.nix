@@ -1,7 +1,11 @@
 
-{ pkgs, flags, ... }:
+{ pkgs, inputs, flags, ... }:
 
 {
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
+
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -14,6 +18,11 @@
     wget
     git
   ];
+
+  # secrets management
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = "/home/spiros/.config/sops/age/keys.txt";
 
   # networking.firewall.enable = false;
 

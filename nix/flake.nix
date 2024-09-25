@@ -14,9 +14,10 @@
     aider-flake = {
       url = "github:smantzavinos/aider_flake/4f33ab9dc3ca2148b3128e6a3b5b117aa1586b6f";
     };
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@attrs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -41,7 +42,10 @@
                 enableDevTools = false;
               };
 
-              sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
+              sharedModule = import ./system_shared.nix {
+                inherit pkgs inputs;
+                flags = overriddenFlags;
+              };
             in [
               sharedModule
               /etc/nixos/configuration.nix
@@ -51,7 +55,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
+                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
               # (import ./system_shared.nix { inherit pkgs flags; })
               # sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
@@ -69,7 +73,7 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs;
+                inherit pkgs inputs;
                 flags = overriddenFlags;
               };
             in [
@@ -82,7 +86,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
+                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -99,7 +103,7 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs;
+                inherit pkgs inputs;
                 flags = overriddenFlags;
               };
             in [
@@ -112,7 +116,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
+                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -126,7 +130,7 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs;
+                inherit pkgs inputs;
                 flags = overriddenFlags;
               };
             in [
@@ -137,7 +141,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
+                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
         };
@@ -151,7 +155,7 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs;
+                inherit pkgs inputs;
                 flags = overriddenFlags;
               };
             in [
@@ -163,7 +167,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = attrs // { flags = overriddenFlags; };
+                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
         };
