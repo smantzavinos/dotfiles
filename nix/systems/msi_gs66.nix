@@ -32,6 +32,40 @@
 
 
 
+  # Nextcloud
+  # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  sops.secrets = {
+    nextcloudAdminPass = {
+      sopsFile = ../secrets/nextcloud-admin-pass.txt;
+      format = "binary";
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
+  };
+
+  # environment.etc."nextcloud-admin-pass".text = "PWD";
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud29;
+    hostName = "localhost";
+    config.adminpassFile = config.sops.secrets.nextcloudAdminPass.path;
+
+
+    # Let NixOS install and configure the database automatically.
+    database.createLocally = true;
+
+    # Let NixOS install and configure Redis caching automatically.
+    configureRedis = true;
+
+    autoUpdateApps.enable = true;
+    extraAppsEnable = true;
+    extraApps = with config.services.nextcloud.package.packages.apps; {
+      inherit calendar contacts mail notes tasks;
+    };
+  };
+
+  # __________________________________________________
+
 
 
   services.plex = {
