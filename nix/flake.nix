@@ -48,6 +48,7 @@
               };
             in [
               sharedModule
+              inputs.sops-nix.nixosModules.sops
               /etc/nixos/configuration.nix
               # /etc/nixos/hardware-configuration.nix
               home-manager.nixosModules.home-manager
@@ -73,11 +74,13 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
+                inherit pkgs;
                 flags = overriddenFlags;
+                home-manager = home-manager;
               };
             in [
               sharedModule
+              inputs.sops-nix.nixosModules.sops
               /etc/nixos/configuration.nix
               /etc/nixos/hardware-configuration.nix
               ./systems/lenovo_x1_extreme.nix
@@ -103,11 +106,12 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
+                inherit pkgs;
                 flags = overriddenFlags;
               };
             in [
               sharedModule
+              inputs.sops-nix.nixosModules.sops
               /etc/nixos/configuration.nix
               /etc/nixos/hardware-configuration.nix
               ./systems/precision_t5600.nix
@@ -130,11 +134,12 @@
               };
 
               sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
+                inherit pkgs;
                 flags = overriddenFlags;
               };
             in [
               sharedModule
+              inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
               home-manager.nixosModules.home-manager
               {
@@ -160,6 +165,7 @@
               };
             in [
               sharedModule
+              inputs.sops-nix.nixosModules.sops
               # TODO: Replace with local
               /etc/nixos/configuration.nix
               home-manager.nixosModules.home-manager

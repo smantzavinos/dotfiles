@@ -1,10 +1,12 @@
 
-{ pkgs, inputs, flags, ... }:
+{ pkgs, flags, ... }:
 
+let
+  # Define the full path for secrets file
+  secretsFile = ./secrets/secrets.yaml;
+  ageKeyFile = "/home/spiros/.config/sops/age/keys.txt";
+in
 {
-  imports = [
-    inputs.sops-nix.nixosModules.sops
-  ];
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -20,9 +22,9 @@
   ];
 
   # secrets management
-  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFile = secretsFile;
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = "/home/spiros/.config/sops/age/keys.txt";
+  sops.age.keyFile = ageKeyFile;
 
   # networking.firewall.enable = false;
 
