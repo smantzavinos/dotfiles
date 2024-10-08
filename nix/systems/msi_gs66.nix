@@ -41,6 +41,20 @@
       owner = "nextcloud";
       group = "nextcloud";
     };
+
+    nextcloudDBPass = {
+      sopsFile = ../secrets/nextcloud-db-pass.txt;
+      format = "binary";
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
+
+    minioCredentials = {
+      sopsFile = ../secrets/minio-credentials.txt;
+      format = "binary";
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
   };
 
   # environment.etc."nextcloud-admin-pass".text = "PWD";
@@ -62,7 +76,153 @@
     extraApps = with config.services.nextcloud.package.packages.apps; {
       inherit calendar contacts mail notes tasks;
     };
+
+    # config.objectstore.s3 = {
+    #   enable = true;
+    #   bucket = "nextcloud";
+    #   autocreate = true;
+    #   key = accessKey;
+    #   secretFile = "${pkgs.writeText "secret" "test12345"}";
+    #   hostname = "localhost";
+    #   useSsl = false;
+    #   port = 9000;
+    #   usePathStyle = true;
+    #   region = "us-east-1";
+    # };
+
+    # dataDir = /mnt/raid1/nextcloud/data;
+    # extraConfig = ''
+    #   'datadirectory' => '/mnt/raid1/nextcloud/data',
+    # '';
+
+    config = {
+      # only specify dbtype if using postgresql db
+      dbtype = "pgsql";
+      dbname = "nextcloud";
+      dbuser = "nextcloud";
+      # default directory for postgresql, ensures automatic setup of db
+      dbhost = "/run/postgresql";
+      adminuser = "admin";
+      # specified using agenix, provide path to file as alternative
+      # adminpassFile = config.age.secrets.nextcloudPass.path;
+      # error thrown unless specified
+      # defaultPhoneRegion = "AU";
+    };
+
+    # specify only if you want redis caching
+    # extraOptions = {
+    #   redis = {
+    #     host = "127.0.0.1";
+    #     port = 31638;
+    #     dbindex = 0;
+    #     timeout = 1.5;
+    #   };
+    # };
+
+    settings = {
+      datadirectory = "/mnt/raid1/nextcloud/data";  # Set the custom data directory
+      # Add other Nextcloud settings here
+    };
   };
+
+  # Add nextcloud to users group so it has access to raid drive
+  # TODO: UNCOMMENT THIS <<<<<<<<<<<<<<<<<<<-----------------------------------------
+  # users.users.nextcloud = {
+  #   isSystemUser = true;
+  #   extraGroups = [ "users" ];  # Add postgres to the users group
+  # };
+  # TODO: UNCOMMENT THIS <<<<<<<<<<<<<<<<<<<-----------------------------------------
+
+
+
+  # config from:
+  # https://mich-murphy.com/configure-nextcloud-nixos/
+  ####################
+  services = {
+    postgresql = {
+      enable = true;
+      package = pkgs.postgresql_16;
+      # dataDir = /mnt/raid1/postgresql;
+      ensureDatabases = [ "nextcloud" ];
+      ensureUsers = [{
+        name = "nextcloud";
+        ensureDBOwnership = true;
+        # ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+      }];
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database  DBuser  auth-method
+        local all       all     trust
+      '';
+    };
+    # optional backup for postgresql db
+    # postgresqlBackup = {
+    #   enable = true;
+    #   location = "/data/backup/nextclouddb";
+    #   databases = [ "nextcloud" ];
+    #   # time to start backup in systemd.time format
+    #   startAt = "*-*-* 23:15:00";
+    # };
+  };
+
+  # Add postgres to users group so it has access to raid drive
+  users.users.postgres = {
+    isSystemUser = true;
+    extraGroups = [ "users" ];  # Add postgres to the users group
+  };
+
+
+  # ensure postgresql db is started with nextcloud
+  systemd = {
+    services."nextcloud-setup" = {
+      requires = [ "postgresql.service" ];
+      after = [ "postgresql.service" ];
+    };
+  };
+  ####################
+
+
+  # config from:
+  # https://www.addictivetips.com/ubuntu-linux-tips/how-to-set-up-nextcloud-on-nixos/
+  ####################
+  # Environment setup for Nextcloud admin and database passwords
+  # environment.etc."nextcloud-admin-pass".text = "SECURE_PASSWORD_HERE";
+  # environment.etc."nextcloud-db-pass".text = "SECURE_PASSWORD_HERE";
+
+  # PostgreSQL service configuration
+  # services.postgresql = {
+  #   enable = true;
+  #   package = pkgs.postgresql_14;  # Adjust the PostgreSQL version as needed
+  #   initialScript = pkgs.writeText "nextcloud-db-init.sql" ''
+  #     CREATE ROLE nextcloud WITH LOGIN PASSWORD 'SECURE_PASSWORD_HERE';
+  #     CREATE DATABASE nextcloud WITH OWNER nextcloud;
+  #   '';
+  # };
+
+  # # PHP-FPM service configuration for Nextcloud
+  # services.phpfpm.pools.nextcloud = {
+  #   user = "nextcloud";
+  #   group = "nextcloud";
+  #   phpOptions = ''
+  #     upload_max_filesize = 1G
+  #     post_max_size = 1G
+  #     memory_limit = 512M
+  #     max_execution_time = 300
+  #     date.timezone = "America/Detroit"
+  #   '';
+  # };
+  ####################
+
+
+  # services.minio = {
+  #   enable = true;
+  #   listenAddress = "127.0.0.1:9000";
+  #   consoleAddress = "127.0.0.1:9001";
+  #   rootCredentialsFile = config.sops.secrets.minioCredentials.path;
+  #   dataDir = ["/mnt/raid1/nextcloud/minio/data"];
+  #   configDir = "/mnt/raid1/nextcloud/minio/config";
+  #   # user = "spiros";
+  #   # group = "spiros";
+  # };
 
   # __________________________________________________
 
@@ -255,6 +415,7 @@
   #  wget
     git
     btrfs-progs
+    minio-client
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
