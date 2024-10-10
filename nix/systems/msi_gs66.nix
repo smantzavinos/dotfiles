@@ -147,13 +147,13 @@
       ensureUsers = [{
         name = "nextcloud";
         ensureDBOwnership = true;
-        # ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
       }];
-      authentication = pkgs.lib.mkOverride 10 ''
-        #type database  DBuser  auth-method
-        local all       all     trust
-      '';
+      # authentication = pkgs.lib.mkOverride 10 ''
+      #   #type database  DBuser  auth-method
+      #   local all       all     trust
+      # '';
     };
+
     # optional backup for postgresql db
     # postgresqlBackup = {
     #   enable = true;
@@ -165,19 +165,31 @@
   };
 
   # Add postgres to users group so it has access to raid drive
-  users.users.postgres = {
-    isSystemUser = true;
-    extraGroups = [ "users" ];  # Add postgres to the users group
-  };
+  # users.users.postgres = {
+  #   isSystemUser = true;
+  #   extraGroups = [ "users" ];  # Add postgres to the users group
+  # };
 
 
-  # ensure postgresql db is started with nextcloud
   systemd = {
-    services."nextcloud-setup" = {
-      requires = [ "postgresql.service" ];
+    services."apply-postgres-permissions" = {
+      description = "Apply custom PostgreSQL permissions";
       after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
+      serviceConfig = {
+        User = "postgres";
+        ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.postgresql_16}/bin/psql -U postgres -d nextcloud -c \"GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;\"'";
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+
+    # Extend the nextcloud-setup service to require and run after permissions are applied
+    services."nextcloud-setup" = {
+      requires = [ "postgresql.service" "apply-postgres-permissions.service" ];  # Add the new dependency
+      after = [ "postgresql.service" "apply-postgres-permissions.service" ];     # Ensure it runs after the permission service
     };
   };
+
   ####################
 
 
