@@ -74,7 +74,7 @@
     autoUpdateApps.enable = true;
     extraAppsEnable = true;
     extraApps = with config.services.nextcloud.package.packages.apps; {
-      inherit calendar contacts mail notes tasks;
+      inherit calendar contacts mail notes tasks forms integration_openai music onlyoffice;
     };
 
     # config.objectstore.s3 = {
