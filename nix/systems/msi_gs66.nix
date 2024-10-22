@@ -4,7 +4,25 @@
 
 { config, lib, pkgs, modulesPath, ... }:
 
-{
+let
+  # Plex TCP ports. 32400 for accees from web clients
+  plexTCPPorts = [ 32400 443 ];
+  # Combine all TCP ports into one list
+  allowedTCPPorts = plexTCPPorts;
+
+  # Plex UDP ports
+  plexUDPPorts = [ 32410 32412 32413 32414 32469 ];
+  # SSDP port for UPnP/DLNA device discovery
+  ssdpPorts = [ 1900 ];
+  # mDNS port for local network service discovery
+  mdnsPorts = [ 5353 ];
+  # HDHomeRun discovery port
+  hdhomerunPorts = [ 65001 ];
+  # Additional HDHomeRun ports observed in logs
+  additionalUDPPorts = [ 35407 ];
+  # Combine all UDP ports into one list
+  allowedUDPPorts = plexUDPPorts ++ ssdpPorts ++ mdnsPorts ++ hdhomerunPorts ++ additionalUDPPorts;
+in {
 
   # LUKS configuration for encrypted devices
   boot.initrd.luks.devices = {
@@ -248,8 +266,20 @@
 
   networking.firewall = {
     enable = true;
-    # Ports needed for hdhomerun: 65001, 35407
-    allowedUDPPorts = [ 65001 35407 ];
+
+    allowedTCPPorts = allowedTCPPorts;
+    allowedUDPPorts = allowedUDPPorts;
+
+    # Firewall pre-commands to allow incoming UDP traffic from local network to ephemeral ports
+    extraCommands = ''
+      # Allow incoming UDP traffic from local network (192.168.1.0/24) to ephemeral ports (32768-60999)
+      iptables -A INPUT -i enp61s0 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
+      iptables -A INPUT -i wlo1 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
+      # Allow established and related connections (important for UDP as it's stateless)
+      iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+      # Allow traffic on the loopback interface
+      iptables -A INPUT -i lo -j ACCEPT
+    '';
 
     # helpful for debugging firewall rules
     # logRefusedPackets = true;
