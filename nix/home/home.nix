@@ -84,7 +84,7 @@
         pkgs.cryptomator
       ] else [];
 
-      plexServerPackages = if flags.enablePlexCloudServer then [
+      plexServerPackages = if flags.enablePlexServer then [
         pkgs.libhdhomerun
         pkgs.hdhomerun-config-gui
       ] else [];
@@ -96,7 +96,8 @@
       basePackages ++ 
       devToolPackages ++
       epicGamesPackages ++
-      oneDrivePackages ++ 
+      oneDrivePackages ++
+      plexServerPackages ++
       nextCloudServerPackages;
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
