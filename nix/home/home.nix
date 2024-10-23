@@ -43,6 +43,7 @@
         pkgs.age
         pkgs.ssh-to-age
         pkgs.sops
+        pkgs.vlc
 
         # zsh
         pkgs.zsh-powerlevel10k
