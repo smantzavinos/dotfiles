@@ -33,7 +33,10 @@ in
   # networking.firewall.allowedUDPPorts = [ 65001 ];
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.X11Forwarding = true;
+  };
   programs.ssh.startAgent = true;
 
   virtualisation.docker.enable = true;
