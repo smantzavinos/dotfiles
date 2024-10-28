@@ -1,7 +1,13 @@
 
 { pkgs, flags, ... }:
 
+let
+  # Define the full path for secrets file
+  secretsFile = ./secrets/secrets.yaml;
+  ageKeyFile = "/home/spiros/.config/sops/age/keys.txt";
+in
 {
+
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -16,11 +22,16 @@
     openssl
   ];
 
-  networking.firewall.enable = false;
+  # secrets management
+  sops.defaultSopsFile = secretsFile;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = ageKeyFile;
+
+  # networking.firewall.enable = false;
 
   # hdhomerun ports
-  networking.firewall.allowedTCPPorts = [ 65001 ];
-  networking.firewall.allowedUDPPorts = [ 65001 ];
+  # networking.firewall.allowedTCPPorts = [ 65001 ];
+  # networking.firewall.allowedUDPPorts = [ 65001 ];
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

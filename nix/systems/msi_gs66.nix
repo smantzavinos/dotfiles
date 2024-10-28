@@ -5,43 +5,145 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+
+  # LUKS configuration for encrypted devices
+  boot.initrd.luks.devices = {
+    raid1_drive1 = {
+      device = "/dev/disk/by-uuid/190975db-2523-41e1-a3dd-99259db3fa06";
+      preLVM = true;
+    };
+    raid1_drive2 = {
+      device = "/dev/disk/by-uuid/1d74f573-6e2b-4ecf-9a0c-0fe6e84a4af8";
+      preLVM = true;
+    };
+  };
+
+  # Mount the decrypted Btrfs RAID 1
+  fileSystems."/mnt/raid1" = {
+    device = "UUID=e8b3cd29-8d42-4a11-aeeb-7a359a54b4ed";
+    fsType = "btrfs";
+    options = [ "compress=zstd" "degraded" "nofail" ];
+    mountPoint = "/mnt/raid1";
+  };
+
+
+  # Kernel params to allow degraded RAID
+  boot.kernelParams = [ "btrfs-degraded" "rootdelay=10" ];
+
+
+
+  # Nextcloud
+  # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  sops.secrets = {
+    nextcloudAdminPass = {
+      sopsFile = ../secrets/nextcloud-admin-pass.txt;
+      format = "binary";
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
+  };
+
+  # environment.etc."nextcloud-admin-pass".text = "PWD";
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud29;
+    hostName = "localhost";
+    config.adminpassFile = config.sops.secrets.nextcloudAdminPass.path;
+
+
+    # Let NixOS install and configure the database automatically.
+    database.createLocally = true;
+
+    # Let NixOS install and configure Redis caching automatically.
+    configureRedis = true;
+
+    autoUpdateApps.enable = true;
+    extraAppsEnable = true;
+    extraApps = with config.services.nextcloud.package.packages.apps; {
+      inherit calendar contacts mail notes tasks;
+    };
+  };
+
+  # __________________________________________________
+
+
+
   services.plex = {
     enable = true;
     openFirewall = true;
     user = "spiros";
-    # TODO: Drive should be mapped by uuid
-    dataDir = "/run/media/spiros/TOURO/PlexMediaServer";
+    dataDir = "/mnt/raid1/PlexMediaServer";
+  };
+
+  # networking.firewall = {
+  #   enable = true;
+  #   allowedTCPPorts = [ 32400 ];
+  #   allowedUDPPorts = [ 1900 5353 65001 ];
+
+  #   # Allow all traffic on the local network
+  #   extraCommands = ''
+  #     iptables -A INPUT -i eth0 -s 192.168.0.0/24 -j ACCEPT
+  #   '';
+  # };
+
+  networking.firewall = {
+    enable = false;
+    allowedTCPPorts = [ 32400 443 ];  # Include 443 for HTTPS/TLS connections
+    allowedUDPPorts = [ 1900 5353 32410 32412 32413 32414 32469 65001 ];  # Plex discovery ports and SSDP
+
+    # Allow all traffic on the local network
+    extraCommands = ''
+      iptables -A INPUT -i eth0 -s 192.168.0.0/24 -j ACCEPT
+      iptables -A INPUT -i lo -j ACCEPT
+      ip6tables -A INPUT -i eth0 -s fd29:1cdd:dd43::/64 -j ACCEPT
+      ip6tables -A INPUT -i lo -j ACCEPT
+    '';
+  };
+
+
+  # Enable Avahi for mDNS
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
   };
 
   # hdhomerun ports
-  networking = {
-    firewall = {
-      enable = false;
-      allowedTCPPorts = [ 65001 ];
-      allowedUDPPorts = [ 1900 5353 65001 ];
+  # networking = {
+  #   firewall = {
+  #     enable = false;
+  #     allowedTCPPorts = [ 65001 ];
+  #     allowedUDPPorts = [ 1900 5353 65001 ];
 
-      # Allowing multicast DNS and UPnP traffic
-      # extraCommands = ''
-      #   iptables -A INPUT -p udp -m udp --dport 1900 -j ACCEPT
-      #   iptables -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
-      #   iptables -A INPUT -m pkttype --pkt-type multicast -j ACCEPT
-      # '';
+  #     # Allowing multicast DNS and UPnP traffic
+  #     # extraCommands = ''
+  #     #   iptables -A INPUT -p udp -m udp --dport 1900 -j ACCEPT
+  #     #   iptables -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
+  #     #   iptables -A INPUT -m pkttype --pkt-type multicast -j ACCEPT
+  #     # '';
 
-      extraCommands = ''
-        # Allow multicast traffic
-        iptables -A INPUT -p igmp -j ACCEPT
-        iptables -A INPUT -d 239.0.0.0/8 -j ACCEPT
-        iptables -A INPUT -p udp --dport 1900 -j ACCEPT
+  #     extraCommands = ''
+  #       # Allow multicast traffic
+  #       iptables -A INPUT -p igmp -j ACCEPT
+  #       iptables -A INPUT -d 239.0.0.0/8 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 1900 -j ACCEPT
 
-        # Allow Plex to communicate with HDHomeRun
-        iptables -A INPUT -p udp --dport 32400 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32410 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32412 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32413 -j ACCEPT
-        iptables -A INPUT -p udp --dport 32414 -j ACCEPT
-      '';
-    };
-  };
+  #       # Allow Plex to communicate with HDHomeRun
+  #       iptables -A INPUT -p udp --dport 32400 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32410 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32412 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32413 -j ACCEPT
+  #       iptables -A INPUT -p udp --dport 32414 -j ACCEPT
+  #     '';
+  #   };
+  # };
 
   # Original /etc/nixos/configuration.nix below here
   #####################################################################
@@ -99,13 +201,13 @@
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
+  services.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "";
+    variant = "";
   };
 
   # Enable CUPS to print documents.
@@ -152,6 +254,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
     git
+    btrfs-progs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -189,7 +292,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];

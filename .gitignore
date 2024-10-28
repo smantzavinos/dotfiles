@@ -17,6 +17,8 @@ tramp
 /.emacs.d/straight/
 /.emacs.d/transient/
 /.emacs.d/url/
+/.emacs.d/recentf
+/.emacs.d/perspectives/
 
 # Org-mode
 .org-id-locations
