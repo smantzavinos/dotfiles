@@ -73,13 +73,14 @@
                 enableDevTools = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs;
-                flags = overriddenFlags;
-              };
+              # modify flags that are passed to improted modules
+              specialArgs = { flags = flags // {
+                enableOneDrive = true;
+                enableDevTools = true;
+              }; };
 
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
               ./systems/lenovo_x1_extreme.nix
@@ -88,6 +89,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
+                # TODO: can I remove this since I have specialArgs set?
                 home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
