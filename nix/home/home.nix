@@ -15,8 +15,7 @@
 
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
-      # apps/s3drive/s3drive.nix
-      /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+      ./apps/s3drive/s3drive.nix
     ];
 
 
