@@ -160,12 +160,13 @@
                 enableDevTools = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
-                flags = overriddenFlags;
-              };
+              specialArgs = { flags = flags // {
+                enableOneDrive = true;
+                enableDevTools = true;
+              }; };
+
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               # TODO: Replace with local
               /etc/nixos/configuration.nix
