@@ -40,12 +40,31 @@ in
   virtualisation.docker.enable = true;
   users.users.spiros.extraGroups = [ "docker" ];
 
+   # Ensure the SSL directory exists with correct permissions
+  systemd.tmpfiles.rules = [
+    "d /var/lib/postgresql/ssl 0700 postgres postgres -"
+  ];
+
+  # Activation script to generate the self-signed SSL certificate and key
+  system.activationScripts.postgresSSL = ''
+    ${pkgs.openssl}/bin/openssl req -new -x509 -days 3650 -nodes -text \
+      -out /var/lib/postgresql/ssl/server.crt \
+      -keyout /var/lib/postgresql/ssl/server.key \
+      -subj "/CN=localhost"
+
+    chown postgres:postgres /var/lib/postgresql/ssl/server.key /var/lib/postgresql/ssl/server.crt
+    chmod 600 /var/lib/postgresql/ssl/server.key
+    chmod 644 /var/lib/postgresql/ssl/server.crt
+  '';
+
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_14;  # Ensure PostgreSQL v14 as suggested by Plandex
+    package = pkgs.postgresql_16;
     ensureDatabases = [ "plandex" ];
     settings = {
       ssl = true;
+      ssl_cert_file = "/var/lib/postgresql/ssl/server.crt";
+      ssl_key_file = "/var/lib/postgresql/ssl/server.key";
     };
     enableTCPIP = true;
     authentication = pkgs.lib.mkOverride 10 ''
