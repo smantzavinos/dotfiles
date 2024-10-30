@@ -39,7 +39,6 @@
         pkgs.degit
         pkgs.htop-vim
         pkgs.wireshark
-        pkgs.lazygit
         pkgs.age
         pkgs.ssh-to-age
         pkgs.sops
@@ -346,4 +345,11 @@
     };
   };
 
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      # this is not working for some reason
+      keybinding.universal.commits.openLogMenu = "alt+l";
+    };
+  };
 }
