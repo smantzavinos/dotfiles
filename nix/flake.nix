@@ -168,8 +168,8 @@
             in [
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
-              # TODO: Replace with local
-              /etc/nixos/configuration.nix
+              ./systems/virtualbox.nix
+              "${nixpkgs}/nixos/modules/installer/virtualbox-demo.nix"
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
