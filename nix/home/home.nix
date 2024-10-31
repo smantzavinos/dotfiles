@@ -30,6 +30,7 @@
         pkgs.fzf
         pkgs.nix-prefetch-github
         pkgs.jq
+        pkgs.yq-go
         pkgs.glxinfo
         pkgs.pciutils
         pkgs.dpkg
@@ -101,6 +102,13 @@
 
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
+
+
+    home.shellAliases = {
+      source_api_keys = ''
+        eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
+      '';
+    };
 
     programs.git = {
       enable = true;
