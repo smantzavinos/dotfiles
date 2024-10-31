@@ -105,8 +105,26 @@
 
 
     home.shellAliases = {
+      # Decrypts and loads API keys from a SOPS-encrypted YAML file into
+      # environment variables, making them available for the current session.
       source_api_keys = ''
         eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
+      '';
+
+      # Sets up PostgreSQL-related environment variables for plandex server
+      setup_plandex_server = ''
+        export DB_HOST="localhost"
+        export DB_PORT="5432"
+        export DB_USER="postgres"
+        export DB_PASSWORD="postgres"
+        export DB_NAME="plandex"
+        export DATABASE_URL="postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
+
+        export GOENV=development
+
+        source_api_keys
+
+        echo "PostgreSQL environment variables and API keys have been exported."
       '';
     };
 
