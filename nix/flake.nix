@@ -106,12 +106,15 @@
                 enableDevTools = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs;
-                flags = overriddenFlags;
-              };
+              specialArgs = { flags = flags // {
+                enableEpicGames = true;
+                enableOneDrive = true;
+                enableSteam = true;
+                enableDevTools = true;
+              }; };
+
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               /etc/nixos/configuration.nix
               /etc/nixos/hardware-configuration.nix
@@ -133,10 +136,6 @@
               overriddenFlags = flags // {
                 enablePlexServer = true;
               };
-
-              specialArgs = { flags = flags // {
-                enablePlexServer = true;
-              }; };
 
             in [
               ./system_shared.nix
