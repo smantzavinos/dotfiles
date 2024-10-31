@@ -154,21 +154,28 @@ in
   virtualisation.docker.enable = true;
   users.users.spiros.extraGroups = [ "docker" ];
 
-   # Ensure the SSL directory exists with correct permissions
-  systemd.tmpfiles.rules = [
-    "d /var/lib/postgresql/ssl 0700 postgres postgres -"
-  ];
-
   # Activation script to generate the self-signed SSL certificate and key
   system.activationScripts.postgresSSL = ''
-    ${pkgs.openssl}/bin/openssl req -new -x509 -days 3650 -nodes -text \
-      -out /var/lib/postgresql/ssl/server.crt \
-      -keyout /var/lib/postgresql/ssl/server.key \
-      -subj "/CN=localhost"
+    SSL_DIR="/var/lib/postgresql/ssl"
 
-    chown postgres:postgres /var/lib/postgresql/ssl/server.key /var/lib/postgresql/ssl/server.crt
-    chmod 600 /var/lib/postgresql/ssl/server.key
-    chmod 644 /var/lib/postgresql/ssl/server.crt
+    # Ensure the SSL directory exists with correct permissions
+    if [ ! -d "$SSL_DIR" ]; then
+      mkdir -p "$SSL_DIR"
+      chown postgres:postgres "$SSL_DIR"
+      chmod 700 "$SSL_DIR"
+    fi
+
+    # Generate the SSL certificate and key if they don't already exist
+    if [ ! -f "$SSL_DIR/server.key" ]; then
+      ${pkgs.openssl}/bin/openssl req -new -x509 -days 3650 -nodes -text \
+        -out "$SSL_DIR/server.crt" \
+        -keyout "$SSL_DIR/server.key" \
+        -subj "/CN=localhost"
+
+      chown postgres:postgres "$SSL_DIR/server.key" "$SSL_DIR/server.crt"
+      chmod 600 "$SSL_DIR/server.key"
+      chmod 644 "$SSL_DIR/server.crt"
+    fi
   '';
 
   services.postgresql = {

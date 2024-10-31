@@ -134,12 +134,12 @@
                 enablePlexServer = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs;
-                flags = overriddenFlags;
-              };
+              specialArgs = { flags = flags // {
+                enablePlexServer = true;
+              }; };
+
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
               home-manager.nixosModules.home-manager

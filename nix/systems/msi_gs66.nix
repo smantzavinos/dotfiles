@@ -158,18 +158,12 @@ in {
   ####################
   services = {
     postgresql = {
-      enable = true;
-      package = pkgs.postgresql_16;
-      # dataDir = /mnt/raid1/postgresql;
+      # package defined in system_shared.nix
       ensureDatabases = [ "nextcloud" ];
       ensureUsers = [{
         name = "nextcloud";
         ensureDBOwnership = true;
       }];
-      # authentication = pkgs.lib.mkOverride 10 ''
-      #   #type database  DBuser  auth-method
-      #   local all       all     trust
-      # '';
     };
 
     # optional backup for postgresql db
