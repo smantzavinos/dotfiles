@@ -15,9 +15,10 @@
       url = "github:smantzavinos/aider_flake/4f33ab9dc3ca2148b3128e6a3b5b117aa1586b6f";
     };
     sops-nix.url = "github:Mic92/sops-nix";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -41,7 +42,6 @@
               overriddenFlags = flags // {
                 enableDevTools = false;
               };
-
               sharedModule = import ./system_shared.nix {
                 inherit pkgs inputs;
                 flags = overriddenFlags;
@@ -73,22 +73,23 @@
                 enableDevTools = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs;
-                flags = overriddenFlags;
-                home-manager = home-manager;
-              };
+              # modify flags that are passed to improted modules
+              specialArgs = { flags = flags // {
+                enableOneDrive = true;
+                enableDevTools = true;
+              }; };
+
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
-              /etc/nixos/configuration.nix
-              /etc/nixos/hardware-configuration.nix
+              inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
               ./systems/lenovo_x1_extreme.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.spiros = import ./home/home.nix;
+                # TODO: can I remove this since I have specialArgs set?
                 home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
             ];
@@ -159,12 +160,13 @@
                 enableDevTools = true;
               };
 
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
-                flags = overriddenFlags;
-              };
+              specialArgs = { flags = flags // {
+                enableOneDrive = true;
+                enableDevTools = true;
+              }; };
+
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               # TODO: Replace with local
               /etc/nixos/configuration.nix

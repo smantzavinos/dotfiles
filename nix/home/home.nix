@@ -15,8 +15,7 @@
 
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
-      # apps/s3drive/s3drive.nix
-      /home/spiros/dotfiles/nix/home/apps/s3drive/s3drive.nix
+      ./apps/s3drive/s3drive.nix
     ];
 
 
@@ -39,7 +38,6 @@
         pkgs.degit
         pkgs.htop-vim
         pkgs.wireshark
-        pkgs.lazygit
         pkgs.age
         pkgs.ssh-to-age
         pkgs.sops
@@ -348,4 +346,11 @@
     };
   };
 
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      # this is not working for some reason
+      keybinding.universal.commits.openLogMenu = "alt+l";
+    };
+  };
 }
