@@ -28,6 +28,7 @@
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
+        enablePlexServer = false;
         enableOneDrive = false;
         enableSteam = false;
         enableDevTools = false;
