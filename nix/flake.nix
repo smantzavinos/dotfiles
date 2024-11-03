@@ -117,8 +117,6 @@
             in [
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
-              /etc/nixos/configuration.nix
-              /etc/nixos/hardware-configuration.nix
               ./systems/precision_t5600.nix
               home-manager.nixosModules.home-manager
               {
