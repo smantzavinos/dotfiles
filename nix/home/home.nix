@@ -54,6 +54,8 @@
         pkgs.libreoffice
         pkgs.drawio
         pkgs.nextcloud-client
+        pkgs.qbittorrent
+        pkgs.lmstudio
 
         # fonts
         pkgs.nerdfonts
