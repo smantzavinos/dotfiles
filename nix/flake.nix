@@ -78,6 +78,7 @@
               specialArgs = { flags = flags // {
                 enableOneDrive = true;
                 enableDevTools = true;
+                enablePlexServer = true;
               }; };
 
             in [
