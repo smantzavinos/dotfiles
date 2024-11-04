@@ -70,6 +70,7 @@
       ];
 
       devToolPackages = if flags.enableDevTools then [
+        pkgs.nodejs_22
         pkgs.plandex
         pkgs.plandex-server
       ] else [];
