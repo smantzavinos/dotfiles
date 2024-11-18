@@ -19,7 +19,7 @@
   # List packages installed in system profile. To search, run:
   # \$ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git
+    wget vim git nodejs_22
   ];
 
 
