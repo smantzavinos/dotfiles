@@ -169,7 +169,8 @@
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/virtualbox.nix
-              "${nixpkgs}/nixos/modules/installer/virtualbox-demo.nix"
+              # "${nixpkgs}/nixos/modules/installer/virtualbox-demo.nix"
+              # "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix"
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;

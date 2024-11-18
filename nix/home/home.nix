@@ -52,6 +52,7 @@
 
         # apps
         pkgs.google-chrome
+        pkgs.firefox
         pkgs.libreoffice
         pkgs.drawio
         pkgs.nextcloud-client
@@ -64,13 +65,14 @@
         pkgs.weather-icons
 
         # flakes passed in from top level flake.nix
-        aider-flake.packages.x86_64-linux.default
+        # aider-flake.packages.x86_64-linux.default
         whisper-input.defaultPackage.x86_64-linux
       ];
 
       devToolPackages = if flags.enableDevTools then [
         pkgs.plandex
         pkgs.plandex-server
+        pkgs.aider-chat
       ] else [];
 
       epicGamesPackages = if flags.enableEpicGames then [

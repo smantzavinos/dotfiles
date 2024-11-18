@@ -1,53 +1,74 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
+  # See this PR for when the virtualbox-demo.nix file was removed:
+  # https://github.com/NixOS/nixpkgs/pull/354282/files
+  # ##################################################
+
   imports = [];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
 
-  services.displayManager.autoLogin = pkgs.lib.mkForce { user = "spiros"; };
-
-  users.users.spiros = {
-    isNormalUser = true;
-    home = "/home/spiros";
-    description = "Spiros";
-    extraGroups = [ "wheel" "networkmanager" ];
-  };
-
-  # List packages installed in system profile. To search, run:
-  # \$ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git nodejs_22
   ];
 
+  # virtualbox guest additions
+  virtualisation.virtualbox.guest.enable = true;
 
-  # Let demo build as a trusted user.
-  # nix.settings.trusted-users = [ "demo" ];
-  # Mount a VirtualBox shared folder.
-  # This is configurable in the VirtualBox menu at
-  # Machine / Settings / Shared Folders.
-  # fileSystems."/mnt" = {
-  #   fsType = "vboxsf";
-  #   device = "nameofdevicetomount";
-  #   options = [ "rw" ];
-  # };
+  # Enable the X11 server
+  services.xserver.enable = true;
 
-  # By default, the NixOS VirtualBox demo image includes SDDM and Plasma.
-  # If you prefer another desktop manager or display manager, you may want
-  # to disable the default.
-  # services.xserver.desktopManager.plasma5.enable = lib.mkForce false;
-  # services.displayManager.sddm.enable = lib.mkForce false;
+  # Choose a display manager (e.g., SDDM for Plasma)
+  services.xserver.displayManager.sddm.enable = true;
 
-  # Enable GDM/GNOME by uncommenting above two lines and two lines below.
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
+  # Enable a desktop environment (e.g., Plasma 5)
+  services.xserver.desktopManager.plasma5.enable = true;
 
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  # Ensure the user 'spiros' is set up correctly
+  users.users.spiros = {
+    isNormalUser = true;
+    home = "/home/spiros";
+    description = "Spiros";
+    extraGroups = [ "wheel" "networkmanager" "vboxsf" ];
+  };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  users.users.demo = {
+    isNormalUser = true;
+    description = "Demo user account";
+
+    # vboxsf to allow mounting of shared folders.
+    extraGroups = [ "wheel" "vboxsf" ];
+    password = "demo";
+    uid = 1000;
+  };
+
+  # Enable auto-login for convenience (optional)
+  # services.displayManager.autoLogin.enable = true;
+  # services.displayManager.autoLogin.user = "spiros";
+
+  # Bootloader configuration
+  boot.loader.grub = {
+    enable = true;
+    devices = [ "/dev/sda" ];
+    fsIdentifier = "provided";
+  };
+
+  # File systems configuration
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
+
+  # Video drivers for virtual environments
+  services.xserver.videoDrivers = [ "virtualbox" "vmware" "cirrus" "vesa" "modesetting" ];
+
+  # Disable power management in a VM
+  powerManagement.enable = false;
+
+  # Set the system state version to match your NixOS version
+  system.stateVersion = "25.05";
 
 }
