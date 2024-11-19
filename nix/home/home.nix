@@ -188,6 +188,14 @@
       '';
       plugins = [
         {
+          plugin = pkgs.vimPlugins.nvim-dap;
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.nvim-dap-ui;
+          type = "lua";
+        }
+        {
           plugin = pkgs.vimPlugins.neovim-ayu;
           type = "lua";
           config = ''
