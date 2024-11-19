@@ -32,6 +32,7 @@
         enableOneDrive = false;
         enableSteam = false;
         enableDevTools = false;
+        enableLocalLLM = false;
       };
     in
     {
@@ -106,6 +107,7 @@
                 enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enableLocalLLM = true;
               };
 
               specialArgs = { flags = flags // {
@@ -113,6 +115,7 @@
                 enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enableLocalLLM = true;
               }; };
 
             in [

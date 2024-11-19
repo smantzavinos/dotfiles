@@ -57,7 +57,6 @@
         pkgs.drawio
         pkgs.nextcloud-client
         pkgs.qbittorrent
-        pkgs.lmstudio
 
         # fonts
         pkgs.nerdfonts
@@ -76,6 +75,10 @@
         pkgs.plandex
         pkgs.plandex-server
         pkgs.aider-chat
+      ] else [];
+
+      localLLMPackages = if flags.enableLocalLLM then [
+        pkgs.lmstudio
       ] else [];
 
       epicGamesPackages = if flags.enableEpicGames then [
