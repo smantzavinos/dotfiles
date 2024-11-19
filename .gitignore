@@ -19,6 +19,8 @@ tramp
 /.emacs.d/url/
 /.emacs.d/recentf
 /.emacs.d/perspectives/
+/.emacs.d/.dap-breakpoints
+/.emacs.d/.lsp-session-*
 
 # Org-mode
 .org-id-locations
