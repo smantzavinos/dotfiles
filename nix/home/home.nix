@@ -76,6 +76,9 @@
         pkgs.plandex
         pkgs.plandex-server
         pkgs.aider-chat
+        pkgs.svelte-language-server
+        pkgs.tailwindcss-language-server
+        pkgs.lua-language-server
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
