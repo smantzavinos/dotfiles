@@ -149,18 +149,6 @@
       extraLuaConfig = ''
         vim.wo.number = true
 
-        -- LSP configuration
-        local lspconfig = require('lspconfig')
-
-        lspconfig.svelte.setup {
-          on_attach = function(client, bufnr)
-            -- Add your custom on_attach logic here, if needed
-            -- For example, you can set keybindings for LSP features
-          end,
-          flags = {
-            debounce_text_changes = 150,
-          }
-        }
 
         vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>',
         {noremap = true, silent = true})
@@ -226,6 +214,23 @@
         }
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
+        {
+          plugin = pkgs.vimPlugins.nvim-lspconfig;
+          type = "lua";
+          config = ''
+            local lspconfig = require('lspconfig')
+
+            lspconfig.svelte.setup {
+              on_attach = function(client, bufnr)
+                -- Add your custom on_attach logic here, if needed
+                -- For example, you can set keybindings for LSP features
+              end,
+              flags = {
+                debounce_text_changes = 150,
+              }
+            }
+          '';
+        }
         pkgs.vimPlugins.nvim-lspconfig
         {
           plugin = pkgs.vimPlugins.nvim-surround;
