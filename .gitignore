@@ -62,3 +62,4 @@ projectile.cache
 # network security
 /network-security.data
 .aider*
+.env
