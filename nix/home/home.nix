@@ -157,6 +157,8 @@
         {noremap = true, silent = true})
         vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>',
         {noremap = true, silent = true})
+
+	vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
       '';
       plugins = [
         {
