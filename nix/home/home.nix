@@ -123,29 +123,6 @@
       # environment variables, making them available for the current session.
       source_api_keys = ''
         eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
-         local nvim_lsp = require("lspconfig")
-
-         nvim_lsp.nixd.setup({
-            cmd = { "nixd" },
-            settings = {
-               nixd = {
-                  nixpkgs = {
-                     expr = "import <nixpkgs> { }",
-                  },
-                  formatting = {
-                     command = { "nixfmt" },
-                  },
-                  options = {
-                     nixos = {
-                        expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
-                     },
-                     home_manager = {
-                        expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
-                     },
-                  },
-               },
-            },
-         })
       '';
 
       # Sets up PostgreSQL-related environment variables for plandex server
@@ -184,6 +161,30 @@
         {noremap = true, silent = true})
 
 	vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
+
+	local nvim_lsp = require("lspconfig")
+
+	nvim_lsp.nixd.setup({
+	   cmd = { "nixd" },
+	   settings = {
+	      nixd = {
+	         nixpkgs = {
+	            expr = "import <nixpkgs> { }",
+	         },
+	         formatting = {
+	            command = { "nixfmt" },
+	         },
+	         options = {
+	            nixos = {
+	               expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
+	            },
+	            home_manager = {
+	               expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+	            },
+	         },
+	      },
+	   },
+	})
       '';
       plugins = [
         {
