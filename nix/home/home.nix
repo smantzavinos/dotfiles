@@ -226,6 +226,7 @@
         }
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
+        pkgs.vimPlugins.nvim-lspconfig
         {
           plugin = pkgs.vimPlugins.nvim-surround;
           type = "lua";
