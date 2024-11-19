@@ -231,7 +231,6 @@
             }
           '';
         }
-        pkgs.vimPlugins.nvim-lspconfig
         {
           plugin = pkgs.vimPlugins.nvim-surround;
           type = "lua";
