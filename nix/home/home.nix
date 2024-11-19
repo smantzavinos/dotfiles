@@ -149,6 +149,19 @@
       extraLuaConfig = ''
         vim.wo.number = true
 
+        -- LSP configuration
+        local lspconfig = require('lspconfig')
+
+        lspconfig.svelte.setup {
+          on_attach = function(client, bufnr)
+            -- Add your custom on_attach logic here, if needed
+            -- For example, you can set keybindings for LSP features
+          end,
+          flags = {
+            debounce_text_changes = 150,
+          }
+        }
+
         vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>',
         {noremap = true, silent = true})
         vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>',
