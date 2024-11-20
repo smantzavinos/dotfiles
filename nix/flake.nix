@@ -106,6 +106,7 @@
                 enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enablePlexServer = true;
               };
 
               specialArgs = { flags = flags // {
@@ -113,6 +114,7 @@
                 enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enablePlexServer = true;
               }; };
 
             in [
