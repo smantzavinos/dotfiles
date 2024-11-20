@@ -141,9 +141,7 @@
     description = "Spiros Mantzavinos";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      firefox
       kate
-    #  thunderbird
       vim
       git
     ];
