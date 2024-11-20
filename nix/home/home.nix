@@ -146,6 +146,8 @@
     programs.neovim = {
       enable = true;
       vimAlias = true;
+      vimdiffAlias = true;
+      withNodeJs = true;
       extraLuaConfig = ''
         vim.wo.number = true
 
@@ -153,8 +155,14 @@
         {noremap = true, silent = true})
         vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>',
         {noremap = true, silent = true})
+
+        -- Replace tabs with spaces
+        vim.opt.tabstop = 4
+        vim.opt.shiftwidth = 4
+        vim.opt.expandtab = true
       '';
       plugins = [
+        pkgs.vimPlugins.lazy-nvim
         {
           plugin = pkgs.vimPlugins.neovim-ayu;
           type = "lua";
