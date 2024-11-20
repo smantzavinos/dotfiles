@@ -158,37 +158,35 @@
         vim.wo.number = true
 
 
-        vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>',
-        {noremap = true, silent = true})
-        vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>',
-        {noremap = true, silent = true})
+        vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>', {noremap = true, silent = true})
+        vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>', {noremap = true, silent = true})
 
-	vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
 
-	local nvim_lsp = require("lspconfig")
+        local nvim_lsp = require("lspconfig")
 
 
-	nvim_lsp.nixd.setup({
-	   cmd = { "nixd" },
-	   settings = {
-	      nixd = {
-	         nixpkgs = {
-	            expr = "import <nixpkgs> { }",
-	         },
-	         formatting = {
-	            command = { "nixfmt" },
-	         },
-	         options = {
-	            nixos = {
-	               expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
-	            },
-	            home_manager = {
-	               expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
-	            },
-	         },
-	      },
-	   },
-	})
+        nvim_lsp.nixd.setup({
+           cmd = { "nixd" },
+           settings = {
+              nixd = {
+                 nixpkgs = {
+                    expr = "import <nixpkgs> { }",
+                 },
+                 formatting = {
+                    command = { "nixfmt" },
+                 },
+                 options = {
+                    nixos = {
+                       expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
+                    },
+                    home_manager = {
+                       expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+                    },
+                 },
+              },
+           },
+        })
 
         -- Replace tabs with spaces
         vim.opt.tabstop = 4
@@ -202,26 +200,26 @@
           type = "lua";
           config = ''
             local dap = require('dap')
-            dap.adapters.lldb = {
-              type = 'executable',
-              command = '/usr/bin/lldb-vscode', -- adjust as needed
-              name = "lldb"
-            }
-            dap.configurations.cpp = {
-              {
-                name = "Launch",
-                type = "lldb",
-                request = "launch",
-                program = function()
-                  return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-                end,
-                cwd = '${workspaceFolder}',
-                stopOnEntry = false,
-                args = {},
-              },
-            }
-            dap.configurations.c = dap.configurations.cpp
-            dap.configurations.rust = dap.configurations.cpp
+            -- dap.adapters.lldb = {
+            --   type = 'executable',
+            --   command = '/usr/bin/lldb-vscode', -- adjust as needed
+            --   name = "lldb"
+            -- }
+            -- dap.configurations.cpp = {
+            --   {
+            --     name = "Launch",
+            --     type = "lldb",
+            --     request = "launch",
+            --     program = function()
+            --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            --     end,
+            --     cwd = '$-{workspaceFolder}-',
+            --     stopOnEntry = false,
+            --     args = {},
+            --   },
+            -- }
+            -- dap.configurations.c = dap.configurations.cpp
+            -- dap.configurations.rust = dap.configurations.cpp
 
             -- Keybindings for nvim-dap
             vim.api.nvim_set_keymap('n', '<F5>', ':lua require"dap".continue()<CR>', { noremap = true, silent = true })
