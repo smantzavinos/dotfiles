@@ -83,6 +83,7 @@
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
+        pkgs.vscode-js-debug
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
