@@ -165,6 +165,7 @@
             },
           dev = {
             path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            patterns = {""},
           },
           install = {
             -- Safeguard in case we forget to install a plugin with Nix
@@ -230,6 +231,7 @@
       '';
       plugins = [
         pkgs.vimPlugins.lazy-nvim
+        pkgs.vimPlugins.nvim-tree-lua
         {
           plugin = pkgs.vimPlugins.nvim-dap;
           type = "lua";
