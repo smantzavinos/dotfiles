@@ -170,6 +170,20 @@
             -- Safeguard in case we forget to install a plugin with Nix
             missing = false,
           },
+        plugins = {
+          {
+            "nvim-tree/nvim-tree.lua",
+            version = "*",
+            lazy = false,
+            dependencies = {
+              "nvim-tree/nvim-web-devicons",
+            },
+            config = function()
+              require("nvim-tree").setup {}
+            end,
+          },
+          -- Add other plugins here
+        }
         })
 
 
