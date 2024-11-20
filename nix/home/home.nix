@@ -53,11 +53,11 @@
 
         # apps
         pkgs.google-chrome
+        pkgs.firefox
         pkgs.libreoffice
         pkgs.drawio
         pkgs.nextcloud-client
         pkgs.qbittorrent
-        pkgs.lmstudio
 
         # fonts
         pkgs.nerdfonts
@@ -67,7 +67,7 @@
         pkgs.weather-icons
 
         # flakes passed in from top level flake.nix
-        aider-flake.packages.x86_64-linux.default
+        # aider-flake.packages.x86_64-linux.default
         whisper-input.defaultPackage.x86_64-linux
       ];
 
@@ -75,6 +75,11 @@
         pkgs.nodejs_22
         pkgs.plandex
         pkgs.plandex-server
+        pkgs.aider-chat
+      ] else [];
+
+      localLLMPackages = if flags.enableLocalLLM then [
+        pkgs.lmstudio
       ] else [];
 
       epicGamesPackages = if flags.enableEpicGames then [
