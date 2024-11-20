@@ -149,7 +149,7 @@
       userEmail = "smantzavinos@gmail.com";
     };
 
-    xdg.configFile."nvim/lua" = {
+    xdg.configFile."nvim/lua/plugins" = {
       recursive = true;
       source = ./nvim/lua;
     };
@@ -161,7 +161,21 @@
       withNodeJs = true;
       extraLuaConfig = ''
         vim.g.mapleader = " " -- Need to set leader before lazy for correct keybindings
-        require("lazy").setup("plugins")
+        -- require("lazy").setup("plugins")
+
+        require("lazy").setup({
+          dev = {
+            path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            patterns = {""},
+          },
+          install = {
+            -- Safeguard in case we forget to install a plugin with Nix
+            missing = false,
+          },
+          spec = {
+            { import = "plugins" },
+          }
+        })
 
 
 
