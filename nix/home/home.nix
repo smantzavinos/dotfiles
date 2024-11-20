@@ -171,7 +171,7 @@
           },
           install = {
             -- Safeguard in case we forget to install a plugin with Nix
-            missing = false,
+            missing = true,
           },
           spec = {
             {
@@ -201,6 +201,29 @@
                     enable = true,
                     additional_vim_regex_highlighting = false,
                   },
+                })
+              end,
+            },
+            {
+              "mfussenegger/nvim-dap",
+              lazy = true,
+              dependencies = {
+              	"rcarriga/nvim-dap-ui",
+              	"mxsdev/nvim-dap-vscode-js",
+              },
+              config = function() 
+              	require("dap-vscode-js").setup({
+              		debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+              		adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
+              	})
+              	require("dapui").setup()
+              end
+            },
+            {
+              "mxsdev/nvim-dap-vscode-js",
+              config = function()
+                require("dap-vscode-js").setup({
+                  adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
                 })
               end,
             },
@@ -256,44 +279,45 @@
         pkgs.vimPlugins.nvim-treesitter-parsers.svelte
         pkgs.vimPlugins.nvim-treesitter-parsers.typescript
         pkgs.vimPlugins.nvim-treesitter-parsers.html
-        {
-          plugin = pkgs.vimPlugins.nvim-dap;
-          type = "lua";
-          config = ''
-            local dap = require('dap')
-            -- dap.adapters.lldb = {
-            --   type = 'executable',
-            --   command = '/usr/bin/lldb-vscode', -- adjust as needed
-            --   name = "lldb"
-            -- }
-            -- dap.configurations.cpp = {
-            --   {
-            --     name = "Launch",
-            --     type = "lldb",
-            --     request = "launch",
-            --     program = function()
-            --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-            --     end,
-            --     cwd = '$-{workspaceFolder}-',
-            --     stopOnEntry = false,
-            --     args = {},
-            --   },
-            -- }
-            -- dap.configurations.c = dap.configurations.cpp
-            -- dap.configurations.rust = dap.configurations.cpp
-
-            -- Keybindings for nvim-dap
-            vim.api.nvim_set_keymap('n', '<F5>', ':lua require"dap".continue()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<F10>', ':lua require"dap".step_over()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<F11>', ':lua require"dap".step_into()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<F12>', ':lua require"dap".step_out()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<Leader>b', ':lua require"dap".toggle_breakpoint()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<Leader>B', ':lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<Leader>lp', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<Leader>dr', ':lua require"dap".repl.open()<CR>', { noremap = true, silent = true })
-            vim.api.nvim_set_keymap('n', '<Leader>dl', ':lua require"dap".run_last()<CR>', { noremap = true, silent = true })
-          '';
-        }
+        pkgs.vimPlugins.nvim-dap
+        # {
+        #   plugin = pkgs.vimPlugins.nvim-dap;
+        #   type = "lua";
+        #   config = ''
+        #     local dap = require('dap')
+        #     -- dap.adapters.lldb = {
+        #     --   type = 'executable',
+        #     --   command = '/usr/bin/lldb-vscode', -- adjust as needed
+        #     --   name = "lldb"
+        #     -- }
+        #     -- dap.configurations.cpp = {
+        #     --   {
+        #     --     name = "Launch",
+        #     --     type = "lldb",
+        #     --     request = "launch",
+        #     --     program = function()
+        #     --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        #     --     end,
+        #     --     cwd = '$-{workspaceFolder}-',
+        #     --     stopOnEntry = false,
+        #     --     args = {},
+        #     --   },
+        #     -- }
+        #     -- dap.configurations.c = dap.configurations.cpp
+        #     -- dap.configurations.rust = dap.configurations.cpp
+        #
+        #     -- Keybindings for nvim-dap
+        #     vim.api.nvim_set_keymap('n', '<F5>', ':lua require"dap".continue()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<F10>', ':lua require"dap".step_over()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<F11>', ':lua require"dap".step_into()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<F12>', ':lua require"dap".step_out()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<Leader>b', ':lua require"dap".toggle_breakpoint()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<Leader>B', ':lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<Leader>lp', ':lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<Leader>dr', ':lua require"dap".repl.open()<CR>', { noremap = true, silent = true })
+        #     vim.api.nvim_set_keymap('n', '<Leader>dl', ':lua require"dap".run_last()<CR>', { noremap = true, silent = true })
+        #   '';
+        # }
         {
           plugin = pkgs.vimPlugins.nvim-dap-ui;
           type = "lua";
