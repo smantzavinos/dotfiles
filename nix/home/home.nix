@@ -155,8 +155,28 @@
       vimdiffAlias = true;
       withNodeJs = true;
       extraLuaConfig = ''
-        vim.wo.number = true
+        vim.g.mapleader = " " -- Need to set leader before lazy for correct keybindings
+        require("lazy").setup({
+          performance = {
+            reset_packpath = false,
+            rtp = {
+                reset = false,
+              }
+            },
+          dev = {
+            path = "${pkgs.vimUtils.packDir config.home-manager.users.spiros.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+          },
+          install = {
+            -- Safeguard in case we forget to install a plugin with Nix
+            missing = false,
+          },
+        })
 
+
+
+
+
+        vim.wo.number = true
 
         vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>', {noremap = true, silent = true})
         vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>', {noremap = true, silent = true})
