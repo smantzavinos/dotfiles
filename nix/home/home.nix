@@ -79,6 +79,7 @@
         pkgs.plandex
         pkgs.plandex-server
         pkgs.aider-chat
+        pkgs.tree-sitter
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
@@ -184,6 +185,21 @@
                 require("nvim-tree").setup()
               end,
             },
+            {
+              "nvim-treesitter/nvim-treesitter",
+              opts = {
+                auto_install = false,
+                ensure_installed = {},
+              },
+              config = function()
+                require("nvim-treesitter.configs").setup({
+                  highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                  },
+                })
+              end,
+            },
             -- Add other plugins here
           }
         })
@@ -232,6 +248,10 @@
       plugins = [
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
+        pkgs.vimPlugins.nvim-treesitter
+        pkgs.vimPlugins.nvim-treesitter-parsers.svelte
+        pkgs.vimPlugins.nvim-treesitter-parsers.typescript
+        pkgs.vimPlugins.nvim-treesitter-parsers.html
         {
           plugin = pkgs.vimPlugins.nvim-dap;
           type = "lua";
