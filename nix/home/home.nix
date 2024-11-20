@@ -46,6 +46,7 @@
         pkgs.ncdu
         pkgs.nixd
         pkgs.nixfmt
+        pkgs.usbutils
 
         # zsh
         pkgs.zsh-powerlevel10k
@@ -151,6 +152,8 @@
     programs.neovim = {
       enable = true;
       vimAlias = true;
+      vimdiffAlias = true;
+      withNodeJs = true;
       extraLuaConfig = ''
         vim.wo.number = true
 
@@ -186,8 +189,14 @@
 	      },
 	   },
 	})
+
+        -- Replace tabs with spaces
+        vim.opt.tabstop = 4
+        vim.opt.shiftwidth = 4
+        vim.opt.expandtab = true
       '';
       plugins = [
+        pkgs.vimPlugins.lazy-nvim
         {
           plugin = pkgs.vimPlugins.nvim-dap;
           type = "lua";
@@ -447,7 +456,7 @@
 
   programs.kitty = {
     enable = true;
-    theme = "Dracula";
+    themeFile = "Dracula";
     # font = "JetBrainsMono Nerd Font";
   };
 

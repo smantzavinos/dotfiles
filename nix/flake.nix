@@ -104,17 +104,17 @@
             let
               overriddenFlags = flags // {
                 enableEpicGames = true;
-                enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enablePlexServer = true;
                 enableLocalLLM = true;
               };
 
               specialArgs = { flags = flags // {
                 enableEpicGames = true;
-                enableOneDrive = true;
                 enableSteam = true;
                 enableDevTools = true;
+                enablePlexServer = true;
                 enableLocalLLM = true;
               }; };
 
