@@ -12,6 +12,11 @@ management of system and user-level settings.
 - /home.nix/: Holds the user-specific configuration managed by Home Manager.
 - /flake.nix/: The central flake file defining inputs and outputs for Home Manager.
 
+*** vim
+Vim plugins are installed as nixpkgs. Lazy.nvim is used to load packages, but is configured to not auto-install any missing ones.
+
+If there is a plugin that is not available in nixos, you can configure it with Lazy.nvim and install with `:Lazy install` in vim.
+
 ** Usage
 
 *** Prerequisites
