@@ -149,6 +149,11 @@
       userEmail = "smantzavinos@gmail.com";
     };
 
+    xdg.configFile."nvim/lua" = {
+      recursive = true;
+      source = ./nvim/lua;
+    };
+
     programs.neovim = {
       enable = true;
       vimAlias = true;
@@ -496,14 +501,4 @@
       keybinding.universal.commits.openLogMenu = "alt+l";
     };
   };
-}
-return {
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  config = function()
-    require("nvim-tree").setup()
-  end,
 }
