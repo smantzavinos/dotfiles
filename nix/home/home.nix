@@ -156,7 +156,7 @@
       vimdiffAlias = true;
       withNodeJs = true;
       extraLuaConfig = ''
-        vim.g.mapleader = " " -- Need to set leader before lazy for correct keybindings
+        vim.g.mapleader = "\\" -- Set leader key to backslash
         require("lazy").setup({
           performance = {
             reset_packpath = false,
@@ -183,6 +183,10 @@
               },
               config = function()
                 require("nvim-tree").setup()
+              end,
+              -- Map <Leader>E to toggle nvim-tree
+              config = function()
+                vim.api.nvim_set_keymap('n', '<Leader>E', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
               end,
             },
             {
