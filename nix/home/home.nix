@@ -164,26 +164,27 @@
               }
             },
           dev = {
-            path = "${pkgs.vimUtils.packDir config.home-manager.users.spiros.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
           },
           install = {
             -- Safeguard in case we forget to install a plugin with Nix
             missing = false,
           },
-        plugins = {
-          {
-            "nvim-tree/nvim-tree.lua",
-            version = "*",
-            lazy = false,
-            dependencies = {
-              "nvim-tree/nvim-web-devicons",
+          spec = {
+            {
+              "nvim-tree/nvim-tree.lua",
+              version = "*",
+              install = true,
+              lazy = false,
+              dependencies = {
+                "nvim-tree/nvim-web-devicons",
+              },
+              config = function()
+                require("nvim-tree").setup()
+              end,
             },
-            config = function()
-              require("nvim-tree").setup {}
-            end,
-          },
-          -- Add other plugins here
-        }
+            -- Add other plugins here
+          }
         })
 
 
