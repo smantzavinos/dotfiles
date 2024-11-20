@@ -352,7 +352,7 @@
 
   programs.kitty = {
     enable = true;
-    theme = "Dracula";
+    themeFile = "Dracula";
     # font = "JetBrainsMono Nerd Font";
   };
 
