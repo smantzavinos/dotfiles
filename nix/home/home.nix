@@ -160,6 +160,11 @@
       ];
     };
 
+    xdg.configFile."nvim/lua/plugins" = {
+      recursive = true;
+      source =./nvim/lua;
+    };
+
     programs.neovim = {
       enable = true;
       vimAlias = true;
@@ -184,21 +189,6 @@
           },
           spec = {
             {
-              "nvim-tree/nvim-tree.lua",
-              version = "*",
-              install = true,
-              lazy = false,
-              dependencies = {
-                "nvim-tree/nvim-web-devicons",
-              },
-              config = function()
-                require("nvim-tree").setup()
-
-                -- Map <Leader>E to toggle nvim-tree
-                vim.api.nvim_set_keymap('n', '<Leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-              end,
-            },
-            {
               "nvim-treesitter/nvim-treesitter",
               opts = {
                 auto_install = false,
@@ -213,6 +203,7 @@
                 })
               end,
             },
+            { import = "plugins" },
             -- Add other plugins here
           }
         })
