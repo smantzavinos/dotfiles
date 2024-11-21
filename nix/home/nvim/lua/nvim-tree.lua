@@ -9,9 +9,9 @@ return {
     },
     config = function()
       require("nvim-tree").setup()
-
-      -- Map <Leader>E to toggle nvim-tree
-      vim.api.nvim_set_keymap('n', '<Leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
     end,
+    keys = {
+      { "<Leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true } }
+    },
   },
 }
