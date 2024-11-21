@@ -188,7 +188,6 @@
             missing = false,
           },
           spec = {
-            { import = "nvim-treesitter-config" },
             { import = "plugins" },
             -- Add other plugins here
           }
@@ -544,11 +543,3 @@
     };
   };
 }
--- nvim-treesitter configuration
-require("nvim-treesitter.configs").setup({
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  -- Add any additional nvim-treesitter configuration here
-})
