@@ -248,6 +248,12 @@
         vim.opt.tabstop = 4
         vim.opt.shiftwidth = 4
         vim.opt.expandtab = true
+
+        -- Enable autoread and set up autocommand for auto-reloading buffers
+        vim.opt.autoread = true
+        vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+          command = "checktime"
+        })
       '';
       plugins = [
         pkgs.vimPlugins.lazy-nvim
