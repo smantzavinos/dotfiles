@@ -21,6 +21,7 @@ tramp
 /.emacs.d/perspectives/
 /.emacs.d/.dap-breakpoints
 /.emacs.d/.lsp-session-*
+/.emacs.d/bookmarks
 
 # Org-mode
 .org-id-locations
