@@ -83,6 +83,7 @@
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
+        pkgs.supabase-cli
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
@@ -111,6 +112,7 @@
     in
       basePackages ++ 
       devToolPackages ++
+      localLLMPackages ++
       epicGamesPackages ++
       oneDrivePackages ++
       plexServerPackages ++
