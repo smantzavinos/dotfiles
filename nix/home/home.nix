@@ -250,6 +250,8 @@
         pkgs.vimPlugins.nvim-treesitter-parsers.typescript
         pkgs.vimPlugins.nvim-treesitter-parsers.html
         pkgs.vimPlugins.fzf-lua
+        pkgs.vimPlugins.nvim-cmp
+        pkgs.vimPlugins.cmp-nvim-lsp
         {
           plugin = pkgs.vimPlugins.nvim-dap;
           type = "lua";
