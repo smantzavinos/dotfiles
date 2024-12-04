@@ -48,6 +48,17 @@ in
     mode = "0600";
   };
 
+  # fonts
+  fonts.packages = with pkgs; [
+    # nerd-fonts.fira-code
+    # nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    font-awesome
+    emacs-all-the-icons-fonts
+    material-icons
+    weather-icons
+  ];
+
   # Enable network manager if you want to manage the VPN via Network Manager as well
   # Note: I'm not sure this is doing anything.
   networking.networkmanager.enable = true;

@@ -62,15 +62,9 @@
         pkgs.nextcloud-client
         pkgs.qbittorrent
 
-        # fonts
-        pkgs.nerdfonts
-        pkgs.font-awesome
-        pkgs.emacs-all-the-icons-fonts
-        pkgs.material-icons
-        pkgs.weather-icons
+        # Note: fonts moved to system_shared.nix
 
         # flakes passed in from top level flake.nix
-        # aider-flake.packages.x86_64-linux.default
         whisper-input.defaultPackage.x86_64-linux
       ];
 
@@ -78,7 +72,8 @@
         pkgs.nodejs_22
         pkgs.plandex
         pkgs.plandex-server
-        pkgs.aider-chat
+        # pkgs.aider-chat
+        aider-flake.packages.x86_64-linux.default
         pkgs.tree-sitter
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
