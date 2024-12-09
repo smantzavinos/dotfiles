@@ -204,6 +204,9 @@
         local nvim_lsp = require("lspconfig")
 
 
+        nvim_lsp.ts_ls.setup{}
+        nvim_lsp.svelte.setup{}
+
         nvim_lsp.nixd.setup({
            cmd = { "nixd" },
            settings = {
