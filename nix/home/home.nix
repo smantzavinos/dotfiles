@@ -248,17 +248,6 @@
         pkgs.vimPlugins.nvim-cmp
         pkgs.vimPlugins.cmp-nvim-lsp
         {
-          plugin = pkgs.vimPlugins.neovim-ayu;
-          type = "lua";
-          config = ''
-            vim.opt.termguicolors = true
-            require('ayu').setup({
-                mirage = true,
-            })
-            require('ayu').colorscheme()
-          '';
-        }
-        {
           plugin = pkgs.vimPlugins.nvim-web-devicons;
           type = "lua";
           config = ''
