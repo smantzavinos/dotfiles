@@ -285,7 +285,6 @@
             vim.api.nvim_set_keymap('n', '<Leader>dl', ':lua require"dap".run_last()<CR>', { noremap = true, silent = true })
           '';
         }
-        pkgs.vimPlugins.nvim-dap-ui
         {
           plugin = pkgs.vimPlugins.neovim-ayu;
           type = "lua";
