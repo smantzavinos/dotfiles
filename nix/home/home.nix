@@ -247,7 +247,6 @@
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.nvim-cmp
         pkgs.vimPlugins.cmp-nvim-lsp
-        pkgs.vimPlugins.nvim-dap
         {
           plugin = pkgs.vimPlugins.neovim-ayu;
           type = "lua";
