@@ -34,6 +34,15 @@
         enableDevTools = false;
         enableLocalLLM = false;
       };
+      # Add standardized home-manager config
+      standardHomeManagerConfig = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.spiros = import ./home/home.nix;
+          extraSpecialArgs = inputs;
+        };
+      };
     in
     {
       nixosConfigurations = {
@@ -100,36 +109,22 @@
 
         t5600 = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules =
-            let
-              overriddenFlags = flags // {
-                enableEpicGames = true;
-                enableSteam = true;
-                enableDevTools = true;
-                enablePlexServer = true;
-                enableLocalLLM = true;
-              };
-
-              specialArgs = { flags = flags // {
-                enableEpicGames = true;
-                enableSteam = true;
-                enableDevTools = true;
-                enablePlexServer = true;
-                enableLocalLLM = true;
-              }; };
-
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              ./systems/precision_t5600.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
-            ];
+          specialArgs = {
+            flags = flags // {
+              enableEpicGames = true;
+              enableSteam = true;
+              enableDevTools = true;
+              enablePlexServer = true;
+              enableLocalLLM = true;
+            };
+          };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/precision_t5600.nix
+            home-manager.nixosModules.home-manager
+            standardHomeManagerConfig
+          ];
         };
 
         msi_gs66 = nixpkgs.lib.nixosSystem {
