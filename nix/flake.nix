@@ -177,6 +177,20 @@
               }
             ];
         };
+
+        installMedia = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig flags)
+            {
+              isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+            }
+          ];
+        };
       };
     };
 }
