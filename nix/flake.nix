@@ -35,12 +35,12 @@
         enableLocalLLM = false;
       };
       # Add standardized home-manager config
-      standardHomeManagerConfig = {
+      standardHomeManagerConfig = flags: {
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
           users.spiros = import ./home/home.nix;
-          extraSpecialArgs = inputs;
+          extraSpecialArgs = inputs // { inherit flags; };
         };
       };
     in
@@ -123,7 +123,7 @@
             inputs.sops-nix.nixosModules.sops
             ./systems/precision_t5600.nix
             home-manager.nixosModules.home-manager
-            standardHomeManagerConfig
+            (standardHomeManagerConfig specialArgs.flags)
           ];
         };
 
