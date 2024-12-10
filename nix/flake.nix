@@ -109,22 +109,24 @@
 
         t5600 = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = {
-            flags = flags // {
+          let
+            systemFlags = flags // {
               enableEpicGames = true;
               enableSteam = true;
               enableDevTools = true;
               enablePlexServer = true;
               enableLocalLLM = true;
             };
-          };
-          modules = [
-            ./system_shared.nix
-            inputs.sops-nix.nixosModules.sops
-            ./systems/precision_t5600.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig specialArgs.flags)
-          ];
+          in {
+            specialArgs = { flags = systemFlags; };
+            modules = [
+              ./system_shared.nix
+              inputs.sops-nix.nixosModules.sops
+              ./systems/precision_t5600.nix
+              home-manager.nixosModules.home-manager
+              (standardHomeManagerConfig systemFlags)
+            ];
+          }
         };
 
         msi_gs66 = nixpkgs.lib.nixosSystem {
