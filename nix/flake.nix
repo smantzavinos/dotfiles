@@ -179,6 +179,7 @@
             ];
         };
 
+        # Not working
         installMedia = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
