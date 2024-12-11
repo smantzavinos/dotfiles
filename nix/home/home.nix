@@ -75,6 +75,7 @@
         # pkgs.aider-chat
         aider-flake.packages.x86_64-linux.default
         pkgs.tree-sitter
+        pkgs.typescript-language-server
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
@@ -204,9 +205,6 @@
         local nvim_lsp = require("lspconfig")
 
 
-        nvim_lsp.ts_ls.setup{}
-        nvim_lsp.svelte.setup{}
-
         nvim_lsp.nixd.setup({
            cmd = { "nixd" },
            settings = {
@@ -269,6 +267,8 @@
           type = "lua";
           config = ''
             local lspconfig = require('lspconfig')
+
+            lspconfig.ts_ls.setup{}
 
             lspconfig.svelte.setup {
               on_attach = function(client, bufnr)
