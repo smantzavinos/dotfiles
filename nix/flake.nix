@@ -150,6 +150,24 @@
             ];
         };
 
+        msi_ms16 = let
+          systemFlags = flags // {
+            enableSteam = true;
+            enableDevTools = true;
+            enableLocalLLM = true;
+          };
+        in nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/msi_ms16.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
+        };
+
         vbox = nixpkgs.lib.nixosSystem {
           inherit system;
           modules =
