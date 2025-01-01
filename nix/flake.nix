@@ -54,15 +54,10 @@
               overriddenFlags = flags // {
                 enableDevTools = false;
               };
-              sharedModule = import ./system_shared.nix {
-                inherit pkgs inputs;
-                flags = overriddenFlags;
-              };
             in [
-              sharedModule
+              ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               /etc/nixos/configuration.nix
-              # /etc/nixos/hardware-configuration.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -70,9 +65,6 @@
                 home-manager.users.spiros = import ./home/home.nix;
                 home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
               }
-              # (import ./system_shared.nix { inherit pkgs flags; })
-              # sharedModule = import ./system_shared.nix { inherit pkgs; flags = overriddenFlags; };
-              # ./systems/precision_t5600.nix
           ];
         };
 
