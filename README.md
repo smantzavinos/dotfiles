@@ -3,9 +3,16 @@
 ## NixOS
 
 1) Install NixOS from a bootable USB installer.
-2) copy ssh keys on to computer
-3) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild)
-4) clone this repo
+2) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild
+3) copy ssh keys on to computer
+4) create age key (needed to rebuild)
+```
+mkdir ~/.config/sops
+mkdir ~/.config/sops/age
+read -s SSH_TO_AGE_PASSPHRASE; export SSH_TO_AGE_PASSPHRASE
+ssh-to-age -private-key -i $HOME/.ssh/id_ed25519 -o ~/.config/sops/age/keys.txt
+```
+5) clone this repo
 ```
 cd ~
 git clone git@github.com:smantzavinos/dotfiles.git
