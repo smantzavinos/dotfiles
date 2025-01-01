@@ -1,5 +1,19 @@
-# dotfiles
+# Current dotfiles usage
 
+## NixOS
+
+1) Install NixOS from a bootable USB installer.
+2) copy ssh keys on to computer
+3) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild)
+4) clone this repo
+```
+cd ~
+git clone git@github.com:smantzavinos/dotfiles.git
+```
+
+## Windows
+
+# Archived
 ## tmux
 Create symlink to tmux config
 ```
