@@ -4,21 +4,31 @@
 
 1) Install NixOS from a bootable USB installer.
 2) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild
-3) copy ssh keys on to computer
-4) create age key (needed to rebuild)
+3) Enable flakes. Add this line to configuration.
+```
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+```
+4) copy ssh keys on to computer
+5) create age key (needed to rebuild)
 ```
 mkdir ~/.config/sops
 mkdir ~/.config/sops/age
 read -s SSH_TO_AGE_PASSPHRASE; export SSH_TO_AGE_PASSPHRASE
 ssh-to-age -private-key -i $HOME/.ssh/id_ed25519 -o ~/.config/sops/age/keys.txt
 ```
-5) clone this repo
+6) clone this repo
 ```
 cd ~
 git clone git@github.com:smantzavinos/dotfiles.git
 ```
+7) Use system specific config or generic "nixos" config. If using generic config, must rebuild impure as it imports existing system configuration.
+```
+sudo nixos-rebuild switch --flake .#nixos --impure
+```
+
 
 ## Windows
+todo
 
 # Archived
 ## tmux
