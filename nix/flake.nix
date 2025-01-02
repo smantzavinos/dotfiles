@@ -47,24 +47,19 @@
     in
     {
       nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+        nixos = let
+          systemFlags = flags // {
+            enableDevTools = false;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
-          modules =
-            let
-              overriddenFlags = flags // {
-                enableDevTools = false;
-              };
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              /etc/nixos/configuration.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            /etc/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
           ];
         };
 
