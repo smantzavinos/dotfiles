@@ -12,7 +12,7 @@
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
     aider-flake = {
-      url = "github:smantzavinos/aider_flake/f1693cbcc7a91d102d188eefdd5b74ed29a4e130";
+      url = "github:smantzavinos/aider_flake/2b94bd46df49c5b3a1bd151a1e1e32aad65fbcaf";
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -139,7 +139,6 @@
 
         msi_ms16 = let
           systemFlags = flags // {
-            enableSteam = true;
             enableDevTools = true;
             enableLocalLLM = true;
           };
@@ -149,7 +148,8 @@
           modules = [
             ./system_shared.nix
             inputs.sops-nix.nixosModules.sops
-            ./systems/msi_ms16.nix
+            /etc/nixos/configuration.nix
+            # ./systems/msi_ms16.nix
             home-manager.nixosModules.home-manager
             (standardHomeManagerConfig systemFlags)
           ];
