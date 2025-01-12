@@ -260,6 +260,8 @@
         }
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
+        pkgs.vimPlugins.blink-cmp
+        pkgs.vimPlugins.friendly-snippets
         {
           plugin = pkgs.vimPlugins.nvim-lspconfig;
           type = "lua";

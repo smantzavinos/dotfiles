@@ -1,5 +1,18 @@
--- This file is intentionally empty after removing nvim-cmp
--- It will be replaced with blink.cmp configuration
---
-
--- AI! set up blink.cmp here
+return {
+  {
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    version = '*',
+    opts = {
+      keymap = { preset = 'default' },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono'
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+    },
+    opts_extend = { "sources.default" }
+  }
+}
