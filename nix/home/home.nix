@@ -146,6 +146,7 @@
       enable = true;
       userName = "Spiros Mantzavinos";
       userEmail = "smantzavinos@gmail.com";
+      lfs.enable = true;
     };
 
     programs.vscode = {
