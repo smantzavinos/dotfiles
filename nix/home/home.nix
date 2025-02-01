@@ -146,6 +146,7 @@
       enable = true;
       userName = "Spiros Mantzavinos";
       userEmail = "smantzavinos@gmail.com";
+      lfs.enable = true;
     };
 
     programs.vscode = {
@@ -246,12 +247,10 @@
         pkgs.vimPlugins.nvim-treesitter-parsers.typescript
         pkgs.vimPlugins.nvim-treesitter-parsers.html
         pkgs.vimPlugins.fzf-lua
-        pkgs.vimPlugins.nvim-cmp
         pkgs.vimPlugins.neovim-ayu
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
-        pkgs.vimPlugins.cmp-nvim-lsp
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
@@ -262,6 +261,8 @@
         }
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
+        pkgs.vimPlugins.blink-cmp
+        pkgs.vimPlugins.friendly-snippets
         {
           plugin = pkgs.vimPlugins.nvim-lspconfig;
           type = "lua";
