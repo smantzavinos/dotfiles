@@ -238,6 +238,21 @@
         vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
           command = "checktime"
         })
+
+        -- Add keybinding to show diagnostics in a floating window
+        vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+        
+        -- Add keybinding to copy all diagnostics to clipboard
+        vim.keymap.set('n', '<leader>D', function()
+          local diagnostics = vim.diagnostic.get(0)
+          local lines = {}
+          for _, d in ipairs(diagnostics) do
+            table.insert(lines, string.format("[%s] %s (line %d)", d.severity, d.message, d.lnum + 1))
+          end
+          local text = table.concat(lines, '\n')
+          vim.fn.setreg('+', text) -- Copy to system clipboard
+          print("Diagnostics copied to clipboard")
+        end, { noremap = true, silent = true })
       '';
       plugins = [
         pkgs.vimPlugins.lazy-nvim
