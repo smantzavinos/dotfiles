@@ -12,7 +12,7 @@
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
     aider-flake = {
-      url = "github:smantzavinos/aider_flake/438a4d71dc9e5a56e1db5ed0edbdf526ef1b132e";
+      url = "github:smantzavinos/aider_flake/4b7df2d637c61a52e069dcb34364a37144ab1391";
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
