@@ -18,14 +18,10 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
