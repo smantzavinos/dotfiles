@@ -263,6 +263,8 @@
         pkgs.vimPlugins.nvim-treesitter-parsers.html
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
+        pkgs.vimPlugins.neogit
+        pkgs.vimPlugins.diffview-nvim
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
