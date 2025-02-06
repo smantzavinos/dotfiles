@@ -49,6 +49,8 @@
         pkgs.usbutils
         pkgs.zoxide
 
+        pkgs.sesh
+
         # zsh
         pkgs.zsh-powerlevel10k
         pkgs.zplug
