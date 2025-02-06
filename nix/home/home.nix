@@ -47,6 +47,7 @@
         pkgs.nixd
         pkgs.nixfmt
         pkgs.usbutils
+        pkgs.zoxide
 
         # zsh
         pkgs.zsh-powerlevel10k
@@ -378,6 +379,9 @@
 
       # <C-f> binding to complete a word in the auto suggestion
       bindkey '^F' forward-word
+
+      # zoxide completions in zsh
+      eval "$(zoxide init zsh)"
     '';
   };
 
