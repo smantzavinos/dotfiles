@@ -439,6 +439,16 @@
       {
         plugin = vim-tmux-navigator;
       }
+      {
+        plugin = resurrect;
+        extraConfig = ''
+          # Restore neovim sessions when restoring tmux sessions
+          set -g @resurrect-strategy-nvim 'session'
+
+          # Restore pane contents when restoring tmux sessions
+          set -g @resurrect-capture-pane-contents 'on'
+        '';
+      }
     ];
   };
 
