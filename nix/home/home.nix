@@ -408,14 +408,25 @@
         # bind-key -T copy-mode-vi v send -X begin-selection
         # bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
 
-        # # Don't rename windows automatically
-        # set-option -g allow-rename off
+        # Don't rename windows automatically
+        set-option -g allow-rename off
 
-        # # Restore neovim sessions when restoring tmux sessions
-        # set -g @resurrect-strategy-nvim 'session'
+        # Recommended binding for sesh using fzf-tmux
+        bind-key "T" run-shell "sesh connect \"$(
+          sesh list --icons | fzf-tmux -p 80%,70% \
+            --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
+            --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+            --bind 'tab:down,btab:up' \
+            --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+            --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
+            --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
+            --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
+            --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+            --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
+            --preview-window 'right:55%' \
+            --preview 'sesh preview {}'
+        )\""
 
-        # # Restore pane contents when restoring tmux sessions
-        # set -g @resurrect-capture-pane-contents 'on'
     '';
     plugins = with pkgs.tmuxPlugins; [
       {
