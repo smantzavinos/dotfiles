@@ -1,17 +1,20 @@
 return {
   {
     "epwalsh/obsidian.nvim",
-    version = "*",  -- recommended, use latest release instead of latest commit
-    lazy = true,
-    ft = "markdown",
+    version = "*",
+    event = {
+      "BufReadPre *.md",
+      "BufNewFile *.md",
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
       "nvim-telescope/telescope.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
-    config = function()
-      require("obsidian").setup({
+    opts = {
+    config = function(_, opts)
+      require("obsidian").setup(opts)
         workspaces = {
           {
             name = "personal",
@@ -66,7 +69,6 @@ return {
             ObsidianHighlightText = { bg = "#75662e" },
           },
         },
-      })
-    end
+    },
   }
 }
