@@ -64,6 +64,7 @@
         pkgs.drawio
         pkgs.nextcloud-client
         pkgs.qbittorrent
+        pkgs.obsidian
 
         # Note: fonts moved to system_shared.nix
 
