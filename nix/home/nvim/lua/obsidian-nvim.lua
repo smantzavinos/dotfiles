@@ -16,7 +16,7 @@ return {
       workspaces = {
           {
             name = "personal",
-            path = "~/vaults/personal",
+            path = "~/notes_md",
           },
         },
         completion = {
@@ -40,7 +40,7 @@ return {
         end,
         templates = {
           subdir = "templates",
-          date_format = "%Y-%m-%d",
+          date_format = "%Y_%m_%d",
           time_format = "%H:%M",
         },
         ui = {
