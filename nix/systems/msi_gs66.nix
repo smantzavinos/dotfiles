@@ -6,9 +6,10 @@
 
 let
   # Plex TCP ports. 32400 for accees from web clients
+  httpPorts = [ 80 ];
   plexTCPPorts = [ 32400 443 ];
   # Combine all TCP ports into one list
-  allowedTCPPorts = plexTCPPorts;
+  allowedTCPPorts = httpPorts ++ plexTCPPorts;
 
   # Plex UDP ports
   plexUDPPorts = [ 32410 32412 32413 32414 32469 ];
@@ -73,15 +74,29 @@ in {
       owner = "nextcloud";
       group = "nextcloud";
     };
+
+    cloudflare = {
+      sopsFile = ../secrets/cloudflare-api-token.txt;
+      format = "binary";
+    };
+
+    # ddns-updater = {
+    #   sopsFile = ../secrets/ddns-updater-config.yaml;
+    #   format = "yaml";
+    #   owner = "ddns-updater";
+    #   group = "ddns-updater";
+    #   mode = "0400";
+    # };
   };
 
   # environment.etc."nextcloud-admin-pass".text = "PWD";
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud29;
-    hostName = "localhost";
+    hostName = "cloud.spiros.dev";
+    https = true;
+    # trustedHosts = [ "localhost" "cloud.spiros.dev" ];
     config.adminpassFile = config.sops.secrets.nextcloudAdminPass.path;
-
 
     # Let NixOS install and configure the database automatically.
     database.createLocally = true;
@@ -145,10 +160,10 @@ in {
 
   # Add nextcloud to users group so it has access to raid drive
   # TODO: UNCOMMENT THIS <<<<<<<<<<<<<<<<<<<-----------------------------------------
-  # users.users.nextcloud = {
-  #   isSystemUser = true;
-  #   extraGroups = [ "users" ];  # Add postgres to the users group
-  # };
+  users.users.nextcloud = {
+    isSystemUser = true;
+    extraGroups = [ "users" ];
+  };
   # TODO: UNCOMMENT THIS <<<<<<<<<<<<<<<<<<<-----------------------------------------
 
 
@@ -208,20 +223,6 @@ in {
   # config from:
   # https://www.addictivetips.com/ubuntu-linux-tips/how-to-set-up-nextcloud-on-nixos/
   ####################
-  # Environment setup for Nextcloud admin and database passwords
-  # environment.etc."nextcloud-admin-pass".text = "SECURE_PASSWORD_HERE";
-  # environment.etc."nextcloud-db-pass".text = "SECURE_PASSWORD_HERE";
-
-  # PostgreSQL service configuration
-  # services.postgresql = {
-  #   enable = true;
-  #   package = pkgs.postgresql_14;  # Adjust the PostgreSQL version as needed
-  #   initialScript = pkgs.writeText "nextcloud-db-init.sql" ''
-  #     CREATE ROLE nextcloud WITH LOGIN PASSWORD 'SECURE_PASSWORD_HERE';
-  #     CREATE DATABASE nextcloud WITH OWNER nextcloud;
-  #   '';
-  # };
-
   # # PHP-FPM service configuration for Nextcloud
   # services.phpfpm.pools.nextcloud = {
   #   user = "nextcloud";
@@ -251,6 +252,81 @@ in {
   # __________________________________________________
 
 
+
+  # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   # Define the configuration file for ddns-updater
+  # environment.etc."ddns-updater/config.yml".text = ''
+  #   settings:
+  #     log_level: info
+  #     update_period: 5m
+
+  #   domains:
+  #     - provider: cloudflare
+  #       domain: "spiros.dev"
+  #       host: "cloud"
+  #       ip_version: ipv4
+  #       cloudflare_zone_identifier: "${config.sops.secrets.cloudflare.zoneId}"
+  #       cloudflare_auth_token: "${config.sops.secrets.cloudflare.apiToken}"
+  # '';
+
+  # services.ddns-updater = {
+  #   enable = true;
+  #   # description = "Dynamic DNS Updater Service";
+  #   # after = [ "network.target" ];
+  #   settings.configFile = config.sops.secrets.ddns-updater.path;
+  #   # serviceConfig = {
+  #   #   ExecStart = "${pkgs.ddns-updater}/bin/ddns-updater --config /etc/ddns-updater/config.yml";
+  #   #   Restart = "on-failure";
+  #   # };
+  #   # wantedBy = [ "multi-user.target" ];
+  # };
+
+  # systemd.timers.ddns-updater = {
+  #   description = "Dynamic DNS Updater Timer";
+  #   wants = [ "ddns-updater.service" ];
+  #   timerConfig = {
+  #     OnBootSec = "5min";
+  #     OnUnitActiveSec = "5min";
+  #   };
+  #   wantedBy = [ "timers.target" ];
+  # };
+
+
+  ########################## <<<<<<<---------------- UNCOMMENT Nginx here
+  # services.nginx.virtualHosts = {
+  #   "cloud.spiros.dev" = {
+  #     forceSSL = true;
+  #     enableACME = true;
+  #     # root = "${config.services.nextcloud.package}/share/nextcloud";
+  #     locations."/" = {
+  #       proxyPass = "http://127.0.0.1:8080";
+  #     };
+  #   };
+  # };
+
+  # cloudflare and google dns servers
+  # networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+
+  # security.acme = {
+  #   acceptTerms = true;
+  #   defaults.email = "smantzavinos@gmail.com";
+
+  #   certs = {
+  #     "cloud.spiros.dev" = {
+  #       domain = "cloud.spiros.dev";
+  #       group = "nginx";
+  #       dnsProvider = "cloudflare";
+  #       # location of your CLOUDFLARE_DNS_API_TOKEN=[value]
+  #       # https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#EnvironmentFile=
+  #       environmentFile = config.sops.secrets.cloudflare.path;
+  #     };
+  #   };
+  # };
+
+  # __________________________________________________
+
+
+
   services.plex = {
     enable = true;
     openFirewall = true;
@@ -258,21 +334,41 @@ in {
     dataDir = "/mnt/raid1/PlexMediaServer";
   };
 
+  # networking.nftables.enable = true;
+
   networking.firewall = {
     enable = true;
 
     allowedTCPPorts = allowedTCPPorts;
     allowedUDPPorts = allowedUDPPorts;
 
-    # Firewall pre-commands to allow incoming UDP traffic from local network to ephemeral ports
+    # allowedUDPPortRanges = [
+    #   {
+    #     portRange = { from = 32768; to = 60999; };
+    #     source = { address = "192.168.1.0/24"; };
+    #     # interfaces = [ "enp61s0" "wlo1" ];
+    #     description = "Allow incoming UDP traffic from local network to ephemeral ports for Plex";
+    #   }
+    # ];
+
+    # Firewall pre-commands to allow incoming UDP traffic from local network to ephemeral ports.
+    # This is needed for Plex.
     extraCommands = ''
+      # nixos-fw usage comes from this: https://discourse.nixos.org/t/open-firewall-ports-only-towards-local-network/13037/2
       # Allow incoming UDP traffic from local network (192.168.1.0/24) to ephemeral ports (32768-60999)
-      iptables -A INPUT -i enp61s0 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
-      iptables -A INPUT -i wlo1 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
+      iptables -A nixos-fw -s 192.168.1.0/24 -p udp --dport 32768:60999 -j nixos-fw-accept
       # Allow established and related connections (important for UDP as it's stateless)
       iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
       # Allow traffic on the loopback interface
       iptables -A INPUT -i lo -j ACCEPT
+
+      # # Allow incoming UDP traffic from local network (192.168.1.0/24) to ephemeral ports (32768-60999)
+      # iptables -A INPUT -i enp61s0 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
+      # iptables -A INPUT -i wlo1 -s 192.168.1.0/24 -p udp --dport 32768:60999 -j ACCEPT
+      # # Allow established and related connections (important for UDP as it's stateless)
+      # iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+      # # Allow traffic on the loopback interface
+      # iptables -A INPUT -i lo -j ACCEPT
     '';
 
     # helpful for debugging firewall rules
@@ -392,6 +488,7 @@ in {
     git
     btrfs-progs
     minio-client
+    ddns-updater
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
