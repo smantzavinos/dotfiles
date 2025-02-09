@@ -274,6 +274,10 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
+        # Add required dependencies for obsidian.nvim
+        pkgs.vimPlugins.nvim-cmp
+        pkgs.vimPlugins.telescope-nvim
+        pkgs.vimPlugins.plenary-nvim
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
