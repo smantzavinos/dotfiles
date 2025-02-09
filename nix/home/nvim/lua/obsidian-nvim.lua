@@ -13,9 +13,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     opts = {
-    config = function(_, opts)
-      require("obsidian").setup(opts)
-        workspaces = {
+      workspaces = {
           {
             name = "personal",
             path = "~/vaults/personal",
@@ -69,6 +67,7 @@ return {
             ObsidianHighlightText = { bg = "#75662e" },
           },
         },
+      },
     },
   }
 }
