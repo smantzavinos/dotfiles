@@ -261,6 +261,11 @@
       '';
       plugins = [
         pkgs.vimPlugins.lazy-nvim
+        # Add required dependencies first
+        pkgs.vimPlugins.plenary-nvim
+        pkgs.vimPlugins.nvim-cmp
+        pkgs.vimPlugins.telescope-nvim
+        # Now list obsidian.nvim after its dependencies
         pkgs.vimPlugins.obsidian-nvim
         pkgs.vimPlugins.nvim-tree-lua
         pkgs.vimPlugins.nvim-treesitter
@@ -274,10 +279,6 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
-        # Add required dependencies for obsidian.nvim
-        pkgs.vimPlugins.nvim-cmp
-        pkgs.vimPlugins.telescope-nvim
-        pkgs.vimPlugins.plenary-nvim
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
