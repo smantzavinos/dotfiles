@@ -48,6 +48,7 @@
         pkgs.nixfmt
         pkgs.usbutils
         pkgs.zoxide
+        pkgs.pandoc
 
         pkgs.sesh
 
