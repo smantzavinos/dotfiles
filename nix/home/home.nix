@@ -261,6 +261,7 @@
       '';
       plugins = [
         pkgs.vimPlugins.lazy-nvim
+        pkgs.vimPlugins.obsidian-nvim
         pkgs.vimPlugins.nvim-tree-lua
         pkgs.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.nvim-treesitter-parsers.svelte
