@@ -63,6 +63,8 @@ in
   # Note: I'm not sure this is doing anything.
   networking.networkmanager.enable = true;
 
+  programs.kdeconnect.enable = true;
+
   services.openvpn.servers = {
     pia = {
       # config = null; # Explicitly set config to null since we're using configFile
