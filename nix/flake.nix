@@ -22,6 +22,7 @@
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
+      pkgs = nixpkgs.legacyPackages.${system};
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
@@ -45,11 +46,11 @@
       # Add home-manager configuration
       homeConfigurations = {
         spiros = home-manager.lib.homeManagerConfiguration {
-          inherit system;
+          inherit system pkgs;
           username = "spiros";
           homeDirectory = "/home/spiros";
           configuration = import ./home/home.nix;
-          extraSpecialArgs = inputs // { inherit flags; };
+          extraSpecialArgs = inputs // { inherit flags pkgs; };
         };
       };
 
