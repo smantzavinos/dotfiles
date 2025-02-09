@@ -1,12 +1,9 @@
 return {
   {
     "epwalsh/obsidian.nvim",
+    version = "*",  -- recommended, use latest release instead of latest commit
     lazy = true,
-    event = {
-      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'
-      "BufReadPre " .. vim.fn.expand "~" .. "/vaults/**.md",
-      "BufNewFile " .. vim.fn.expand "~" .. "/vaults/**.md",
-    },
+    ft = "markdown",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
