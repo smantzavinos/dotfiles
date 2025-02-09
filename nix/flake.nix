@@ -46,11 +46,18 @@
       # Add home-manager configuration
       homeConfigurations = {
         spiros = home-manager.lib.homeManagerConfiguration {
-          inherit system pkgs;
-          username = "spiros";
-          homeDirectory = "/home/spiros";
-          configuration = import ./home/home.nix;
-          extraSpecialArgs = inputs // { inherit flags pkgs; };
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            ./home/home.nix
+            {
+              home = {
+                username = "spiros";
+                homeDirectory = "/home/spiros";
+                stateVersion = "23.11";
+              };
+            }
+          ];
+          extraSpecialArgs = inputs // { inherit flags; };
         };
       };
 
