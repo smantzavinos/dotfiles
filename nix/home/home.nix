@@ -22,7 +22,6 @@
     home.packages = let
       basePackages = [
         # utils
-        pkgs.home-manager
         pkgs.cowsay
         pkgs.gh
         pkgs.fd
