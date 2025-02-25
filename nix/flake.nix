@@ -6,7 +6,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager?ref=release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     whisper-input = {
@@ -28,6 +28,10 @@
             system = system;
             overlays = [];
           }).vimPlugins;
+          nerd-fonts = (import inputs.nixpkgs-unstable {
+            system = system;
+            overlays = [];
+          }).nerd-fonts;
         })
       ];
       pkgs = import inputs.nixpkgs {
