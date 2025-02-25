@@ -50,9 +50,7 @@ in
 
   # fonts
   fonts.packages = with pkgs; [
-    # nerd-fonts.fira-code
-    # nerd-fonts.droid-sans-mono
-    nerdfonts.jetbrains-mono
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "JetBrainsMono" ]; })
     font-awesome
     emacs-all-the-icons-fonts
     material-icons
