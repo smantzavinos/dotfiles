@@ -52,7 +52,7 @@ in
   fonts.packages = with pkgs; [
     # nerd-fonts.fira-code
     # nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
+    nerdfonts.jetbrains-mono
     font-awesome
     emacs-all-the-icons-fonts
     material-icons
