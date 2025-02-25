@@ -2,7 +2,8 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -21,7 +22,19 @@
   outputs = { self, nixpkgs, home-manager, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
-      lib = nixpkgs.lib;
+      overlays = [
+        (final: prev: {
+          vimPlugins = (import inputs.nixpkgs-unstable {
+            system = system;
+            overlays = [];
+          }).vimPlugins;
+        })
+      ];
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        overlays = overlays;
+      };
+      lib = pkgs.lib;
       flags = {
         enableEpicGames = false;
         enableNextCloudServer = false;
