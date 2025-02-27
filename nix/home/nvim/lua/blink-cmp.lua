@@ -8,6 +8,7 @@ return {
       "rafamadriz/friendly-snippets",
     },
     config = function()
+      local luasnip = require("luasnip")
       require("blink.cmp").setup({
         keymap = {
           preset = 'default',
