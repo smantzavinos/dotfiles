@@ -281,6 +281,7 @@
         }
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
+        pkgs.vimPlugins.luasnip
         pkgs.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
         {
