@@ -2,8 +2,8 @@ return {
   {
     "saghen/blink.cmp",
     lazy = true,
-    event = { "InsertEnter" };
-    dependencies = { 
+    event = { "InsertEnter" },
+    dependencies = {
       "rafamadriz/friendly-snippets",
     },
     config = function()
@@ -30,5 +30,5 @@ return {
         },
       })
     end
-  }
+  },
 }
