@@ -15,7 +15,7 @@ return {
           ['<Tab>'] = {
             function(cmp)
               local luasnip = require("luasnip")
-              if luasnip.jumpable and luasnip.jumpable(1) then
+              if luasnip.jumpable(1) then
                 return luasnip.jump(1)
               else
                 return cmp.select_and_accept()
