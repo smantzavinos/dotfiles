@@ -3,7 +3,7 @@
 {
     home.username = "spiros";
     home.homeDirectory = "/home/spiros";
-    home.stateVersion = "23.11"; # To figure this out you can comment out the line and see what version it expected.
+    home.stateVersion = "24.11"; # To figure this out you can comment out the line and see what version it expected.
     programs.home-manager.enable = true;
 
     home.sessionVariables.EDITOR = "vim";
