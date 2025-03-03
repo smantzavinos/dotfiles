@@ -3,10 +3,10 @@
 
 {
   # Enable OpenGL
-  hardware.graphics = {
+  hardware.opengl = {
     enable = true;
-    # driSupport = true;
-    # driSupport32Bit = true;
+    driSupport = true;
+    driSupport32Bit = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
