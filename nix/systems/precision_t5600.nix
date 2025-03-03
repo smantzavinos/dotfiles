@@ -5,9 +5,6 @@
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = [ config.boot.kernelPackages.nvidiaPackages.stable.vulkan-icd ];
   };
 
   # Load nvidia driver for Xorg and Wayland
