@@ -190,7 +190,7 @@
   #####################################################################
 
   boot.initrd.availableKernelModules = [ "ata_generic" "ehci_pci" "ahci" "megaraid_sas" "xhci_pci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_drm" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
