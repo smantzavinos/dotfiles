@@ -134,6 +134,7 @@
             let
               overriddenFlags = flags // {
                 enablePlexServer = true;
+                enableDevTools = true;
               };
 
             in [
