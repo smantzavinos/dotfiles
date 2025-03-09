@@ -431,7 +431,14 @@ in {
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  # Add IGC network driver configuration
+  boot.extraModprobeConfig = ''
+    options igc InterruptThrottleRate=3000,3000,3000,3000 
+    options igc max_speed=2500
+  '';
+
+  # Ensure the IGC module is loaded
+  boot.kernelModules = [ "kvm-intel" "igc" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
