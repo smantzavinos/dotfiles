@@ -20,6 +20,7 @@ in
     wget
     git
     openssl
+    ethtool
   ];
 
   # secrets management
