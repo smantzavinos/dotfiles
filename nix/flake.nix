@@ -32,6 +32,10 @@
             system = system;
             overlays = [];
           }).nerd-fonts;
+          claude-code = (import inputs.nixpkgs-unstable {
+            system = system;
+            overlays = [];
+          }).claude-code;
         })
       ];
       pkgs = import inputs.nixpkgs {

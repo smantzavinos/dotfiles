@@ -83,6 +83,7 @@
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
         pkgs.supabase-cli
+        pkgs.claude-code
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
