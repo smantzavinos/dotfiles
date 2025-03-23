@@ -24,18 +24,16 @@
       system = "x86_64-linux";
       overlays = [
         (final: prev: {
-          vimPlugins = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).vimPlugins;
-          nerd-fonts = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).nerd-fonts;
-          claude-code = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).claude-code;
+          # Create a single unstable reference
+          unstable = import inputs.nixpkgs-unstable {
+            inherit system;
+            config = { allowUnfree = true; };
+          };
+          
+          # Then reference packages from unstable
+          vimPlugins = final.unstable.vimPlugins;
+          nerd-fonts = final.unstable.nerd-fonts;
+          claude-code = final.unstable.claude-code;
         })
       ];
       pkgs = import inputs.nixpkgs {
