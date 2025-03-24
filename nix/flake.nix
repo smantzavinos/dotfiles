@@ -162,33 +162,20 @@
           ];
         };
 
-        vbox = nixpkgs.lib.nixosSystem {
+        vbox = let
+          systemFlags = flags // {
+            enableDevTools = true;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
-          modules =
-            let
-              overriddenFlags = flags // {
-                enableDevTools = true;
-              };
-
-              specialArgs = { flags = flags // {
-                enableOneDrive = true;
-                enableDevTools = true;
-              }; };
-
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              ./systems/virtualbox.nix
-              # "${nixpkgs}/nixos/modules/installer/virtualbox-demo.nix"
-              # "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix"
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
-            ];
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/virtualbox.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
         };
 
         # Not working
