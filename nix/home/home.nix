@@ -426,6 +426,14 @@
     mouse = true;
     escapeTime = 20;
     keyMode = "vi";
+    plugins = with pkgs.tmuxPlugins; [
+      catppuccin
+      cpu
+      battery
+      {
+        plugin = vim-tmux-navigator;
+      }
+    ];
     extraConfig = ''
         # ensure correct 256 color support in each term type
         set -g default-terminal "tmux-256color"
@@ -433,69 +441,20 @@
         set-option -ga terminal-overrides ",xterm-256color:Tc"
         set-option -ga terminal-overrides ",tmux-256color:Tc"
 
-        # # VI keys for movement, selection, and copying
-        # setw -g mode-keys vi
-        # bind-key -T copy-mode-vi v send -X begin-selection
-        # bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
+        # Configure the catppuccin plugin
+        set -g @catppuccin_flavor "mocha"
+        set -g @catppuccin_window_status_style "rounded"
 
-        # Don't rename windows automatically
-        set-option -g allow-rename off
-
-        # Recommended binding for sesh using fzf-tmux
-        bind-key "T" run-shell "sesh connect \"$(
-          sesh list --icons | fzf-tmux -p 80%,70% \
-            --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
-            --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
-            --bind 'tab:down,btab:up' \
-            --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
-            --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
-            --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
-            --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
-            --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
-            --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' \
-            --preview-window 'right:55%' \
-            --preview 'sesh preview {}'
-        )\""
-
+        # Make the status line pretty and add some modules
+        set -g status-right-length 100
+        set -g status-left-length 100
+        set -g status-left ""
+        set -g status-right "#{E:@catppuccin_status_application}"
+        set -agF status-right "#{E:@catppuccin_status_cpu}"
+        set -ag status-right "#{E:@catppuccin_status_session}"
+        set -ag status-right "#{E:@catppuccin_status_uptime}"
+        set -agF status-right "#{E:@catppuccin_status_battery}"
     '';
-    plugins = with pkgs.tmuxPlugins; [
-      {
-        plugin = catppuccin;
-        extraConfig = ''
-            set -g @catppuccin_flavour "mocha"
-            set -g @catppuccin_window_status_style "rounded"
-
-            # Make the status line pretty and add some modules
-            set -g status-right-length 100
-            set -g status-left-length 100
-            set -g status-left ""
-            set -g status-right "#{E:@catppuccin_status_application}"
-            set -agF status-right "#{E:@catppuccin_status_cpu}"
-            set -ag status-right "#{E:@catppuccin_status_session}"
-            set -ag status-right "#{E:@catppuccin_status_uptime}"
-            set -agF status-right "#{E:@catppuccin_status_battery}"
-
-            run ~/.config/tmux/plugins/tmux-plugins/tmux-cpu/cpu.tmux
-            run ~/.config/tmux/plugins/tmux-plugins/tmux-battery/battery.tmux
-        '';
-      }
-      {
-        plugin = tmux-fzf;
-      }
-      {
-        plugin = vim-tmux-navigator;
-      }
-      {
-        plugin = resurrect;
-        extraConfig = ''
-          # Restore neovim sessions when restoring tmux sessions
-          set -g @resurrect-strategy-nvim 'session'
-
-          # Restore pane contents when restoring tmux sessions
-          set -g @resurrect-capture-pane-contents 'on'
-        '';
-      }
-    ];
   };
 
   programs.kitty = {
