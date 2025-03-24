@@ -419,6 +419,7 @@
 
   programs.tmux = {
     enable = true;
+    status = true;
     sensibleOnTop = false;
     shortcut = "a";
     shell = "${pkgs.zsh}/bin/zsh";
@@ -427,7 +428,12 @@
     escapeTime = 20;
     keyMode = "vi";
     plugins = with pkgs.tmuxPlugins; [
-      catppuccin
+      {
+        plugin = catppuccin;
+        extraConfig = ''
+          set -g @catppuccin_status_modules_right "application cpu session uptime battery"
+        '';
+      }
       cpu
       battery
       {
@@ -444,16 +450,13 @@
         # Configure the catppuccin plugin
         set -g @catppuccin_flavor "mocha"
         set -g @catppuccin_window_status_style "rounded"
-
-        # Make the status line pretty and add some modules
+        set -g @catppuccin_status_modules_right "application cpu session uptime battery"
+        
+        # Status bar configuration
+        set -g status on
+        set -g status-position bottom
         set -g status-right-length 100
         set -g status-left-length 100
-        set -g status-left ""
-        set -g status-right "#{E:@catppuccin_status_application}"
-        set -agF status-right "#{E:@catppuccin_status_cpu}"
-        set -ag status-right "#{E:@catppuccin_status_session}"
-        set -ag status-right "#{E:@catppuccin_status_uptime}"
-        set -agF status-right "#{E:@catppuccin_status_battery}"
     '';
   };
 
