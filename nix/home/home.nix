@@ -1,4 +1,11 @@
-{config, pkgs, aider-flake, whisper-input, flags, ...}:
+{ config
+, pkgs
+, pkgs_unstable
+, aider-flake
+, whisper-input
+, flags
+, ...
+}:
 
 {
     home.username = "spiros";
@@ -83,7 +90,7 @@
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
         pkgs.supabase-cli
-        pkgs.claude-code
+        pkgs_unstable.claude-code
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
