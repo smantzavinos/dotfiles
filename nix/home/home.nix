@@ -273,7 +273,7 @@
         pkgs.vimPlugins.nvim-treesitter-parsers.typescript
         pkgs.vimPlugins.nvim-treesitter-parsers.html
         pkgs.vimPlugins.fzf-lua
-        pkgs.vimPlugins.neovim-ayu
+        pkgs.vimPlugins.catppuccin-nvim
         pkgs.vimPlugins.neogit
         pkgs.vimPlugins.diffview-nvim
         pkgs.vimPlugins.nvim-web-devicons
@@ -325,7 +325,7 @@
           config = ''
             require('lualine').setup({
               options = {
-                theme = 'ayu_mirage',
+                theme = 'catppuccin',
               },
             })
             vim.opt.showmode = false
@@ -349,12 +349,28 @@
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    syntaxHighlighting = {
+      enable = true;
+      styles = {
+        # Catppuccin Mocha colors for syntax highlighting
+        "comment" = "italic #585b70";
+        "path" = "#89b4fa";
+        "builtin" = "#f5c2e7";
+        "command" = "#89b4fa";
+        "alias" = "#f5c2e7";
+        "function" = "#89b4fa";
+        "single-quoted-argument" = "#a6e3a1";
+        "double-quoted-argument" = "#a6e3a1";
+        "global-alias" = "#f5c2e7";
+      };
+    };
 
     # Use Zplug for plugin management
     initExtraBeforeCompInit = ''
       source ${pkgs.zplug}/share/zplug/init.zsh
 
+      # We'll configure catppuccin another way
+      
       # Load Powerlevel10k theme
       zplug "romkatv/powerlevel10k", as:theme, depth:1
 
@@ -364,18 +380,19 @@
       zplug "plugins/git", from:oh-my-zsh
       zplug "plugins/tmux", from:oh-my-zsh
       zplug "asdf-vm/asdf", use:"asdf.plugin.zsh"
-      zplug "junegunn/fzf", as:command, use:"bin/*", hook-build:"./install --bin"
+      # Use system fzf from Nix instead of the one from zplug
+      # zplug "junegunn/fzf", as:command, use:"bin/*", hook-build:"./install --bin"
       zplug "Aloxaf/fzf-tab", defer:2
       zplug "zsh-users/zsh-autosuggestions", defer:2
       zplug "chitoku-k/fzf-zsh-completions", defer:2
 
-      # Install plugins if there are plugins that have not been installed yet
-      if ! zplug check --verbose; then
-          printf "Install? [y/N]: "
-          if read -q; then
-              echo; zplug install
-          fi
-      fi
+      # Skip the install prompt since we're managing plugins through Nix
+      # if ! zplug check --verbose; then
+      #     printf "Install? [y/N]: "
+      #     if read -q; then
+      #         echo; zplug install
+      #     fi
+      # fi
 
       # Load plugins and themes
       zplug load
@@ -393,6 +410,10 @@
 
       # zoxide completions in zsh
       eval "$(zoxide init zsh)"
+      
+      # FZF integration from Nix-installed fzf
+      source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+      source ${pkgs.fzf}/share/fzf/completion.zsh
     '';
   };
 
@@ -439,18 +460,23 @@
     '';
     plugins = with pkgs.tmuxPlugins; [
       {
-        plugin = dracula;
+        plugin = catppuccin;
         extraConfig = ''
-            set -g @dracula-show-battery true
-            set -g @dracula-show-powerline true
-            set -g @dracula-refresh-rate 10
-            set -g @dracula-show-left-icon session
+            set -g @catppuccin_flavour "mocha"
+            set -g @catppuccin_window_status_style "rounded"
 
-            set -g @dracula-plugins "weather cpu-usage ram-usage battery"
-            set -g @dracula-cpu-usage-colors "yellow dark_gray"
-            set -g @dracula-cpu-usage-label "\uf4bc"
-            set -g @dracula-ram-usage-label "\ue266"
-            set -g @dracula-show-location false
+            # Make the status line pretty and add some modules
+            set -g status-right-length 100
+            set -g status-left-length 100
+            set -g status-left ""
+            set -g status-right "#{E:@catppuccin_status_application}"
+            set -agF status-right "#{E:@catppuccin_status_cpu}"
+            set -ag status-right "#{E:@catppuccin_status_session}"
+            set -ag status-right "#{E:@catppuccin_status_uptime}"
+            set -agF status-right "#{E:@catppuccin_status_battery}"
+
+            run ~/.config/tmux/plugins/tmux-plugins/tmux-cpu/cpu.tmux
+            run ~/.config/tmux/plugins/tmux-plugins/tmux-battery/battery.tmux
         '';
       }
       {
@@ -474,7 +500,7 @@
 
   programs.kitty = {
     enable = true;
-    themeFile = "Dracula";
+    themeFile = "Catppuccin-Mocha";
     # font = "JetBrainsMono Nerd Font";
   };
 
