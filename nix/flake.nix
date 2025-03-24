@@ -22,21 +22,13 @@
   outputs = { self, nixpkgs, home-manager, nixos-hardware, ... }@inputs:
     let
       system = "x86_64-linux";
-      overlays = [
-        (final: prev: {
-          vimPlugins = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).vimPlugins;
-          nerd-fonts = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).nerd-fonts;
-        })
-      ];
       pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = overlays;
+        config = { allowUnfree = true; };
+      };
+      pkgs_unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config = { allowUnfree = true; };
       };
       lib = pkgs.lib;
       flags = {
@@ -54,7 +46,9 @@
           useGlobalPkgs = true;
           useUserPackages = true;
           users.spiros = import ./home/home.nix;
-          extraSpecialArgs = inputs // { inherit flags; };
+          extraSpecialArgs = inputs // { 
+            inherit flags pkgs_unstable; 
+          };
         };
       };
     in
