@@ -40,6 +40,9 @@
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    # Use this driver instead of stable to support GPU with Vulkan games on Steam
+    # package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
   };
 
   programs.steam = {
