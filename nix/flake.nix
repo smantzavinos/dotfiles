@@ -122,6 +122,25 @@
           ];
         };
 
+        t7910 = let
+          systemFlags = flags // {
+            enableEpicGames = true;
+            enableSteam = true;
+            enableDevTools = true;
+            enableLocalLLM = true;
+          };
+        in nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/precision_t7910.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
+        };
+
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules =
