@@ -95,7 +95,7 @@
         pkgs.python313
         pkgs.uv
 
-        buffrs.packages.x86_64-linux
+        buffrs.packages.x86_64-linux.default
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [

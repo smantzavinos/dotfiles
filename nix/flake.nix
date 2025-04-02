@@ -17,6 +17,7 @@
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    buffrs.url = "github:helsing-ai/buffrs";
   };
 
   outputs = { self, nixpkgs, home-manager, nixos-hardware, ... }@inputs:
