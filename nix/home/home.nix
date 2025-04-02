@@ -2,6 +2,7 @@
 , pkgs
 , pkgs_unstable
 , aider-flake
+, buffrs
 , whisper-input
 , flags
 , ...
@@ -93,6 +94,8 @@
         pkgs_unstable.claude-code
         pkgs.python313
         pkgs.uv
+
+        buffrs.packages.x86_64-linux
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
