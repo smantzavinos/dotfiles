@@ -170,6 +170,7 @@
           specialArgs = { flags = systemFlags; };
           modules = [
             ./system_shared.nix
+            ./home/apps/litellm/litellm.nix
             inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
             # ./systems/msi_ms16.nix
