@@ -11,8 +11,9 @@ in {
       ExecStart = ''
         ${pkgs.docker}/bin/docker run --rm \
           -v /etc/litellm/config.yaml:/app/config.yaml \
-          -e AZURE_API_KEY='${litellmSecrets.AZURE_API_KEY}' \
-          -e AZURE_API_BASE='${litellmSecrets.AZURE_API_BASE}' \
+          -e OPENAI_API_KEY='${litellmSecrets.OPENAI_API_KEY}' \
+          -e OPENAI_API_BASE='${litellmSecrets.OPENAI_API_BASE}' \
+          -e MODEL='gpt-4o' \
           -p 4000:4000 \
           ghcr.io/berriai/litellm:main-latest --config /app/config.yaml --detailed_debug
       '';
