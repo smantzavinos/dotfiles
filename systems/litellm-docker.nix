@@ -1,9 +1,8 @@
 { config, pkgs, ... }:
 
 let
-  litellmSecrets = builtins.fromYAML (builtins.readFile ./secrets/litellm_secrets.yaml);
-in
-{
+  litellmSecrets = builtins.fromYAML (builtins.readFile config.sops.secrets.litellm.path);
+in {
   systemd.services.litellm = {
     description = "LiteLLM Docker Container Service";
     after = [ "docker.service" ];
@@ -11,7 +10,7 @@ in
     serviceConfig = {
       ExecStart = ''
         ${pkgs.docker}/bin/docker run --rm \
-          -v /etc/litellm_config.yaml:/app/config.yaml \
+          -v /etc/litellm/config.yaml:/app/config.yaml \
           -e AZURE_API_KEY='${litellmSecrets.AZURE_API_KEY}' \
           -e AZURE_API_BASE='${litellmSecrets.AZURE_API_BASE}' \
           -p 4000:4000 \
