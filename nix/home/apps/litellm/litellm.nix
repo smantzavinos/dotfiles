@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  litellmSecrets = builtins.fromYAML (builtins.readFile config.sops.secrets.litellm.path);
+  litellmSecrets = pkgs.lib.fromYAML (builtins.readFile config.sops.secrets.litellm.path);
 in {
   systemd.services.litellm = {
     description = "LiteLLM Docker Container Service";
