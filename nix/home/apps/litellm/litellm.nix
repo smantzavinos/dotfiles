@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-in {
+{
   systemd.services.litellm = {
     description = "LiteLLM Docker Container Service";
     after = [ "docker.service" ];
