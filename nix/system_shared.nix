@@ -39,6 +39,14 @@ in
   };
   programs.ssh.startAgent = true;
 
+  # SOPS-Nix secret for LiteLLM credentials
+  sops.secrets.litellm = {
+    sopsFile = ./secrets/litellm_secrets.sops.yaml;
+    owner = "root";
+    group = "root";
+    mode = "0600";
+  };
+
   # SOPS-Nix secret for PIA credentials
   sops.secrets.pia = {
     sopsFile = ./secrets/pia-credentials.sops.yaml;
