@@ -1,0 +1,7 @@
+config for gpt-4o. model_list:
+  - model_name: gpt-3.5-turbo ### RECEIVED MODEL NAME ###
+    litellm_params: # all params accepted by litellm.completion() - https://docs.litellm.ai/docs/completion/input
+      model: azure/gpt-turbo-small-eu ### MODEL NAME sent to `litellm.completion()` ###
+      api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
+      api_key: "os.environ/AZURE_API_KEY_EU" # does os.getenv("AZURE_API_KEY_EU")
+      rpm: 6
