@@ -5,6 +5,7 @@
 , buffrs
 , whisper-input
 , flags
+, nixneovimplugins
 , ...
 }:
 
@@ -56,6 +57,11 @@
         pkgs.nixfmt
         pkgs.usbutils
         pkgs.zoxide
+        
+        # C compiler and build tools for Treesitter parsers
+        pkgs.gcc
+        # Required for TreeSitter parser compilation
+        pkgs.gnumake
 
         pkgs.sesh
 
@@ -273,10 +279,57 @@
       plugins = [
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
-        pkgs.vimPlugins.nvim-treesitter
-        pkgs.vimPlugins.nvim-treesitter-parsers.svelte
-        pkgs.vimPlugins.nvim-treesitter-parsers.typescript
-        pkgs.vimPlugins.nvim-treesitter-parsers.html
+        {
+          plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
+          type = "lua";
+          config = ''
+            require("codecompanion").setup({
+              adapters = {
+                anthropic = {
+                  api_key = os.getenv("ANTHROPIC_API_KEY")
+                }
+              },
+              default_adapter = "anthropic",
+              size = {
+                width = "40%",
+                height = "60%"
+              },
+            })
+            
+            -- Key mappings for CodeCompanion
+            vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+            vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+            vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
+          '';
+        }
+        {
+          plugin = pkgs.vimPlugins.nvim-treesitter;
+          type = "lua";
+          config = ''
+            -- Set custom parser install location in writable path
+            local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
+            vim.fn.mkdir(parser_install_dir, "p")  -- Create directory if it doesn't exist
+            
+            vim.opt.runtimepath:append(parser_install_dir)
+            
+            require("nvim-treesitter.configs").setup({
+              highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+              },
+              parser_install_dir = parser_install_dir,
+              ensure_installed = {
+                "svelte", 
+                "typescript", 
+                "html",
+                "javascript",
+                "json",
+                "lua",
+                "nix",
+              },
+            })
+          '';
+        }
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
         pkgs.vimPlugins.neogit
