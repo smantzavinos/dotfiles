@@ -96,14 +96,11 @@
               inputs.sops-nix.nixosModules.sops
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
               ./systems/lenovo_x1_extreme.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                # TODO: can I remove this since I have specialArgs set?
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
+              (standardHomeManagerConfig (flags // {
+                enableOneDrive = true;
+                enableDevTools  = true;
+                enablePlexServer = true;
+              }))
             ];
         };
 
@@ -158,13 +155,7 @@
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
+              (standardHomeManagerConfig (flags // { enablePlexServer = true; }))
             ];
         };
 
