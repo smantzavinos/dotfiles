@@ -68,6 +68,7 @@
           specialArgs = { flags = systemFlags; };
           modules = [
             ./system_shared.nix
+            ./systems/litellm-docker.nix
             inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
             home-manager.nixosModules.home-manager
