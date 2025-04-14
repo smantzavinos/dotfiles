@@ -297,25 +297,7 @@
         pkgs.vimPlugins.luasnip
         pkgs.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
-        {
-          plugin = pkgs.vimPlugins.nvim-lspconfig;
-          type = "lua";
-          config = ''
-            local lspconfig = require('lspconfig')
-
-            lspconfig.ts_ls.setup{}
-
-            lspconfig.svelte.setup {
-              on_attach = function(client, bufnr)
-                -- Add your custom on_attach logic here, if needed
-                -- For example, you can set keybindings for LSP features
-              end,
-              flags = {
-                debounce_text_changes = 150,
-              }
-            }
-          '';
-        }
+        pkgs.vimPlugins.nvim-lspconfig
         {
           plugin = pkgs.vimPlugins.nvim-surround;
           type = "lua";
