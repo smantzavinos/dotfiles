@@ -3,11 +3,16 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
-    "folke/neodev.nvim",
+    "folke/lazydev.nvim",
   },
   config = function()
-    -- Setup neovim lua configuration
-    require("neodev").setup()
+    -- Setup lazydev configuration
+    require("lazydev").setup({
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    })
     
     local lspconfig = require('lspconfig')
 

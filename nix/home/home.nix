@@ -216,6 +216,7 @@
         pkgs.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
         pkgs.vimPlugins.nvim-lspconfig
+        pkgs.vimPlugins.lazydev-nvim
         {
           plugin = pkgs.vimPlugins.nvim-surround;
           type = "lua";
