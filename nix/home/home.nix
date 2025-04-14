@@ -175,9 +175,14 @@
       ];
     };
 
-    xdg.configFile."nvim/lua/plugins" = {
-      recursive = true;
-      source =./nvim/lua;
+    xdg.configFile = {
+      "nvim/lua/plugins" = {
+        recursive = true;
+        source = ./nvim/lua;
+      };
+      "nvim/lua/init.lua" = {
+        source = ./nvim/lua/init.lua;
+      };
     };
 
     programs.neovim = {
