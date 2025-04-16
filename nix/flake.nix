@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-24.11";
@@ -14,6 +15,13 @@
     };
     aider-flake = {
       url = "github:smantzavinos/aider_flake/65ab799e41d91de8ffecd86e07a841f1dd697d43";
+    };
+    avante-nvim-nightly-flake = {
+      url = "github:vinnymeller/avante-nvim-nightly-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-utils.follows = "flake-utils";
+      };
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";

@@ -2,6 +2,7 @@
 , pkgs
 , pkgs_unstable
 , aider-flake
+, avante-nvim-nightly-flake
 , buffrs
 , whisper-input
 , flags
@@ -271,6 +272,7 @@
         end, { noremap = true, silent = true })
       '';
       plugins = [
+        avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
         pkgs.vimPlugins.nvim-treesitter
