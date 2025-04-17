@@ -4,6 +4,7 @@ return {
       event = "VeryLazy",
       version = false, -- Never set this value to "*"! Never!
       config = function()
+        require("avante_lib").load()
         require("avante").setup({
           provider = "openai",
           openai = {
