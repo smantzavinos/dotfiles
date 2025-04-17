@@ -275,6 +275,8 @@
         avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs.vimPlugins.img-clip-nvim
         pkgs.vimPlugins.render-markdown-nvim
+        pkgs_unstable.vimPlugins.blink-cmp-avante
+
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
         pkgs.vimPlugins.nvim-treesitter
