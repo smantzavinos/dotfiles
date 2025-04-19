@@ -19,6 +19,7 @@ in
     wget
     git
     openssl
+    sops  # Add SOPS here
   ];
 
   # secrets management
