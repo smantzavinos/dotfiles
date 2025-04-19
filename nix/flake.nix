@@ -44,6 +44,7 @@
         enableSteam = false;
         enableDevTools = false;
         enableLocalLLM = false;
+        enableOpenWebUI = false;
       };
       # Add standardized home-manager config
       standardHomeManagerConfig = flags: {
@@ -164,6 +165,7 @@
           systemFlags = flags // {
             enableDevTools = true;
             enableLocalLLM = true;
+            enableOpenWebUI = false;
           };
         in nixpkgs.lib.nixosSystem {
           inherit system;

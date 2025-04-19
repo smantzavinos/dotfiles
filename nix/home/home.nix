@@ -108,6 +108,10 @@
         pkgs.lmstudio
       ] else [];
 
+      openWebUIPackages = if flags.enableOpenWebUI then [
+        pkgs_unstable.open-webui
+      ] else [];
+
       epicGamesPackages = if flags.enableEpicGames then [
         pkgs.lutris
         pkgs.wineWowPackages.full
@@ -131,6 +135,7 @@
       basePackages ++ 
       devToolPackages ++
       localLLMPackages ++
+      openWebUIPackages ++
       epicGamesPackages ++
       oneDrivePackages ++
       plexServerPackages ++
