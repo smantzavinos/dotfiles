@@ -41,8 +41,8 @@ in
   programs.ssh.startAgent = true;
 
   # SOPS-Nix secret for AI API keys
-  sops.secrets.aiApiKeys = {
-    sopsFile = ./secrets/ai-api-keys.yaml;
+  sops.secrets.OPENAI_API_KEY = {
+    sopsFile = ./secrets/ai-api-keys.sops.yaml;
     owner = "root";
     group = "root";
     mode = "0600";
