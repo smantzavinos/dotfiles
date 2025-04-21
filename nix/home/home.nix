@@ -150,7 +150,7 @@
       # Decrypts and loads API keys from a SOPS-encrypted YAML file into
       # environment variables, making them available for the current session.
       source_api_keys = ''
-        eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
+        eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.sops.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
       '';
 
       # Sets up PostgreSQL-related environment variables for plandex server
