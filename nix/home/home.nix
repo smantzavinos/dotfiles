@@ -272,10 +272,15 @@
         end, { noremap = true, silent = true })
       '';
       plugins = [
-        avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs.vimPlugins.img-clip-nvim
         pkgs.vimPlugins.render-markdown-nvim
+        pkgs.vimPlugins.dressing-nvim
+        pkgs.vimPlugins.plenary-nvim
+        pkgs.vimPlugins.nui-nvim
         pkgs_unstable.vimPlugins.blink-cmp-avante
+        # Nightly flake wasn't working. Commands were mising.
+        # avante-nvim-nightly-flake.packages.${pkgs.system}.default
+        pkgs_unstable.vimPlugins.avante-nvim
 
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
