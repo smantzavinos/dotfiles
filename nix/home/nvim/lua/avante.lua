@@ -3,6 +3,7 @@ return {
       "yetone/avante.nvim",
       event = "VeryLazy",
       version = false, -- Never set this value to "*"! Never!
+      after = "blink-cmp-avante",
       config = function()
         require("avante_lib").load()
         require("avante").setup({
