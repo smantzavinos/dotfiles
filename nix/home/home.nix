@@ -293,31 +293,34 @@
         # avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs_unstable.vimPlugins.avante-nvim
 
+        # pkgs_unstable.vimPlugins.codecompanion-nvim
+        nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
+
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
-        {
-          plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
-          type = "lua";
-          config = ''
-            require("codecompanion").setup({
-              adapters = {
-                anthropic = {
-                  api_key = os.getenv("ANTHROPIC_API_KEY")
-                }
-              },
-              default_adapter = "anthropic",
-              size = {
-                width = "40%",
-                height = "60%"
-              },
-            })
-            
-            -- Key mappings for CodeCompanion
-            vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-            vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-            vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
-          '';
-        }
+        # {
+        #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
+        #   type = "lua";
+        #   config = ''
+        #     require("codecompanion").setup({
+        #       adapters = {
+        #         anthropic = {
+        #           api_key = os.getenv("ANTHROPIC_API_KEY")
+        #         }
+        #       },
+        #       default_adapter = "anthropic",
+        #       size = {
+        #         width = "40%",
+        #         height = "60%"
+        #       },
+        #     })
+        #
+        #     -- Key mappings for CodeCompanion
+        #     vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
+        #   '';
+        # }
         {
           plugin = pkgs.vimPlugins.nvim-treesitter;
           type = "lua";
@@ -342,6 +345,7 @@
                 "json",
                 "lua",
                 "nix",
+                "yaml",
               },
             })
           '';
@@ -364,7 +368,7 @@
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
         pkgs.vimPlugins.luasnip
-        pkgs.vimPlugins.blink-cmp
+        pkgs_unstable.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
         {
           plugin = pkgs.vimPlugins.nvim-lspconfig;
