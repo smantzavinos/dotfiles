@@ -40,6 +40,8 @@ return {
           auto_complete = true,
           -- Trigger characters for auto-completion
           trigger_characters = { "/", "@" },
+          -- Use native completion instead of nvim-cmp
+          use_native = true,
         },
         strategies = {
           chat = {

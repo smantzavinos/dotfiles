@@ -30,7 +30,7 @@ return {
           nerd_font_variant = 'mono'
         },
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer', 'codecompanion' },
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
         },
       })
     end,
