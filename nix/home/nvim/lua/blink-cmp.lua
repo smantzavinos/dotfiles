@@ -35,6 +35,11 @@ return {
             codecompanion = { "codecompanion" },
           }
         },
+        providers = {
+          codecompanion = {
+            type = "codecompanion",
+          }
+        },
       })
     end,
   },
