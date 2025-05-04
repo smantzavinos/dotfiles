@@ -35,6 +35,21 @@ return {
           width = "40%",
           height = "60%"
         },
+        strategies = {
+          chat = {
+            slash_commands = {
+              ["file"] = {
+                -- Location to the slash command in CodeCompanion
+                callback = "strategies.chat.slash_commands.file",
+                description = "Select a file using Telescope",
+                opts = {
+                  provider = "fzf_lua", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks"
+                  contains_code = true,
+                },
+              },
+            },
+          },
+        },
       })
 
       -- Key mappings for CodeCompanion
