@@ -298,29 +298,6 @@
 
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
-        # {
-        #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
-        #   type = "lua";
-        #   config = ''
-        #     require("codecompanion").setup({
-        #       adapters = {
-        #         anthropic = {
-        #           api_key = os.getenv("ANTHROPIC_API_KEY")
-        #         }
-        #       },
-        #       default_adapter = "anthropic",
-        #       size = {
-        #         width = "40%",
-        #         height = "60%"
-        #       },
-        #     })
-        #
-        #     -- Key mappings for CodeCompanion
-        #     vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-        #     vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-        #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
-        #   '';
-        # }
         {
           plugin = pkgs.vimPlugins.nvim-treesitter;
           type = "lua";
