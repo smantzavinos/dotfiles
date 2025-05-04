@@ -323,6 +323,7 @@
                 "lua",
                 "nix",
                 "yaml",
+                "markdown",
               },
             })
           '';
