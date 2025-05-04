@@ -35,6 +35,12 @@ return {
           width = "40%",
           height = "60%"
         },
+        completion = {
+          -- Enable native completion
+          auto_complete = true,
+          -- Trigger characters for auto-completion
+          trigger_characters = { "/", "@" },
+        },
         strategies = {
           chat = {
             slash_commands = {

@@ -30,15 +30,7 @@ return {
           nerd_font_variant = 'mono'
         },
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer' },
-          per_filetype = {
-            codecompanion = { "codecompanion" },
-          }
-        },
-        providers = {
-          codecompanion = {
-            type = "codecompanion",
-          }
+          default = { 'lsp', 'path', 'snippets', 'buffer', 'codecompanion' },
         },
       })
     end,
