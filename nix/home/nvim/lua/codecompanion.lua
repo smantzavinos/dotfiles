@@ -39,9 +39,13 @@ return {
           -- Enable native completion
           auto_complete = true,
           -- Trigger characters for auto-completion
-          trigger_characters = { "/", "@" },
+          trigger_characters = { "/", "@", "#" },
           -- Use native completion instead of nvim-cmp
           use_native = true,
+          -- Debounce time in milliseconds
+          debounce = 80,
+          -- Maximum number of items to show in the completion menu
+          max_items = 10,
         },
         strategies = {
           chat = {
@@ -56,6 +60,8 @@ return {
                 },
               },
             },
+            -- Enable slash commands completion
+            enable_slash_command_completion = true,
           },
         },
       })

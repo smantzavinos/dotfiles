@@ -7,7 +7,7 @@ return {
       "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
     },
-    after = "codecompanion",
+    after = "codecompanion.nvim",
     config = function()
       local luasnip = require("luasnip")
       require("blink.cmp").setup({
