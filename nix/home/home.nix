@@ -292,6 +292,7 @@
         # Nightly flake wasn't working. Commands were mising.
         # avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs_unstable.vimPlugins.avante-nvim
+        # nixneovimplugins.packages.${pkgs.system}.avante-nvim
 
         # pkgs_unstable.vimPlugins.codecompanion-nvim
         nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
