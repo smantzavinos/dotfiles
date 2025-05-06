@@ -136,7 +136,6 @@
 
         t7910 = let
           systemFlags = flags // {
-            enableEpicGames = true;
             enableSteam = true;
             enableDevTools = true;
             enableLocalLLM = true;
