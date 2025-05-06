@@ -216,7 +216,6 @@
           },
           spec = {
             { import = "plugins" },
-            { import = "markdown-preview" },
             -- Add other plugins here
           }
         })
