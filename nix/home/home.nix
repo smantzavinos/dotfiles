@@ -216,6 +216,7 @@
           },
           spec = {
             { import = "plugins" },
+            { import = "markdown-preview" },
             -- Add other plugins here
           }
         })
@@ -336,6 +337,7 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
+        pkgs.vimPlugins.markdown-preview-nvim
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
