@@ -165,6 +165,7 @@
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
+              home-manager.nixosModules.home-manager
               (standardHomeManagerConfig (flags // { enablePlexServer = true; }))
             ];
         };
