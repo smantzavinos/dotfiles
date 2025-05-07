@@ -3,14 +3,18 @@
 ## NixOS
 
 1) Install NixOS from a bootable USB installer.
-2) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild
+2) Install git and vim (use nano to add to `/etc/nixos/configuration.nix` and rebuild.
 3) Enable flakes. Add this line to configuration.
 ```
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
-4) copy ssh keys on to computer
+4) copy ssh keys on to computer. Ensure correct private key permissions.
+```
+chmod 400 ~/.ssh/id_ed25519
+```
 5) create age key (needed to rebuild)
 ```
+nix-shell -p ssh-to-age
 mkdir ~/.config/sops
 mkdir ~/.config/sops/age
 read -s SSH_TO_AGE_PASSPHRASE; export SSH_TO_AGE_PASSPHRASE

@@ -1,14 +1,13 @@
-
 { config, lib, pkgs, ... }:
 
 {
   # Enable OpenGL
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"]; # or "nvidiaLegacy470 etc.
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
 
@@ -19,7 +18,7 @@
     # Enable this if you have graphical corruption issues or application crashes after waking
     # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
     # of just the bare essentials.
-    powerManagement.enable = false;
+    powerManagement.enable = true;
 
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
@@ -51,25 +50,15 @@
     dedicatedServer.openFirewall = true;
   };
 
-
   # Original /etc/nixos/configuration.nix below here
   #####################################################################
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
-
-  # Enable swap on luks
-  boot.initrd.luks.devices."luks-1efbb05b-55e1-433a-9cd5-8e638c958c3e".device = "/dev/disk/by-uuid/1efbb05b-55e1-433a-9cd5-8e638c958c3e";
-  boot.initrd.luks.devices."luks-1efbb05b-55e1-433a-9cd5-8e638c958c3e".keyFile = "/crypto_keyfile.bin";
-
-  networking.hostName = "nixos"; # Define your hostname.
+  boot.initrd.luks.devices."luks-261fa310-9454-46f4-a3fa-3a5e31a22ba1".device = "/dev/disk/by-uuid/261fa310-9454-46f4-a3fa-3a5e31a22ba1";
+  networking.hostName = "t7910"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -78,9 +67,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -101,23 +87,23 @@
   };
 
   # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
   };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -142,11 +128,13 @@
     description = "Spiros Mantzavinos";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      kate
-      vim
-      git
+      kdePackages.kate
+    #  thunderbird
     ];
   };
+
+  # Install firefox.
+  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -154,30 +142,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    git
   #  wget
-    headsetcontrol
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  programs.ssh.startAgent = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -188,29 +156,29 @@
   system.stateVersion = "24.11"; # Did you read the comment?
 
 
-
   # Original /etc/nixos/hardware-configuration.nix below here
   #####################################################################
 
-  boot.initrd.availableKernelModules = [ "ata_generic" "ehci_pci" "ahci" "megaraid_sas" "xhci_pci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_drm" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "mpt3sas" "megaraid_sas" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/61529241-7014-49cd-85bb-df8767e64b7d";
+    { device = "/dev/disk/by-uuid/b2bd25ff-8587-46a7-845c-2a8d54aa21bc";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-d47a4d1e-7582-41ef-98da-6bfc138f5676".device = "/dev/disk/by-uuid/d47a4d1e-7582-41ef-98da-6bfc138f5676";
+  boot.initrd.luks.devices."luks-5ba93ffd-7e9a-4889-a7b8-85ada0d882d1".device = "/dev/disk/by-uuid/5ba93ffd-7e9a-4889-a7b8-85ada0d882d1";
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/A66C-1948";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/A165-7C70";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/23cad618-bbe2-4312-a43e-ba6eb281c6ef"; }
+    [ { device = "/dev/disk/by-uuid/69151999-9974-4666-94b0-9049718070d2"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -218,8 +186,10 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s25.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
 }

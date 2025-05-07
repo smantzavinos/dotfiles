@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-24.11";
@@ -13,30 +14,34 @@
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
     aider-flake = {
-      url = "github:smantzavinos/aider_flake/4b7df2d637c61a52e069dcb34364a37144ab1391";
+      url = "github:smantzavinos/aider_flake/65ab799e41d91de8ffecd86e07a841f1dd697d43";
+    };
+    avante-nvim-nightly-flake = {
+      url = "github:vinnymeller/avante-nvim-nightly-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-utils.follows = "flake-utils";
+      };
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    buffrs.url = "github:helsing-ai/buffrs";
+    nixneovimplugins = {
+      url = "github:NixNeovim/NixNeovimPlugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, ... }@inputs:
     let
       system = "x86_64-linux";
-      overlays = [
-        (final: prev: {
-          vimPlugins = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).vimPlugins;
-          nerd-fonts = (import inputs.nixpkgs-unstable {
-            system = system;
-            overlays = [];
-          }).nerd-fonts;
-        })
-      ];
       pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = overlays;
+        config = { allowUnfree = true; };
+      };
+      pkgs_unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config = { allowUnfree = true; };
       };
       lib = pkgs.lib;
       flags = {
@@ -47,6 +52,7 @@
         enableSteam = false;
         enableDevTools = false;
         enableLocalLLM = false;
+        enableOpenWebUI = false;
       };
       # Add standardized home-manager config
       standardHomeManagerConfig = flags: {
@@ -54,7 +60,9 @@
           useGlobalPkgs = true;
           useUserPackages = true;
           users.spiros = import ./home/home.nix;
-          extraSpecialArgs = inputs // { inherit flags; };
+          extraSpecialArgs = inputs // { 
+            inherit flags pkgs_unstable; 
+          };
         };
       };
     in
@@ -69,6 +77,7 @@
           specialArgs = { flags = systemFlags; };
           modules = [
             ./system_shared.nix
+            ./systems/litellm-docker.nix
             inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
             home-manager.nixosModules.home-manager
@@ -97,14 +106,11 @@
               inputs.sops-nix.nixosModules.sops
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
               ./systems/lenovo_x1_extreme.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                # TODO: can I remove this since I have specialArgs set?
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
+              (standardHomeManagerConfig (flags // {
+                enableOneDrive = true;
+                enableDevTools  = true;
+                enablePlexServer = true;
+              }))
             ];
         };
 
@@ -128,6 +134,24 @@
           ];
         };
 
+        t7910 = let
+          systemFlags = flags // {
+            enableSteam = true;
+            enableDevTools = true;
+            enableLocalLLM = true;
+          };
+        in nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/precision_t7910.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
+        };
+
         msi_gs66 = nixpkgs.lib.nixosSystem {
           inherit system;
           modules =
@@ -141,13 +165,7 @@
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
+              (standardHomeManagerConfig (flags // { enablePlexServer = true; }))
             ];
         };
 
@@ -155,12 +173,14 @@
           systemFlags = flags // {
             enableDevTools = true;
             enableLocalLLM = true;
+            enableOpenWebUI = false;
           };
         in nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { flags = systemFlags; };
           modules = [
             ./system_shared.nix
+            ./home/apps/litellm/litellm.nix
             inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
             # ./systems/msi_ms16.nix
@@ -169,33 +189,20 @@
           ];
         };
 
-        vbox = nixpkgs.lib.nixosSystem {
+        vbox = let
+          systemFlags = flags // {
+            enableDevTools = true;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
-          modules =
-            let
-              overriddenFlags = flags // {
-                enableDevTools = true;
-              };
-
-              specialArgs = { flags = flags // {
-                enableOneDrive = true;
-                enableDevTools = true;
-              }; };
-
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              ./systems/virtualbox.nix
-              # "${nixpkgs}/nixos/modules/installer/virtualbox-demo.nix"
-              # "${nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix"
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.spiros = import ./home/home.nix;
-                home-manager.extraSpecialArgs = inputs // { flags = overriddenFlags; };
-              }
-            ];
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.sops-nix.nixosModules.sops
+            ./systems/virtualbox.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
         };
 
         # Not working

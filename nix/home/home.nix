@@ -1,4 +1,14 @@
-{config, pkgs, aider-flake, whisper-input, flags, ...}:
+{ config
+, pkgs
+, pkgs_unstable
+, aider-flake
+, avante-nvim-nightly-flake
+, buffrs
+, whisper-input
+, flags
+, nixneovimplugins
+, ...
+}:
 
 {
     home.username = "spiros";
@@ -48,6 +58,11 @@
         pkgs.nixfmt
         pkgs.usbutils
         pkgs.zoxide
+        
+        # C compiler and build tools for Treesitter parsers
+        pkgs.gcc
+        # Required for TreeSitter parser compilation
+        pkgs.gnumake
 
         pkgs.sesh
 
@@ -76,17 +91,27 @@
         pkgs.plandex
         pkgs.plandex-server
         # pkgs.aider-chat
-        aider-flake.packages.x86_64-linux.default
+        pkgs_unstable.aider-chat-with-playwright
+        # aider-flake.packages.x86_64-linux.default
         pkgs.tree-sitter
         pkgs.typescript-language-server
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
         pkgs.supabase-cli
+        pkgs_unstable.claude-code
+        pkgs.python313
+        pkgs.uv
+
+        buffrs.packages.x86_64-linux.default
       ] else [];
 
       localLLMPackages = if flags.enableLocalLLM then [
         pkgs.lmstudio
+      ] else [];
+
+      openWebUIPackages = if flags.enableOpenWebUI then [
+        pkgs_unstable.open-webui
       ] else [];
 
       epicGamesPackages = if flags.enableEpicGames then [
@@ -112,6 +137,7 @@
       basePackages ++ 
       devToolPackages ++
       localLLMPackages ++
+      openWebUIPackages ++
       epicGamesPackages ++
       oneDrivePackages ++
       plexServerPackages ++
@@ -125,7 +151,7 @@
       # Decrypts and loads API keys from a SOPS-encrypted YAML file into
       # environment variables, making them available for the current session.
       source_api_keys = ''
-        eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
+        eval "$(sops -d /home/spiros/dotfiles/nix/secrets/ai-api-keys.sops.yaml | yq eval -r '. | to_entries | .[] | "export \(.key)=\(.value)"')"
       '';
 
       # Sets up PostgreSQL-related environment variables for plandex server
@@ -258,12 +284,73 @@
         end, { noremap = true, silent = true })
       '';
       plugins = [
+        pkgs.vimPlugins.img-clip-nvim
+        pkgs.vimPlugins.render-markdown-nvim
+        pkgs.vimPlugins.dressing-nvim
+        pkgs.vimPlugins.plenary-nvim
+        pkgs.vimPlugins.nui-nvim
+        pkgs_unstable.vimPlugins.blink-cmp-avante
+        # Nightly flake wasn't working. Commands were mising.
+        # avante-nvim-nightly-flake.packages.${pkgs.system}.default
+        pkgs_unstable.vimPlugins.avante-nvim
+
+        # pkgs_unstable.vimPlugins.codecompanion-nvim
+        nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
+
         pkgs.vimPlugins.lazy-nvim
         pkgs.vimPlugins.nvim-tree-lua
-        pkgs.vimPlugins.nvim-treesitter
-        pkgs.vimPlugins.nvim-treesitter-parsers.svelte
-        pkgs.vimPlugins.nvim-treesitter-parsers.typescript
-        pkgs.vimPlugins.nvim-treesitter-parsers.html
+        # {
+        #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
+        #   type = "lua";
+        #   config = ''
+        #     require("codecompanion").setup({
+        #       adapters = {
+        #         anthropic = {
+        #           api_key = os.getenv("ANTHROPIC_API_KEY")
+        #         }
+        #       },
+        #       default_adapter = "anthropic",
+        #       size = {
+        #         width = "40%",
+        #         height = "60%"
+        #       },
+        #     })
+        #
+        #     -- Key mappings for CodeCompanion
+        #     vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
+        #   '';
+        # }
+        {
+          plugin = pkgs.vimPlugins.nvim-treesitter;
+          type = "lua";
+          config = ''
+            -- Set custom parser install location in writable path
+            local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
+            vim.fn.mkdir(parser_install_dir, "p")  -- Create directory if it doesn't exist
+            
+            vim.opt.runtimepath:append(parser_install_dir)
+            
+            require("nvim-treesitter.configs").setup({
+              highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+              },
+              parser_install_dir = parser_install_dir,
+              ensure_installed = {
+                "svelte", 
+                "typescript", 
+                "html",
+                "javascript",
+                "json",
+                "lua",
+                "nix",
+                "yaml",
+              },
+            })
+          '';
+        }
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
         pkgs.vimPlugins.neogit
@@ -282,7 +369,7 @@
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
         pkgs.vimPlugins.luasnip
-        pkgs.vimPlugins.blink-cmp
+        pkgs_unstable.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
         {
           plugin = pkgs.vimPlugins.nvim-lspconfig;
@@ -500,6 +587,17 @@
     settings = {
       # this is not working for some reason
       keybinding.universal.commits.openLogMenu = "alt+l";
+    };
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      auto_sync = false;
+      sync_frequency = "5m";
+      sync_address = "https://api.atuin.sh";
+      search_mode = "fuzzy";
     };
   };
 }
