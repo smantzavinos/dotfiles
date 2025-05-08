@@ -66,7 +66,7 @@
           useUserPackages = true;
           users.spiros = import ./home/home.nix;
           extraSpecialArgs = inputs // { 
-            inherit flags pkgs_unstable; 
+            inherit flags pkgs_unstable awesome-neovim-plugins; 
           };
         };
       };

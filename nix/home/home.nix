@@ -7,6 +7,7 @@
 , whisper-input
 , flags
 , nixneovimplugins
+, awesome-neovim-plugins
 , ...
 }:
 
