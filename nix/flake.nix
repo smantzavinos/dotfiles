@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager?ref=release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    awesome-neovim-plugins = {
+      url = "github:m15a/flake-awesome-neovim-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     whisper-input = {
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
@@ -32,12 +36,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {
         inherit system;
         config = { allowUnfree = true; };
+        overlays = [ awesome-neovim-plugins.overlays.default ];
       };
       pkgs_unstable = import inputs.nixpkgs-unstable {
         inherit system;

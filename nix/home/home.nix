@@ -358,6 +358,7 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
+        pkgs.awesomeNeovimPlugins.nvim-aider
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
