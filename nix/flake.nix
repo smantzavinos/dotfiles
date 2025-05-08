@@ -152,8 +152,14 @@
           ];
         };
 
-        msi_gs66 = nixpkgs.lib.nixosSystem {
+        msi_gs66 = let
+          systemFlags = flags // {
+            enablePlexServer = true;
+            enableDevTools = true;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { flags = systemFlags; };
           modules =
             let
               overriddenFlags = flags // {
@@ -166,7 +172,7 @@
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
               home-manager.nixosModules.home-manager
-              (standardHomeManagerConfig (flags // { enablePlexServer = true; }))
+              (standardHomeManagerConfig systemFlags)
             ];
         };
 
