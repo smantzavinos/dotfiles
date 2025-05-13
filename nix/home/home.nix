@@ -99,7 +99,7 @@
         pkgs.svelte-language-server
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
-        pkgs.supabase-cli
+        pkgs_unstable.supabase-cli
         pkgs_unstable.claude-code
         pkgs.python313
         pkgs.uv
