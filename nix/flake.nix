@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager?ref=release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    awesome-neovim-plugins = {
+      url = "github:m15a/flake-awesome-neovim-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     whisper-input = {
       url = "github:Quoteme/whisper-input/2ddac6100928297dab028446ef8dc9b17325b833";
     };
@@ -32,12 +36,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {
         inherit system;
         config = { allowUnfree = true; };
+        overlays = [ awesome-neovim-plugins.overlays.default ];
       };
       pkgs_unstable = import inputs.nixpkgs-unstable {
         inherit system;
@@ -61,7 +66,7 @@
           useUserPackages = true;
           users.spiros = import ./home/home.nix;
           extraSpecialArgs = inputs // { 
-            inherit flags pkgs_unstable; 
+            inherit flags pkgs_unstable awesome-neovim-plugins; 
           };
         };
       };
@@ -152,19 +157,27 @@
           ];
         };
 
-        msi_gs66 = nixpkgs.lib.nixosSystem {
+        msi_gs66 = let
+          systemFlags = flags // {
+            enablePlexServer = true;
+            enableDevTools = true;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { flags = systemFlags; };
           modules =
             let
               overriddenFlags = flags // {
                 enablePlexServer = true;
+                enableDevTools = true;
               };
 
             in [
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops
               ./systems/msi_gs66.nix
-              (standardHomeManagerConfig (flags // { enablePlexServer = true; }))
+              home-manager.nixosModules.home-manager
+              (standardHomeManagerConfig systemFlags)
             ];
         };
 

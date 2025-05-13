@@ -19,6 +19,7 @@ in
     wget
     git
     openssl
+    ethtool
     sops  # Add SOPS here
   ];
 

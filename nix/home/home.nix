@@ -7,6 +7,7 @@
 , whisper-input
 , flags
 , nixneovimplugins
+, awesome-neovim-plugins
 , ...
 }:
 
@@ -359,6 +360,8 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
+        pkgs_unstable.vimPlugins.snacks-nvim
+        awesome-neovim-plugins.packages.${pkgs.system}.nvim-aider
         {
           plugin = pkgs.vimPlugins.vim-startify;
           config = ''
