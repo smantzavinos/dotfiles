@@ -145,6 +145,28 @@
       plexServerPackages ++
       nextCloudServerPackages;
 
+    home.file.".aider-openai.yml" = {
+      text = ''
+        model: gpt-4o
+        editor-model: gpt-4o-mini
+        weak-model: gpt-3.5-turbo
+      '';
+    };
+
+    home.file.".aider-gemini.yml" = {
+      text = ''
+        model: gemini            # alias → gemini/gemini-1.5-pro-latest or gemini/gemini-1.5-pro-preview-0514
+        editor-model: flash      # alias → gemini/gemini-1.5-flash-latest or gemini/gemini-1.5-flash-preview-0514
+        weak-model: flash        # cheap, low-latency fallback
+      '';
+    };
+
+    # Default Aider configuration
+    home.file.".aider.conf.yml" = {
+      # This will be the same as the gemini config, making it the default
+      text = builtins.readFile ./../.aider.conf.yml; # Or copy the text from .aider-gemini.yml above
+    };
+
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
 
@@ -171,6 +193,10 @@
 
         echo "PostgreSQL environment variables and API keys have been exported."
       '';
+
+      # Aider configuration aliases
+      aider-openai = "AIDER_CONFIG=$HOME/.aider-openai.yml aider \"$@\"";
+      aider-gemini = "AIDER_CONFIG=$HOME/.aider-gemini.yml aider \"$@\"";
     };
 
     programs.git = {
