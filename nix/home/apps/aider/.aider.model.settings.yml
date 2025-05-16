@@ -1,0 +1,15 @@
+- name: openai/gpt-4.1-2025-04-14
+  edit_format: patch
+  use_repo_map: true
+  extra_params:
+    max_tokens: 8192
+  editor_model_name: openai/gpt-4.1-2025-04-14
+  editor_edit_format: editor-diff
+  weak_model_name: openai/gpt-4.1-nano
+
+- name: openai/gpt-4.1-nano
+  edit_format: diff
+  use_repo_map: true
+  extra_params:
+    max_tokens: 4096
+
