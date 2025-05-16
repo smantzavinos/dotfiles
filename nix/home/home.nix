@@ -167,6 +167,11 @@
       text = builtins.readFile ./../.aider.conf.yml; # Or copy the text from .aider-gemini.yml above
     };
 
+    home.file.".aider.model.settings.yml" = {
+      # This file contains model-specific settings for Aider
+      text = builtins.readFile ./../.aider.model.settings.yml;
+    };
+
     # auto reload fonts so you don't need to execute `fc-cache -f -v` manually after install
     fonts.fontconfig.enable = true;
 
