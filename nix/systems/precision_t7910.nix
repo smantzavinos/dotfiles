@@ -159,26 +159,26 @@
   # Original /etc/nixos/hardware-configuration.nix below here
   #####################################################################
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "mpt3sas" "megaraid_sas" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "mpt3sas" "megaraid_sas" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b2bd25ff-8587-46a7-845c-2a8d54aa21bc";
+    { device = "/dev/disk/by-uuid/cce1d25e-0697-4a37-9987-6b1fd5f72685";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-5ba93ffd-7e9a-4889-a7b8-85ada0d882d1".device = "/dev/disk/by-uuid/5ba93ffd-7e9a-4889-a7b8-85ada0d882d1";
+  boot.initrd.luks.devices."luks-4c4a8037-ab85-4265-a9bd-ed2aebb37c02".device = "/dev/disk/by-uuid/4c4a8037-ab85-4265-a9bd-ed2aebb37c02";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A165-7C70";
+    { device = "/dev/disk/by-uuid/F542-BD26";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/69151999-9974-4666-94b0-9049718070d2"; }
+    [ { device = "/dev/disk/by-uuid/d4e6425c-ac77-45fa-9108-64e2a11b63ee"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
