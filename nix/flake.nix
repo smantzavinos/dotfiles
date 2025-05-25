@@ -90,33 +90,21 @@
           ];
         };
 
-        x1 = nixpkgs.lib.nixosSystem {
+        x1 = let
+          systemFlags = flags // {
+            enableDevTools = true;
+          };
+        in nixpkgs.lib.nixosSystem {
           inherit system;
-          modules =
-            let
-              overriddenFlags = flags // {
-                enableOneDrive = true;
-                enableDevTools = true;
-              };
-
-              # modify flags that are passed to improted modules
-              specialArgs = { flags = flags // {
-                enableOneDrive = true;
-                enableDevTools = true;
-                enablePlexServer = true;
-              }; };
-
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
-              ./systems/lenovo_x1_extreme.nix
-              (standardHomeManagerConfig (flags // {
-                enableOneDrive = true;
-                enableDevTools  = true;
-                enablePlexServer = true;
-              }))
-            ];
+          specialArgs = { flags = systemFlags; };
+          modules = [
+            ./system_shared.nix
+            inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
+            inputs.sops-nix.nixosModules.sops
+            ./systems/lenovo_x1_extreme.nix
+            home-manager.nixosModules.home-manager
+            (standardHomeManagerConfig systemFlags)
+          ];
         };
 
         t5600 = let
