@@ -75,6 +75,21 @@
     };
   };
 
+  # ─── Fingerprint reader ──────────────────────────────────────────────────────
+  services.fprintd = {
+    enable  = true;                 # start fprintd DBus service
+    package = pkgs.fprintd-tod;     # TOD-patched fprintd
+    tod = {
+      enable = true;                # activate "Tod" driver support
+      driver = pkgs.libfprint-2-tod1-vfs0090;   # Synaptics 06cb:00bd reader
+    };
+  };
+
+  # Make PAM accept fingerprints for login & sudo
+  security.pam.services.login.fprintAuth = true;
+  security.pam.services.sudo.fprintAuth = true;
+  # Add SDDM support for fingerprint authentication
+  security.pam.services.sddm.fprintAuth = true;
 
   # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   # original /etc/nixos/configuration.nix
