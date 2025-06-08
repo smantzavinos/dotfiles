@@ -102,6 +102,8 @@
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
             inputs.sops-nix.nixosModules.sops
             ./systems/lenovo_x1_extreme.nix
+            # Removing this causes network adapters to disappear on reboot
+            /etc/nixos/configuration.nix
             home-manager.nixosModules.home-manager
             (standardHomeManagerConfig systemFlags)
           ];
