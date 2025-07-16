@@ -301,6 +301,10 @@
 
         -- Add keybinding to show diagnostics in a floating window
         vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+
+        vim.keymap.set("n", "<leader>id", function()
+          vim.api.nvim_put({ os.date("%Y-%m-%d") }, "c", true, true)
+        end, { desc = "Insert date" })
         
         -- Add keybinding to copy all diagnostics to clipboard
         vim.keymap.set('n', '<leader>D', function()
@@ -349,31 +353,22 @@
             -- Cycle checkbox states for obsidian.nvim
             map("n", "<leader>x", "<cmd>ObsidianCycleCheckbox<CR>", { silent = true, desc = "Cycle Checkbox" })
 
-            -- Move lines up/down
-            map("n", "<A-j>", ":m .+1<CR>==", { silent = true, desc = "Move Line Down" })
-            map("n", "<A-k>", ":m .-2<CR>==", { silent = true, desc = "Move Line Up" })
-            map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move Selection Down" })
-            map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move Selection Up" })
-
-            -- Indent/de-indent
-            map("n", "<A-l>", ">>", { silent = true, desc = "Indent Line" })
-            map("n", "<A-h>", "<<", { silent = true, desc = "De-indent Line" })
-            map("v", "<A-l>", ">gv", { silent = true, desc = "Indent Selection" })
-            map("v", "<A-h>", "<gv", { silent = true, desc = "De-indent Selection" })
-            
             -- Create new list items
-            map("n", "<C-CR>", "o<Esc>", { silent = true, desc = "New List Item" })
             map("n", "<S-CR>", "o[ ] <Esc>", { silent = true, desc = "New TODO Item" })
 
             -- Cycle bullet type
             map("n", "<C-t>", cycle_bullet, { silent = true, desc = "Cycle Bullet Type" })
             
-            -- Automatically continue lists when pressing enter
-            vim.opt_local.formatoptions:append({ "r", "o" })
+            -- keep indentation but turn off automatic list / comment continuation
+            vim.opt_local.autoindent = true
+            vim.opt_local.formatoptions:remove({ "r", "o", "n" })
           end,
         })
       '';
       plugins = [
+        pkgs.vimPlugins.autolist-nvim
+        pkgs.vimPlugins.mini-move
+        pkgs.vimPlugins.dial-nvim
         pkgs.vimPlugins.img-clip-nvim
         pkgs.vimPlugins.render-markdown-nvim
         pkgs.vimPlugins.dressing-nvim
@@ -510,6 +505,51 @@
         }
         {
           plugin = pkgs.vimPlugins.vim-tmux-navigator;
+        }
+        {
+          plugin = pkgs.vimPlugins.autolist-nvim;
+          type = "lua";
+          config = ''
+            require("autolist").setup()
+            local map = vim.keymap.set
+            -- list-aware tab / shift-tab
+            map({"i","n"}, "<Tab>", "<cmd>AutolistTab<CR>")
+            map({"i","n"}, "<S-Tab>", "<cmd>AutolistShiftTab<CR>")
+            -- NEW list item on Alt-Enter
+            map("i", "<A-CR>", "<CR><cmd>AutolistNewBullet<CR>", { desc = "New list item (autolist)" })
+            -- normal-mode convenience
+            map("n", "o", "o<cmd>AutolistNewBullet<CR>")
+            map("n", "O", "O<cmd>AutolistNewBulletBefore<CR>")
+          '';
+        }
+        {
+          plugin = pkgs.vimPlugins.mini-move;
+          type = "lua";
+          config = ''
+            require("mini.move").setup()
+            local map = vim.keymap.set
+            map({"n","v"}, "<M-j>", "<Plug>(MiniMoveLineDown)")
+            map({"n","v"}, "<M-k>", "<Plug>(MiniMoveLineUp)")
+          '';
+        }
+        {
+          plugin = pkgs.vimPlugins.dial-nvim;
+          type = "lua";
+          config = ''
+            local dial = require("dial")
+            local aug = require("dial.augend")
+            dial.config.augends:register_group{
+              default = {
+                aug.date.alias["%Y-%m-%d"],
+              },
+            }
+            local map = vim.keymap.set
+            local dm = require("dial.map")
+            map("n", "<C-a>", dm.inc_normal(), {noremap=true})
+            map("n", "<C-x>", dm.dec_normal(), {noremap=true})
+            map("v", "<C-a>", dm.inc_visual(), {noremap=true})
+            map("v", "<C-x>", dm.dec_visual(), {noremap=true})
+          '';
         }
       ];
     };
