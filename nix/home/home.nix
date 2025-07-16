@@ -313,6 +313,36 @@
           vim.fn.setreg('+', text) -- Copy to system clipboard
           print("Diagnostics copied to clipboard")
         end, { noremap = true, silent = true })
+
+        -- Keymaps and settings for Markdown / Obsidian
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "markdown",
+          callback = function()
+            local map = function(mode, lhs, rhs, opts)
+              opts = opts or {}
+              opts.buffer = true
+              vim.keymap.set(mode, lhs, rhs, opts)
+            end
+
+            -- Toggle checkbox for obsidian.nvim
+            map("n", "<leader>x", "<cmd>ObsidianToggleCheckbox<CR>", { silent = true, desc = "Toggle Checkbox" })
+
+            -- Move lines up/down
+            map("n", "<A-j>", ":m .+1<CR>==", { silent = true, desc = "Move Line Down" })
+            map("n", "<A-k>", ":m .-2<CR>==", { silent = true, desc = "Move Line Up" })
+            map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move Selection Down" })
+            map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move Selection Up" })
+
+            -- Indent/de-indent
+            map("n", "<A-l>", ">>", { silent = true, desc = "Indent Line" })
+            map("n", "<A-h>", "<<", { silent = true, desc = "De-indent Line" })
+            map("v", "<A-l>", ">gv", { silent = true, desc = "Indent Selection" })
+            map("v", "<A-h>", "<gv", { silent = true, desc = "De-indent Selection" })
+            
+            -- Automatically continue lists when pressing enter
+            vim.opt_local.formatoptions:append({ "r", "o" })
+          end,
+        })
       '';
       plugins = [
         pkgs.vimPlugins.img-clip-nvim

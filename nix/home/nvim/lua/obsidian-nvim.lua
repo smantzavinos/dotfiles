@@ -48,8 +48,8 @@ return {
         update_debounce = 200,
         checkboxes = {
           [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-          ["x"] = { char = "", hl_group = "ObsidianDone" },
-          [">"] = { char = "", hl_group = "ObsidianRightArrow" },
+          ["x"] = { char = "", hl_group = "ObsidianDone" },
+          [">"] = { char = "", hl_group = "ObsidianRightArrow" },
           ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
         },
         external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
