@@ -69,6 +69,6 @@
   powerManagement.enable = false;
 
   # Set the system state version to match your NixOS version
-  system.stateVersion = "25.05";
+  system.stateVersion = "24.11";
 
 }

@@ -419,7 +419,7 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 
   # Original /etc/nixos/hardware-configuration.nix below here
@@ -431,7 +431,14 @@ in {
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  # Add IGC network driver configuration
+  boot.extraModprobeConfig = ''
+    options igc InterruptThrottleRate=3000,3000,3000,3000 
+    options igc max_speed=2500
+  '';
+
+  # Ensure the IGC module is loaded
+  boot.kernelModules = [ "kvm-intel" "igc" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =

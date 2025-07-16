@@ -1,4 +1,3 @@
-
 { config, pkgs, flags, ... }:
 
 let
@@ -20,6 +19,8 @@ in
     wget
     git
     openssl
+    ethtool
+    sops  # Add SOPS here
   ];
 
   # secrets management
@@ -40,7 +41,13 @@ in
   };
   programs.ssh.startAgent = true;
 
-  # SOPS-Nix secret for PIA credentials
+  # SOPS-Nix secret for AI API keys
+  sops.secrets.OPENAI_API_KEY = {
+    sopsFile = ./secrets/ai-api-keys.sops.yaml;
+    owner = "root";
+    group = "root";
+    mode = "0600";
+  };
   sops.secrets.pia = {
     sopsFile = ./secrets/pia-credentials.sops.yaml;
     owner = "root";
@@ -48,11 +55,10 @@ in
     mode = "0600";
   };
 
+
   # fonts
   fonts.packages = with pkgs; [
-    # nerd-fonts.fira-code
-    # nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     font-awesome
     emacs-all-the-icons-fonts
     material-icons
@@ -60,7 +66,6 @@ in
   ];
 
   # Enable network manager if you want to manage the VPN via Network Manager as well
-  # Note: I'm not sure this is doing anything.
   networking.networkmanager.enable = true;
 
   programs.kdeconnect.enable = true;
@@ -131,7 +136,6 @@ in
         iyd1Fzx0yujuiXDROLhISLQDRjVVAvawrAtLZWYK31bY7KlezPlQnl/D9Asxe85l
         8jO5+0LdJ6VyOs/Hd4w52alDW/MFySDZSfQHMTIc30hLBJ8OnCEIvluVQQ2UQvoW
         +no177N9L2Y+M9TcTA62ZyMXShHQGeh20rb4kK8f+iFX8NxtdHVSkxMEFSfDDyQ=
-        -----END CERTIFICATE-----
         </ca>
 
         disable-occ
