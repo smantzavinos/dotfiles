@@ -324,8 +324,30 @@
               vim.keymap.set(mode, lhs, rhs, opts)
             end
 
-            -- Toggle checkbox for obsidian.nvim
-            map("n", "<leader>x", "<cmd>ObsidianToggleCheckbox<CR>", { silent = true, desc = "Toggle Checkbox" })
+            -- Function to cycle bullet points
+            local function cycle_bullet()
+              local line = vim.api.nvim_get_current_line()
+              local bullets = { "-", "*", "+" }
+              local new_line, found = line:gsub(
+                "^%s*([%-%*%+])", -- Match leading whitespace and one of the bullet characters
+                function(bullet)
+                  for i, b in ipairs(bullets) do
+                    if b == bullet then
+                      -- Cycle to the next bullet
+                      local next_bullet_index = (i % #bullets) + 1
+                      return bullets[next_bullet_index]
+                    end
+                  end
+                end,
+                1 -- Only replace the first occurrence
+              )
+              if found > 0 then
+                vim.api.nvim_set_current_line(new_line)
+              end
+            end
+
+            -- Cycle checkbox states for obsidian.nvim
+            map("n", "<leader>x", "<cmd>ObsidianCycleCheckbox<CR>", { silent = true, desc = "Cycle Checkbox" })
 
             -- Move lines up/down
             map("n", "<A-j>", ":m .+1<CR>==", { silent = true, desc = "Move Line Down" })
@@ -338,6 +360,13 @@
             map("n", "<A-h>", "<<", { silent = true, desc = "De-indent Line" })
             map("v", "<A-l>", ">gv", { silent = true, desc = "Indent Selection" })
             map("v", "<A-h>", "<gv", { silent = true, desc = "De-indent Selection" })
+            
+            -- Create new list items
+            map("n", "<C-CR>", "o<Esc>", { silent = true, desc = "New List Item" })
+            map("n", "<S-CR>", "o[ ] <Esc>", { silent = true, desc = "New TODO Item" })
+
+            -- Cycle bullet type
+            map("n", "<C-t>", cycle_bullet, { silent = true, desc = "Cycle Bullet Type" })
             
             -- Automatically continue lists when pressing enter
             vim.opt_local.formatoptions:append({ "r", "o" })
