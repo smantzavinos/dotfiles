@@ -1,7 +1,6 @@
 return {
   {
     "monaqa/dial.nvim",
-    event = "BufReadPost",
     config = function()
       local dial = require("dial")
       local aug = require("dial.augend")
