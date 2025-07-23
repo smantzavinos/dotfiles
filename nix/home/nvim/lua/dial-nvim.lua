@@ -4,6 +4,7 @@ return {
     lazy = true,
     event = "VeryLazy",
     config = function()
+      vim._update_package_paths()
       local dial = require("dial")
       local aug = require("dial.augend")
       dial.config.augends:register_group({
