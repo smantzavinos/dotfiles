@@ -1,10 +1,8 @@
 return {
   {
     "monaqa/dial.nvim",
-    lazy = true,
-    event = "VeryLazy",
+    lazy = false,
     config = function()
-      vim._update_package_paths()
       local dial = require("dial")
       local aug = require("dial.augend")
       dial.config.augends:register_group({
