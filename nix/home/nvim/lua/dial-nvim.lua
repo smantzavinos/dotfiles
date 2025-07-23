@@ -3,9 +3,9 @@ return {
     "monaqa/dial.nvim",
     lazy = false,
     config = function()
-      local dial = require("dial")
       local aug = require("dial.augend")
-      dial.config.augends:register_group({
+      local dconf = require("dial.config")
+      dconf.augends:register_group({
         default = {
           aug.date.alias["%Y-%m-%d"],
         },
