@@ -75,6 +75,21 @@
     };
   };
 
+  # ─── Fingerprint reader ──────────────────────────────────────────────────────
+  services.fprintd = {
+    enable  = true;                 # start fprintd DBus service
+    package = pkgs.fprintd-tod;     # TOD-patched fprintd
+    tod = {
+      enable = true;                # activate "Tod" driver support
+      driver = pkgs.libfprint-2-tod1-vfs0090;   # Synaptics 06cb:00bd reader
+    };
+  };
+
+  # Make PAM accept fingerprints for login & sudo
+  security.pam.services.login.fprintAuth = true;
+  security.pam.services.sudo.fprintAuth = true;
+  # Add SDDM support for fingerprint authentication
+  security.pam.services.sddm.fprintAuth = true;
 
   # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   # original /etc/nixos/configuration.nix
@@ -82,12 +97,14 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.efi.efiSysMountPoint = "/boot";
+
+  boot.initrd.luks.devices."luks-5b4195ab-87ad-4e12-8ed2-1dc90ee9c8e0".device = "/dev/disk/by-uuid/5b4195ab-87ad-4e12-8ed2-1dc90ee9c8e0";
 
   # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
+  # boot.initrd.secrets = {
+  #   "/crypto_keyfile.bin" = null;
+  # };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -122,7 +139,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -215,18 +232,21 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a15d8225-56ad-47bd-8f93-3f263b28fe96";
+    { device = "/dev/disk/by-uuid/c8ab16cd-54db-4fb4-969a-34780d7d4fca";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-1ac696e6-0d96-457c-a1dc-bc46dda0f376".device = "/dev/disk/by-uuid/1ac696e6-0d96-457c-a1dc-bc46dda0f376";
+  boot.initrd.luks.devices."luks-29aa9b0a-c9b2-4901-8585-f5ca73fd51af".device = "/dev/disk/by-uuid/29aa9b0a-c9b2-4901-8585-f5ca73fd51af";
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/8980-9017";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/EA0E-E596";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  swapDevices = [ ];
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/e037b957-f104-475d-9f43-8407fcec3995"; }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
