@@ -36,6 +36,93 @@ Install home manager:
 ./result/activate
 ```
 
+## Keyboard Shortcuts
+
+### tmux
+
+| Shortcut         | Description                                 |
+|------------------|---------------------------------------------|
+| `prefix` + `c`   | New window                                  |
+| `prefix` + `,`   | Rename window                               |
+| `prefix` + `n`   | Next window                                 |
+| `prefix` + `p`   | Previous window                             |
+| `prefix` + `%`   | Split pane vertically                       |
+| `prefix` + `"`   | Split pane horizontally                     |
+| `prefix` + `h/j/k/l` | Move between panes (vim-tmux-navigator) |
+| `prefix` + `T`   | sesh session picker (fzf)                   |
+| `prefix` + `[`   | Enter copy mode                             |
+| `prefix` + `d`   | Detach session                              |
+
+### zsh
+
+| Shortcut         | Description                                 |
+|------------------|---------------------------------------------|
+| `<C-h>`          | Delete previous word                        |
+| `<C-f>`          | Move forward one word                       |
+| `source_api_keys`| Load API keys from SOPS-encrypted YAML      |
+| `setup_plandex_server` | Set up PostgreSQL env vars for plandex |
+| `aider-openai`   | Run aider with OpenAI config                |
+| `aider-gemini`   | Run aider with Gemini config                |
+
+### neovim
+
+| Action/Command                | Normal Mode      | Visual Mode      | Insert Mode      | Description                                         |
+|-------------------------------|------------------|------------------|------------------|-----------------------------------------------------|
+| Show diagnostics              | `<leader>d`      |                  |                  | Show diagnostics in floating window                 |
+| Copy all diagnostics          | `<leader>D`      |                  |                  | Copy all diagnostics to clipboard                   |
+| Insert current date           | `<leader>id`     |                  |                  | Insert current date                                 |
+| Yank (copy) current line      | `Y`              |                  |                  |                                                     |
+| Next tab                      | `<C-m>`          |                  |                  |                                                     |
+| Previous tab                  | `<C-n>`          |                  |                  |                                                     |
+| Open CodeCompanion            | `<leader>cc`     |                  |                  |                                                     |
+| Toggle CodeCompanion          | `<leader>cs`     |                  |                  |                                                     |
+| Toggle Aider                  | `<leader>a/`     |                  |                  |                                                     |
+| Send to Aider                 | `<leader>as`     | `<leader>as`     |                  |                                                     |
+| Open Neogit                   | `<leader>g`      |                  |                  |                                                     |
+| Toggle NvimTree file explorer | `<leader>e`      |                  |                  |                                                     |
+| FZF: Find files               | `<C-p>`          |                  |                  |                                                     |
+| FZF: List buffers             | `<C-b>`          |                  |                  |                                                     |
+| FZF: Live grep                | `<C-g>`          |                  |                  |                                                     |
+| Increment number/date         | `<C-a>`          | `<C-a>`          |                  | (dial.nvim)                                         |
+| Decrement number/date         | `<C-x>`          | `<C-x>`          |                  | (dial.nvim)                                         |
+| Move line/selection down      | `<M-j>`          | `<M-j>`          |                  | (mini.move)                                         |
+| Move line/selection up        | `<M-k>`          | `<M-k>`          |                  | (mini.move)                                         |
+| Move line/selection left      | `<M-h>`          | `<M-h>`          |                  | (mini.move)                                         |
+| Move line/selection right     | `<M-l>`          | `<M-l>`          |                  | (mini.move)                                         |
+| Cycle checkbox state          | `<leader>x`      |                  |                  | (Obsidian/Markdown)                                 |
+| New TODO item                 | `<S-CR>`         |                  |                  | (Obsidian/Markdown)                                 |
+| Cycle bullet type             | `<C-t>`          |                  |                  | (Obsidian/Markdown)                                 |
+
+#### Obsidian/Markdown-specific
+
+| Action                        | Normal Mode         | Visual Mode         | Insert Mode         | Description                                 |
+|-------------------------------|---------------------|---------------------|---------------------|---------------------------------------------|
+| **List**                      |                     |                     |                     |                                             |
+| Add new item                  | `<M-CR>`            |                     |                     | Add new list item                           |
+| Move item up/down             | `<M-j>` / `<M-k>`   | `<M-j>` / `<M-k>`   |                     | Move item up/down                           |
+| Move item up/down with subtree|                     |                     |                     | TODO: visual only, loses indent             |
+| Fold item with subtree        |                     |                     |                     |                                             |
+| **Headings**                  |                     |                     |                     |                                             |
+| Indent/Outdent heading        |                     |                     |                     | TODO                                        |
+| Add new heading below/above   |                     |                     |                     | TODO                                        |
+| Fold heading                  | `zc` (on heading)   |                     |                     | Fold current heading                        |
+| Fold all headings             | `zM`                |                     |                     | Fold all headings                           |
+| Fold all child headings       |                     |                     |                     |                                             |
+| **Other**                     |                     |                     |                     |                                             |
+| Insert date                   | `<leader>id`        |                     |                     | Insert current date                         |
+| Increase/decrease date        |                     |                     |                     |                                             |
+
+**Legend:**  
+- `<leader>` is set to `\` (backslash)  
+- `<M-...>` means "Alt/Meta + ..."  
+- `<C-...>` means "Ctrl + ..."  
+- `<S-CR>` means "Shift + Enter"  
+- `zM`, `zc` are standard Vim fold commands
+
+---
+
+*For more, see the plugin documentation or your `extraLuaConfig` in `home.nix`.*
+
 ### Applying Home Manager Configuration
 To apply the Home Manager configuration for the user 'spiros', use:
 ``` bash
