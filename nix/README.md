@@ -100,7 +100,7 @@ Install home manager:
 | **List**                      |                     |                     |                     |                                             |
 | Add new item                  | `<M-CR>`            |                     |                     | Add new list item                           |
 | Move item up/down             | `<M-j>` / `<M-k>`   | `<M-j>` / `<M-k>`   |                     | Move item up/down                           |
-| Move item up/down with subtree|                     |                     |                     | TODO: visual only, loses indent             |
+| Move item up/down with subtree| N/A                 | `<M-j>` / `<M-k>`   |                     |                                             |
 | Fold item with subtree        |                     |                     |                     |                                             |
 | **Headings**                  |                     |                     |                     |                                             |
 | Indent/Outdent heading        |                     |                     |                     | TODO                                        |
