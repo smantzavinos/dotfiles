@@ -59,155 +59,133 @@
         enableLocalLLM = false;
         enableOpenWebUI = false;
       };
-      # Add standardized home-manager config
-      standardHomeManagerConfig = flags: {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.spiros = import ./home/home.nix;
+      # Shared home config generator
+      mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins }: rec {
+        homeModule = {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.${username} = import ./home/home.nix;
+            extraSpecialArgs = inputs // { 
+              inherit flags pkgs_unstable awesome-neovim-plugins; 
+            };
+          };
+        };
+
+        standaloneHomeConfig = inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home/home.nix ];
           extraSpecialArgs = inputs // { 
             inherit flags pkgs_unstable awesome-neovim-plugins; 
           };
         };
       };
-    in
-    {
-      nixosConfigurations = {
-        nixos = let
-          systemFlags = flags // {
+
+      # System definitions with flags and modules
+      systemDefs = {
+        nixos = {
+          flags = flags // {
             enableDevTools = false;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
+          extraModules = [
             ./systems/litellm-docker.nix
-            inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
 
-        x1 = let
-          systemFlags = flags // {
+        x1 = {
+          flags = flags // {
             enableDevTools = true;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
+          extraModules = [
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
-            inputs.sops-nix.nixosModules.sops
             ./systems/lenovo_x1_extreme.nix
-            # Removing this causes network adapters to disappear on reboot
             /etc/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
 
-        t5600 = let
-          systemFlags = flags // {
+        t5600 = {
+          flags = flags // {
             enableEpicGames = true;
             enableSteam = true;
             enableDevTools = true;
             enablePlexServer = true;
             enableLocalLLM = true;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
-            inputs.sops-nix.nixosModules.sops
+          extraModules = [
             ./systems/precision_t5600.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
 
-        t7910 = let
-          systemFlags = flags // {
+        t7910 = {
+          flags = flags // {
             enableSteam = true;
             enableDevTools = true;
             enableLocalLLM = true;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
-            inputs.sops-nix.nixosModules.sops
+          extraModules = [
             ./systems/precision_t7910.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
 
-        msi_gs66 = let
-          systemFlags = flags // {
+        msi_gs66 = {
+          flags = flags // {
             enablePlexServer = true;
             enableDevTools = true;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules =
-            let
-              overriddenFlags = flags // {
-                enablePlexServer = true;
-                enableDevTools = true;
-              };
-
-            in [
-              ./system_shared.nix
-              inputs.sops-nix.nixosModules.sops
-              ./systems/msi_gs66.nix
-              home-manager.nixosModules.home-manager
-              (standardHomeManagerConfig systemFlags)
-            ];
+          extraModules = [
+            ./systems/msi_gs66.nix
+          ];
         };
 
-        msi_ms16 = let
-          systemFlags = flags // {
+        msi_ms16 = {
+          flags = flags // {
             enableDevTools = true;
             enableLocalLLM = true;
             enableOpenWebUI = false;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
+          extraModules = [
             ./home/apps/litellm/litellm.nix
-            inputs.sops-nix.nixosModules.sops
             /etc/nixos/configuration.nix
-            # ./systems/msi_ms16.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
 
-        vbox = let
-          systemFlags = flags // {
+        vbox = {
+          flags = flags // {
             enableDevTools = true;
           };
-        in nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { flags = systemFlags; };
-          modules = [
-            ./system_shared.nix
-            inputs.sops-nix.nixosModules.sops
+          extraModules = [
             ./systems/virtualbox.nix
-            home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig systemFlags)
           ];
         };
+      };
 
-        # Not working
+      # Generate home configs for all systems
+      homes = builtins.mapAttrs
+        (name: cfg:
+          mkHomeConfig {
+            inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
+            username = "spiros";
+            flags = cfg.flags;
+          })
+        systemDefs;
+    in
+    {
+      # Generate nixosConfigurations using systemDefs
+      nixosConfigurations = builtins.mapAttrs
+        (name: cfg:
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            specialArgs = { flags = cfg.flags; };
+            modules = [
+              ./system_shared.nix
+              inputs.sops-nix.nixosModules.sops
+              home-manager.nixosModules.home-manager
+              homes.${name}.homeModule
+            ] ++ cfg.extraModules;
+          })
+        systemDefs // {
+        # Special case for installMedia
         installMedia = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
@@ -215,7 +193,11 @@
             inputs.sops-nix.nixosModules.sops
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
             home-manager.nixosModules.home-manager
-            (standardHomeManagerConfig flags)
+            (mkHomeConfig {
+              inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
+              username = "spiros";
+              flags = flags;
+            }).homeModule
             {
               isoImage.squashfsCompression = "gzip -Xcompression-level 1";
               home-manager.users.spiros.home.homeDirectory = lib.mkForce "/home/spiros";
@@ -223,5 +205,10 @@
           ];
         };
       };
+
+      # Generate standalone homeConfigurations
+      homeConfigurations = builtins.mapAttrs
+        (name: _: homes.${name}.standaloneHomeConfig)
+        systemDefs;
     };
 }

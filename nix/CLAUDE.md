@@ -1,10 +1,14 @@
 # NixOS Dotfiles Guidelines
 
 ## Build/Test Commands
-- `home-manager switch --flake .` - Apply Home Manager configuration
-- `nix build .#homeConfigurations.spiros.activationPackage` - Build home-manager config
+- `nixos-rebuild switch --flake .#<hostname>` - Apply full system configuration (includes home-manager)
+- `home-manager switch --flake .#<hostname>` - Apply only Home Manager configuration independently
+- `nix run github:nix-community/home-manager/release-24.11 -- switch --flake .#<hostname>` - Run home-manager without installing it
+- `nix build .#homeConfigurations.<hostname>.activationPackage` - Build home-manager config
 - `nix flake update` - Update flake dependencies
 - `nixfmt flake.nix` - Format Nix files
+
+Available hostnames: nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox
 
 ## Code Style Guidelines
 - **Indentation**: Use 2-space indentation consistently across all file types
