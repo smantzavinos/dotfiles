@@ -21,6 +21,7 @@ in
     openssl
     ethtool
     sops  # Add SOPS here
+    home-manager
   ];
 
   # secrets management

@@ -10,6 +10,9 @@
 
 Available hostnames: nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox
 
+## Notes
+- The `home-manager` CLI is installed system-wide, so you can use `home-manager switch --flake .#<hostname>` directly after a system rebuild
+
 ## Code Style Guidelines
 - **Indentation**: Use 2-space indentation consistently across all file types
 - **Imports**: Group by purpose (nixpkgs, home-manager, etc.), use descriptive names
