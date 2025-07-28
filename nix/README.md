@@ -83,8 +83,8 @@ Install home manager:
 | FZF: Find files               | `<C-p>`          |                  |                  |                                                     |
 | FZF: List buffers             | `<C-b>`          |                  |                  |                                                     |
 | FZF: Live grep                | `<C-g>`          |                  |                  |                                                     |
-| Increment number/date         | `<C-a>`          | `<C-a>`          |                  | (dial.nvim)                                         |
-| Decrement number/date         | `<C-x>`          | `<C-x>`          |                  | (dial.nvim)                                         |
+| Increment number/date         | `<C-.>`          | `<C-.>`          |                  | (dial.nvim)                                         |
+| Decrement number/date         | `<C-,>`          | `<C-,>`          |                  | (dial.nvim)                                         |
 | Move line/selection down      | `<M-j>`          | `<M-j>`          |                  | (mini.move)                                         |
 | Move line/selection up        | `<M-k>`          | `<M-k>`          |                  | (mini.move)                                         |
 | Move line/selection left      | `<M-h>`          | `<M-h>`          |                  | (mini.move)                                         |
@@ -110,7 +110,7 @@ Install home manager:
 | Fold all child headings       |                     |                     |                     |                                             |
 | **Other**                     |                     |                     |                     |                                             |
 | Insert date                   | `<leader>id`        |                     |                     | Insert current date                         |
-| Increase/decrease date        |                     |                     |                     |                                             |
+| Increase/decrease date        | `<C-.>` / `<C-,>`   | `<C-.>` / `<C-,>`   |                     |                                             |
 
 **Legend:**  
 - `<leader>` is set to `\` (backslash)  
