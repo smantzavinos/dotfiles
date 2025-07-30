@@ -10,6 +10,11 @@
 
 Available hostnames: nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox
 
+## Dev Mode
+- **Dev Mode**: Systems with `enableDevMode = true` (t5600, msi_ms16) create symlinks for Neovim configs
+- **Benefits**: Edit Neovim Lua configs directly in `~/dotfiles/nix/home/nvim/lua/` for instant changes without rebuilds
+- **Normal Mode**: Other systems copy configs to Nix store (immutable, requires rebuild for changes)
+
 ## Notes
 - The `home-manager` CLI is installed system-wide, so you can use `home-manager switch --flake .#<hostname>` directly after a system rebuild
 

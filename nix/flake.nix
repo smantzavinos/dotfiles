@@ -58,6 +58,7 @@
         enableDevTools = false;
         enableLocalLLM = false;
         enableOpenWebUI = false;
+        enableDevMode = false;
       };
       # Shared home config generator
       mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins }: rec {
@@ -96,6 +97,7 @@
         x1 = {
           flags = flags // {
             enableDevTools = true;
+            enableDevMode = false;
           };
           extraModules = [
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-extreme-gen2
@@ -111,6 +113,7 @@
             enableDevTools = true;
             enablePlexServer = true;
             enableLocalLLM = true;
+            enableDevMode = false;
           };
           extraModules = [
             ./systems/precision_t5600.nix
@@ -143,6 +146,7 @@
             enableDevTools = true;
             enableLocalLLM = true;
             enableOpenWebUI = false;
+            enableDevMode = false;
           };
           extraModules = [
             ./home/apps/litellm/litellm.nix

@@ -1,4 +1,5 @@
 { config
+, lib
 , pkgs
 , pkgs_unstable
 , aider-flake
@@ -220,9 +221,13 @@
       ];
     };
 
-    xdg.configFile."nvim/lua/plugins" = {
+    xdg.configFile."nvim/lua/plugins" = if flags.enableDevMode then {
+      # In dev mode, create symlinks to the source files for rapid iteration
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nix/home/nvim/lua";
+    } else {
+      # In normal mode, copy files to nix store
       recursive = true;
-      source =./nvim/lua;
+      source = ./nvim/lua;
     };
 
     programs.neovim = {
@@ -694,4 +699,11 @@
       search_mode = "fuzzy";
     };
   };
+
+  # Dev mode notification
+  home.activation.devModeNotification = lib.mkIf flags.enableDevMode (lib.hm.dag.entryAfter ["writeBoundary"] ''
+    echo "🚀 Dev Mode Active: Neovim configs are symlinked for rapid iteration"
+    echo "   Config path: ~/.config/nvim/lua/plugins -> ~/dotfiles/nix/home/nvim/lua"
+    echo "   Edit files directly in ~/dotfiles/nix/home/nvim/lua/ for instant changes"
+  '');
 }
