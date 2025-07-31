@@ -92,6 +92,7 @@
 
       devToolPackages = if flags.enableDevTools then [
         pkgs.nodejs_22
+        pkgs.bun
         pkgs.plandex
         pkgs.plandex-server
         # pkgs.aider-chat
