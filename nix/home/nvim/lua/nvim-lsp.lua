@@ -24,31 +24,65 @@ return {
                 vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format({ async = true }) end, opts)
                 
                 -- Diagnostics
-                vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+                vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, opts)
                 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
                 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
                 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
             end
 
-            -- TypeScript/JavaScript LSP (also handles .svelte files for better navigation)
+            -- TypeScript/JavaScript LSP
             lspconfig.ts_ls.setup{
                 on_attach = on_attach,
-                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte" },
+                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+                settings = {
+                    typescript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = "all",
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                    javascript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = "all",
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                },
             }
 
-            -- Svelte LSP (works alongside TypeScript LSP)
+            -- Svelte LSP (handles all Svelte features including navigation)
             lspconfig.svelte.setup {
-                on_attach = function(client, bufnr)
-                    -- Let TypeScript LSP handle navigation, keep Svelte for syntax and formatting
-                    client.server_capabilities.definitionProvider = false
-                    client.server_capabilities.referencesProvider = false
-                    client.server_capabilities.implementationProvider = false
-                    client.server_capabilities.typeDefinitionProvider = false
-                    
-                    on_attach(client, bufnr)
-                end,
+                on_attach = on_attach,
                 flags = {
                     debounce_text_changes = 150,
+                },
+                settings = {
+                    svelte = {
+                        plugin = {
+                            typescript = {
+                                enable = true,
+                                diagnostics = { enable = true },
+                                hover = { enable = true },
+                                documentSymbols = { enable = true },
+                                completions = { enable = true },
+                                findReferences = { enable = true },
+                                definitions = { enable = true },
+                                codeActions = { enable = true },
+                                selectionRange = { enable = true },
+                                rename = { enable = true }
+                            }
+                        }
+                    }
                 }
             }
 
