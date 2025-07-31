@@ -30,14 +30,23 @@ return {
                 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
             end
 
-            -- TypeScript/JavaScript LSP
+            -- TypeScript/JavaScript LSP (also handles .svelte files for better navigation)
             lspconfig.ts_ls.setup{
                 on_attach = on_attach,
+                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte" },
             }
 
-            -- Svelte LSP
+            -- Svelte LSP (works alongside TypeScript LSP)
             lspconfig.svelte.setup {
-                on_attach = on_attach,
+                on_attach = function(client, bufnr)
+                    -- Let TypeScript LSP handle navigation, keep Svelte for syntax and formatting
+                    client.server_capabilities.definitionProvider = false
+                    client.server_capabilities.referencesProvider = false
+                    client.server_capabilities.implementationProvider = false
+                    client.server_capabilities.typeDefinitionProvider = false
+                    
+                    on_attach(client, bufnr)
+                end,
                 flags = {
                     debounce_text_changes = 150,
                 }
