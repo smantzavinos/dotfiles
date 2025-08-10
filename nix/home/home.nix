@@ -108,6 +108,7 @@
         pkgs_unstable.opencode
         pkgs.python313
         pkgs.uv
+        pkgs.mkcert
 
         buffrs.packages.x86_64-linux.default
       ] else [];
