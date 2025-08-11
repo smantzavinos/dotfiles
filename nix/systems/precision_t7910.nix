@@ -58,7 +58,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.initrd.luks.devices."luks-261fa310-9454-46f4-a3fa-3a5e31a22ba1".device = "/dev/disk/by-uuid/261fa310-9454-46f4-a3fa-3a5e31a22ba1";
-  networking.hostName = "t7910"; # Define your hostname.
+  networking.hostName = lib.mkForce "t7910"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

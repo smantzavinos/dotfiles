@@ -305,7 +305,7 @@ in {
   boot.initrd.luks.devices."luks-0dd0154d-6aea-42f9-a913-7d1ae299cad3".device = "/dev/disk/by-uuid/0dd0154d-6aea-42f9-a913-7d1ae299cad3";
   boot.initrd.luks.devices."luks-0dd0154d-6aea-42f9-a913-7d1ae299cad3".keyFile = "/crypto_keyfile.bin";
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = lib.mkForce "msi_gs66"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

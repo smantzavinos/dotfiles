@@ -213,6 +213,40 @@
       lfs.enable = true;
     };
 
+    programs.ssh = {
+      enable = true;
+      matchBlocks = {
+        "nixos" = {
+          hostname = "nixos.local";
+          user = "spiros";
+        };
+        "x1" = {
+          hostname = "x1.local";
+          user = "spiros";
+        };
+        "t5600" = {
+          hostname = "t5600.local";
+          user = "spiros";
+        };
+        "t7910" = {
+          hostname = "t7910.local";
+          user = "spiros";
+        };
+        "msi_gs66" = {
+          hostname = "msi_gs66.local";
+          user = "spiros";
+        };
+        "msi_ms16" = {
+          hostname = "msi_ms16.local";
+          user = "spiros";
+        };
+        "vbox" = {
+          hostname = "vbox.local";
+          user = "spiros";
+        };
+      };
+    };
+
     programs.vscode = {
       enable = true;
       extensions = with pkgs.vscode-extensions; [

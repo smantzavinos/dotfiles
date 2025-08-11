@@ -69,7 +69,7 @@
   boot.initrd.luks.devices."luks-1efbb05b-55e1-433a-9cd5-8e638c958c3e".device = "/dev/disk/by-uuid/1efbb05b-55e1-433a-9cd5-8e638c958c3e";
   boot.initrd.luks.devices."luks-1efbb05b-55e1-433a-9cd5-8e638c958c3e".keyFile = "/crypto_keyfile.bin";
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = lib.mkForce "t5600"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

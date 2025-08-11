@@ -11,6 +11,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  networking.hostName = lib.mkForce "vbox"; # Define your hostname.
+
   environment.systemPackages = with pkgs; [
     wget vim git nodejs_22
   ];

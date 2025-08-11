@@ -32,7 +32,7 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.initrd.luks.devices."luks-a4d51763-bd85-4feb-84a6-48bb1fd6d04f".device = "/dev/disk/by-uuid/a4d51763-bd85-4feb-84a6-48bb1fd6d04f";
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = lib.mkForce "msi_ms16"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

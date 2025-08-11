@@ -71,6 +71,20 @@ in
 
   programs.kdeconnect.enable = true;
 
+  # Enable Avahi for .local hostname resolution
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+  };
+
   services.openvpn.servers = {
     pia = {
       # config = null; # Explicitly set config to null since we're using configFile

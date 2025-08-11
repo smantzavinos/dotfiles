@@ -32,6 +32,7 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
+    context                 # hostname with colors
     os_icon                 # os identifier
     dir                     # current directory
     vcs                     # git status
@@ -926,28 +927,71 @@
   # typeset -g POWERLEVEL9K_CPU_ARCH_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   ##################################[ context: user@hostname ]##################################
-  # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
-  # Context color in SSH without privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=180
-  # Default context color (no privileges, no SSH).
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=180
-
-  # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%m'
-  # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%m'
-  # Default context format (no privileges, no SSH): user@hostname.
+  # Always show context (hostname) for system identification
+  typeset -g POWERLEVEL9K_CONTEXT_SHOW_DEFAULT_USER=true
+  typeset -g POWERLEVEL9K_CONTEXT_SHOW_ON_COMMAND=true
+  
+  # Context format: show user@hostname
   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m'
-
-  # Don't show context unless running with privileges or in SSH.
-  # Tip: Remove the next line to always show context.
-  typeset -g POWERLEVEL9K_CONTEXT_{DEFAULT,SUDO}_{CONTENT,VISUAL_IDENTIFIER}_EXPANSION=
-
-  # Custom icon.
-  # typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='⭐'
-  # Custom prefix.
-  typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%246Fwith '
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%m'
+  
+  # White text for all contexts
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=15
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=15
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=15
+  
+  # Set background color based on hostname for visual distinction
+  case $(hostname) in
+    nixos)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=1      # Red
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=1
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=1
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='🖥️'
+      ;;
+    x1)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=2      # Green
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=2
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=2
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='💻'
+      ;;
+    t5600)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=4      # Blue
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=4
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=4
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='🖥️'
+      ;;
+    t7910)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=5      # Magenta
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=5
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=5
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='🖥️'
+      ;;
+    msi_gs66)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=6      # Cyan
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=6
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=6
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='🎮'
+      ;;
+    msi_ms16)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=3      # Yellow
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=3
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=3
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='💻'
+      ;;
+    vbox)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=8      # Gray
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=8
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=8
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='📦'
+      ;;
+    *)
+      typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=0      # Black (default)
+      typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=0
+      typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_BACKGROUND=0
+      typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='💻'
+      ;;
+  esac
 
   ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
   # Python virtual environment color.
