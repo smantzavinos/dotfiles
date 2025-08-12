@@ -70,7 +70,7 @@
         pkgs.sesh
 
         # zsh
-        pkgs.zsh-powerlevel10k
+        pkgs.starship
         pkgs.zplug
         pkgs.oh-my-zsh
         pkgs.fzf-zsh
@@ -243,6 +243,80 @@
         "vbox" = {
           hostname = "vbox.local";
           user = "spiros";
+        };
+      };
+    };
+
+    programs.starship = {
+      enable = true;
+      settings = {
+        format = "$os$username$hostname$directory$git_branch$git_status$cmd_duration$line_break$character";
+        add_newline = false;
+        
+        os = {
+          disabled = false;
+          style = "bold white";
+          symbols = {
+            Linux = "🐧 ";
+          };
+        };
+        
+        username = {
+          show_always = true;
+          style_user = "bold yellow";
+          style_root = "bold red";
+          format = "[$user]($style)";
+        };
+        
+        hostname = {
+          ssh_only = false;
+          style = "bold bg:red fg:white";
+          format = "[@$hostname]($style) ";
+        };
+        
+        directory = {
+          style = "bold cyan";
+          truncation_length = 3;
+          truncate_to_repo = true;
+          format = "[$path]($style)[$read_only]($read_only_style) ";
+        };
+        
+        git_branch = {
+          style = "bold purple";
+          format = "on [$symbol$branch]($style) ";
+        };
+        
+        git_status = {
+          style = "bold red";
+          format = "([\$all_status\$ahead_behind](\$style) )";
+          ahead = "⇡\$count";
+          behind = "⇣\$count";
+          diverged = "⇕⇡\$ahead_count⇣\$behind_count";
+          conflicted = "=";
+          deleted = "✘";
+          renamed = "»";
+          modified = "*";
+          staged = "+";
+          untracked = "?";
+          stashed = "\\$";
+        };
+        
+        cmd_duration = {
+          min_time = 2000;
+          style = "bold yellow";
+          format = "took [$duration]($style) ";
+        };
+        
+        time = {
+          disabled = false;
+          style = "bold white";
+          format = "at [$time]($style) ";
+          time_format = "%I:%M:%S %p";
+        };
+        
+        character = {
+          success_symbol = "[✔](bold green)";
+          error_symbol = "[✘](bold red)";
         };
       };
     };
@@ -528,8 +602,7 @@
     initExtraBeforeCompInit = ''
       source ${pkgs.zplug}/share/zplug/init.zsh
 
-      # Load Powerlevel10k theme
-      zplug "romkatv/powerlevel10k", as:theme, depth:1
+      # Starship will be initialized in initExtra instead of using zplug theme
 
       # source ${pkgs.zplug}/share/zplug/init.zsh
 
@@ -554,9 +627,9 @@
       zplug load
     '';
 
-    # Source the Powerlevel10k configuration if it exists
+    # Initialize Starship prompt
     initExtra = ''
-      [[ ! -f ${"~/dotfiles/zsh/.p10k.zsh"} ]] || source ${"~/dotfiles/zsh/.p10k.zsh"}
+      eval "$(starship init zsh)"
 
       # <C-backspace> binding
       bindkey '^H' backward-kill-word
