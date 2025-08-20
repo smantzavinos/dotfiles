@@ -104,7 +104,7 @@
         pkgs.tailwindcss-language-server
         pkgs.lua-language-server
         pkgs_unstable.supabase-cli
-        pkgs_unstable.claude-code
+        # pkgs_unstable.claude-code
         pkgs_unstable.opencode
         pkgs.python313
         pkgs.uv
