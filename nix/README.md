@@ -34,7 +34,40 @@ This will create the file `./result/activate` that can then be executed to insta
 Install home manager:
 #+begin_src bash
 ./result/activate
+
 ```
+
+### Free up disk space in NixOS
+
+See list of system generations:
+``` bash
+sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+```
+
+See list of generations with size of each:
+``` bash
+for gen in $(sudo nix-env --list-generations --profile /nix/var/nix/profiles/system | awk '{print $1}'); do
+  path=$(readlink -f /nix/var/nix/profiles/system-${gen}-link)
+  size=$(nix path-info --closure-size "$path" | awk '{print $2}')
+  echo "Generation $gen: $((size/1024/1024)) MB"
+done
+```
+
+Keep only the 5 latest generations
+``` bash
+sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +5
+```
+
+Check size before and after deletign
+``` bash
+df -h /
+```
+
+Free up and nix store entries that are no longer referenced
+``` bash
+nix-collect-garbage
+```
+
 
 ## Keyboard Shortcuts
 
