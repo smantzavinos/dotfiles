@@ -48,6 +48,36 @@ I need to configure the LSP for Rust development
 - Provides comprehensive testing and validation
 - Supports rapid iteration in dev mode environments
 
+### NixOS Configuration Agent
+**Location**: `.opencode/agent/nix-config.md`
+**Purpose**: Specialized agent for NixOS system and Home Manager configuration management across all systems in the dotfiles repository
+
+**Usage**:
+```bash
+# Invoke the agent in opencode
+@nix-config add Docker support to the t5600 system
+
+# Or use directly in conversation
+I need to enable development tools on the msi_ms16 system and add Node.js packages
+```
+
+**Capabilities**:
+- Multi-system configuration management (nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox)
+- Flag-based feature management with conditional package installation
+- Home Manager integration with user-space configuration
+- Dev mode support for rapid Neovim configuration iteration
+- Package management across stable and unstable nixpkgs channels
+- Service configuration and hardware driver management
+- Build validation and safe deployment procedures
+- Secret management with SOPS integration
+
+**Key Features**:
+- Understands system-specific hardware requirements and capabilities
+- Follows established flake architecture and configuration patterns
+- Handles both system-level and user-level configuration changes
+- Provides comprehensive testing and validation before deployment
+- Supports cross-system configuration management and synchronization
+
 ### Agent Builder Agent
 **Location**: `.opencode/agent/agent-builder.md`
 **Purpose**: Specialized agent for creating comprehensive OpenCode agent instruction files using MCD methodology
