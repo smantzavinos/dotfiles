@@ -61,6 +61,7 @@
         pkgs.usbutils
         pkgs.zoxide
         pkgs.pandoc
+        pkgs.nix-direnv
         
         # C compiler and build tools for Treesitter parsers
         pkgs.gcc
@@ -253,6 +254,14 @@
 
     home.file.".config/starship.toml" = {
       text = builtins.readFile ./starship.toml;
+    };
+
+    programs = {
+      direnv = {
+        enable = true;
+        enableZshIntegration = true; # see note on other shells below
+        nix-direnv.enable = true;
+      };
     };
 
     programs.vscode = {
