@@ -1,6 +1,6 @@
 ---
 description: Specialized agent for creating comprehensive OpenCode agent instruction files using MCD methodology
-mode: subagent
+mode: primary
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
