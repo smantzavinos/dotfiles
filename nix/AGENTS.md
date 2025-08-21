@@ -18,6 +18,36 @@ Available hostnames: nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox
 ## Notes
 - The `home-manager` CLI is installed system-wide, so you can use `home-manager switch --flake .#<hostname>` directly after a system rebuild
 
+## OpenCode Agents
+
+### Neovim Configuration Agent
+**Location**: `.opencode/agent/neovim-config.md`
+**Purpose**: Specialized agent for NixOS Neovim configuration management and plugin integration
+
+**Usage**:
+```bash
+# Invoke the agent in opencode
+@neovim-config help me add the telescope-file-browser plugin
+
+# Or use directly in conversation
+I need to configure the LSP for Rust development
+```
+
+**Capabilities**:
+- Add new Neovim plugins with proper Nix packaging
+- Configure existing plugins with Lua configuration files
+- Set up LSP servers and completion systems
+- Manage keybindings and resolve conflicts
+- Handle dev mode vs normal mode differences
+- Validate configurations and test builds
+
+**Key Features**:
+- Follows established repository patterns and conventions
+- Handles both stable and unstable nixpkgs sources
+- Manages plugin dependencies and load order
+- Provides comprehensive testing and validation
+- Supports rapid iteration in dev mode environments
+
 ## Code Style Guidelines
 - **Indentation**: Use 2-space indentation consistently across all file types
 - **Imports**: Group by purpose (nixpkgs, home-manager, etc.), use descriptive names
