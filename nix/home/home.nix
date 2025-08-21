@@ -217,6 +217,19 @@
     programs.ssh = {
       enable = true;
       matchBlocks = {
+        # GitHub configurations
+        "github.com" = {
+          hostname = "github.com";
+          identityFile = "~/.ssh/id_ed25519";
+          identitiesOnly = true;
+        };
+        "github-globus" = {
+          hostname = "github.com";
+          identityFile = "~/.ssh/id_ed25519_globus";
+          identitiesOnly = true;
+        };
+        
+        # Local system configurations
         "nixos" = {
           hostname = "nixos.local";
           user = "spiros";
