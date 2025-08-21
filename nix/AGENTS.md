@@ -48,6 +48,34 @@ I need to configure the LSP for Rust development
 - Provides comprehensive testing and validation
 - Supports rapid iteration in dev mode environments
 
+### Agent Builder Agent
+**Location**: `.opencode/agent/agent-builder.md`
+**Purpose**: Specialized agent for creating comprehensive OpenCode agent instruction files using MCD methodology
+
+**Usage**:
+```bash
+# Invoke the agent in opencode
+@agent-builder create an agent for Docker container management
+
+# Or use directly in conversation
+I need an agent that can help with database migrations in this Rails project
+```
+
+**Capabilities**:
+- Complete MCD methodology implementation with all 8 sections
+- OpenCode-compatible YAML frontmatter and markdown structure
+- Repository-aware pattern recognition and convention following
+- Comprehensive workflow design with task breakdown and dependencies
+- Detailed testing and validation strategies
+- Operational procedures and maintenance guidelines
+
+**Key Features**:
+- Generates complete, actionable agents on first attempt
+- Follows cognitive empathy principles for AI instruction
+- Creates repository-specific patterns and examples
+- Implements comprehensive quality assurance processes
+- Provides detailed operational and maintenance procedures
+
 ## Code Style Guidelines
 - **Indentation**: Use 2-space indentation consistently across all file types
 - **Imports**: Group by purpose (nixpkgs, home-manager, etc.), use descriptive names
