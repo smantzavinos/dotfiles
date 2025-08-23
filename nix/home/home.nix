@@ -449,39 +449,8 @@
         # pkgs_unstable.vimPlugins.codecompanion-nvim
         nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
 
-        # Custom opencode.nvim plugin with configuration
-        {
-          plugin = opencode-nvim;
-          type = "lua";
-          config = ''
-            -- opencode.nvim configuration
-            local opencode = require('opencode')
-            
-            -- Basic setup with default options
-            opencode.setup({
-                -- Configuration options can be added here
-            })
-            
-            -- Key mappings
-            local keymap = vim.keymap.set
-            local opts = { noremap = true, silent = true }
-            
-            -- Recommended keymaps from the documentation
-            keymap('n', '<leader>oA', function() opencode.ask() end, vim.tbl_extend('force', opts, { desc = 'Ask opencode' }))
-            keymap('n', '<leader>oa', function() opencode.ask('@cursor: ') end, vim.tbl_extend('force', opts, { desc = 'Ask opencode about this' }))
-            keymap('v', '<leader>oa', function() opencode.ask('@selection: ') end, vim.tbl_extend('force', opts, { desc = 'Ask opencode about selection' }))
-            keymap('n', '<leader>ot', function() opencode.toggle() end, vim.tbl_extend('force', opts, { desc = 'Toggle embedded opencode' }))
-            keymap('n', '<leader>on', function() opencode.command('session_new') end, vim.tbl_extend('force', opts, { desc = 'New session' }))
-            keymap('n', '<leader>oy', function() opencode.command('messages_copy') end, vim.tbl_extend('force', opts, { desc = 'Copy last message' }))
-            keymap('n', '<S-C-u>', function() opencode.command('messages_half_page_up') end, vim.tbl_extend('force', opts, { desc = 'Scroll messages up' }))
-            keymap('n', '<S-C-d>', function() opencode.command('messages_half_page_down') end, vim.tbl_extend('force', opts, { desc = 'Scroll messages down' }))
-            keymap('n', '<leader>op', function() opencode.select_prompt() end, vim.tbl_extend('force', opts, { desc = 'Select prompt' }))
-            keymap('v', '<leader>op', function() opencode.select_prompt() end, vim.tbl_extend('force', opts, { desc = 'Select prompt' }))
-            
-            -- Example: keymap for custom prompt
-            keymap('n', '<leader>oe', function() opencode.prompt("Explain @cursor and its context") end, vim.tbl_extend('force', opts, { desc = "Explain code near cursor" }))
-          '';
-        }
+        # Custom opencode.nvim plugin
+        opencode-nvim
 
         pkgs.vimPlugins.lazy-nvim
         # Add required dependencies first
