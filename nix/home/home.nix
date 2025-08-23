@@ -9,7 +9,6 @@
 , flags
 , nixneovimplugins
 , awesome-neovim-plugins
-, dictation
 , ...
 }:
 
@@ -92,9 +91,7 @@
         whisper-input.defaultPackage.x86_64-linux
         
         # dictation packages
-        dictation.packages.x86_64-linux.nerd-dictation
-        dictation.packages.x86_64-linux.nerd-dictation-model
-        (import ./apps/dictation.nix { inherit pkgs dictation; })
+        (import ./apps/dictation.nix { inherit pkgs; })
       ];
 
       devToolPackages = if flags.enableDevTools then [
@@ -764,20 +761,56 @@
   # Dictation desktop app
   xdg.desktopEntries.dictation = {
     name = "Dictation";
-    exec = "${import ./apps/dictation.nix { inherit pkgs dictation; }}/lib/hotkeys.py";
+    exec = "${import ./apps/dictation.nix { inherit pkgs; }}/bin/dictation-toggle";
     terminal = true;
-    comment = "Dictate your speech to text at the press of a button";
+    comment = "Toggle speech-to-text dictation";
     categories = [ "Utility" ];
     type = "Application";
-    settings = {
-      SingleMainWindow = "true";
-    };
   };
 
-  # VOSK model linking for nerd-dictation
-  home.activation.nerd-dictation-model = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p $HOME/.config/nerd-dictation 2> /dev/null
-    ln -sfn ${dictation.packages.x86_64-linux.nerd-dictation-model}/model $HOME/.config/nerd-dictation/model
+
+
+  # KDE shortcuts for dictation
+  home.file.".config/kglobalshortcutsrc".text = lib.mkAfter ''
+    [dictation]
+    _k_friendly_name=Dictation
+    toggle=Meta+Shift+D,none,Toggle Dictation
+  '';
+
+  home.file.".config/khotkeysrc".text = lib.mkAfter ''
+    [Data]
+    DataCount=1
+
+    [Data_1]
+    Comment=Toggle dictation
+    Enabled=true
+    Name=Toggle Dictation
+    Type=SIMPLE_ACTION_DATA
+
+    [Data_1Actions]
+    ActionsCount=1
+
+    [Data_1Actions0]
+    CommandURL=${import ./apps/dictation.nix { inherit pkgs; }}/bin/dictation-toggle
+    Type=COMMAND_URL
+
+    [Data_1Conditions]
+    Comment=
+    ConditionsCount=0
+
+    [Data_1Triggers]
+    Comment=Simple_action
+    TriggersCount=1
+
+    [Data_1Triggers0]
+    Key=Meta+Shift+D
+    Type=SHORTCUT
+    Uuid={d03619b6-9b4c-4636-baf0-9e6f542bd100}
+
+    [Main]
+    AlreadyImported=defaults,kde32b1,konqueror_gestures_kde321
+    Disabled=false
+    Version=2
   '';
 
 

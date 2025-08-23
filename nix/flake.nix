@@ -34,14 +34,9 @@
       url = "github:NixNeovim/NixNeovimPlugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dictation = {
-      url = "github:jtara1/dictation";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, dictation, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {
@@ -66,14 +61,14 @@
         enableDevMode = false;
       };
       # Shared home config generator
-      mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins, dictation }: rec {
+      mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins }: rec {
         homeModule = {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             users.${username} = import ./home/home.nix;
             extraSpecialArgs = inputs // { 
-              inherit flags pkgs_unstable awesome-neovim-plugins dictation; 
+              inherit flags pkgs_unstable awesome-neovim-plugins; 
             };
           };
         };
@@ -82,7 +77,7 @@
           inherit pkgs;
           modules = [ ./home/home.nix ];
           extraSpecialArgs = inputs // { 
-            inherit flags pkgs_unstable awesome-neovim-plugins dictation; 
+            inherit flags pkgs_unstable awesome-neovim-plugins; 
           };
         };
       };
@@ -173,7 +168,7 @@
       homes = builtins.mapAttrs
         (name: cfg:
            mkHomeConfig {
-             inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins dictation;
+             inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
              username = "spiros";
              flags = cfg.flags;
            })
@@ -203,7 +198,7 @@
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
             home-manager.nixosModules.home-manager
             (mkHomeConfig {
-              inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins dictation;
+              inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
               username = "spiros";
               flags = flags;
             }).homeModule
