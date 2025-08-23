@@ -9,6 +9,7 @@
 , flags
 , nixneovimplugins
 , awesome-neovim-plugins
+, opencode-flake
 , ...
 }:
 
@@ -106,7 +107,7 @@
         pkgs.lua-language-server
         pkgs_unstable.supabase-cli
         # pkgs_unstable.claude-code
-        pkgs_unstable.opencode
+        opencode-flake.packages.x86_64-linux.default
         pkgs.python313
         pkgs.uv
         pkgs.mkcert

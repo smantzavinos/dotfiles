@@ -34,9 +34,13 @@
       url = "github:NixNeovim/NixNeovimPlugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode-flake = {
+      url = "github:AodhanHayter/opencode-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixos-hardware, nixneovimplugins, awesome-neovim-plugins, opencode-flake, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {
@@ -61,14 +65,14 @@
         enableDevMode = false;
       };
       # Shared home config generator
-      mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins }: rec {
+      mkHomeConfig = { system, username, pkgs, flags, inputs, pkgs_unstable, awesome-neovim-plugins, opencode-flake }: rec {
         homeModule = {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             users.${username} = import ./home/home.nix;
             extraSpecialArgs = inputs // { 
-              inherit flags pkgs_unstable awesome-neovim-plugins; 
+              inherit flags pkgs_unstable awesome-neovim-plugins opencode-flake; 
             };
           };
         };
@@ -77,7 +81,7 @@
           inherit pkgs;
           modules = [ ./home/home.nix ];
           extraSpecialArgs = inputs // { 
-            inherit flags pkgs_unstable awesome-neovim-plugins; 
+            inherit flags pkgs_unstable awesome-neovim-plugins opencode-flake; 
           };
         };
       };
@@ -167,11 +171,11 @@
       # Generate home configs for all systems
       homes = builtins.mapAttrs
         (name: cfg:
-          mkHomeConfig {
-            inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
-            username = "spiros";
-            flags = cfg.flags;
-          })
+           mkHomeConfig {
+             inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins opencode-flake;
+             username = "spiros";
+             flags = cfg.flags;
+           })
         systemDefs;
     in
     {
@@ -198,7 +202,7 @@
             "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
             home-manager.nixosModules.home-manager
             (mkHomeConfig {
-              inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins;
+              inherit system pkgs inputs pkgs_unstable awesome-neovim-plugins opencode-flake;
               username = "spiros";
               flags = flags;
             }).homeModule
