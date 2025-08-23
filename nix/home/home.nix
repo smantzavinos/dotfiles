@@ -550,7 +550,18 @@
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
-        pkgs_unstable.vimPlugins.snacks-nvim
+        {
+          plugin = pkgs_unstable.vimPlugins.snacks-nvim;
+          type = "lua";
+          config = ''
+            require("snacks").setup({
+              input = { enabled = true },  -- Required for opencode.nvim embedded terminal
+              terminal = { enabled = true },  -- Enable terminal functionality
+              notifier = { enabled = true },  -- Enable notifications
+              quickfile = { enabled = true },  -- Enable quick file operations
+            })
+          '';
+        }
         awesome-neovim-plugins.packages.${pkgs.system}.nvim-aider
         {
           plugin = pkgs.vimPlugins.vim-startify;
