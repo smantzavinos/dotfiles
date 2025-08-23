@@ -9,6 +9,7 @@
 , flags
 , nixneovimplugins
 , awesome-neovim-plugins
+, dictation
 , ...
 }:
 
@@ -28,7 +29,6 @@
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
       ./apps/s3drive/s3drive.nix
-      ./apps/nerd-dictation/nerd-dictation.nix
     ];
 
 
@@ -90,6 +90,11 @@
 
         # flakes passed in from top level flake.nix
         whisper-input.defaultPackage.x86_64-linux
+        
+        # dictation packages
+        dictation.packages.x86_64-linux.nerd-dictation
+        dictation.packages.x86_64-linux.nerd-dictation-model
+        (import ./apps/dictation.nix { inherit pkgs dictation; })
       ];
 
       devToolPackages = if flags.enableDevTools then [
@@ -756,105 +761,24 @@
     echo "   Edit files directly in ~/dotfiles/nix/home/nvim/lua/ for instant changes"
   '');
 
-  # KDE Plasma global shortcuts for nerd-dictation
-  home.file.".config/kglobalshortcutsrc" = {
-    text = ''
-      [nerd-dictation]
-      _k_friendly_name=Nerd Dictation
-      begin=Meta+Shift+D,none,Start Dictation
-      end=Meta+Shift+S,none,Stop Dictation
-      cancel=Meta+Shift+C,none,Cancel Dictation
-    '';
+  # Dictation desktop app
+  xdg.desktopEntries.dictation = {
+    name = "Dictation";
+    exec = "${import ./apps/dictation.nix { inherit pkgs dictation; }}/lib/hotkeys.py";
+    terminal = true;
+    comment = "Dictate your speech to text at the press of a button";
+    categories = [ "Utility" ];
+    type = "Application";
+    settings = {
+      SingleMainWindow = "true";
+    };
   };
 
-  # KDE custom shortcuts configuration
-  home.file.".config/khotkeysrc" = {
-    text = ''
-      [Data]
-      DataCount=3
+  # VOSK model linking for nerd-dictation
+  home.activation.nerd-dictation-model = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p $HOME/.config/nerd-dictation 2> /dev/null
+    ln -sfn ${dictation.packages.x86_64-linux.nerd-dictation-model}/model $HOME/.config/nerd-dictation/model
+  '';
 
-      [Data_1]
-      Comment=Start nerd-dictation
-      Enabled=true
-      Name=Start Dictation
-      Type=SIMPLE_ACTION_DATA
 
-      [Data_1Actions]
-      ActionsCount=1
-
-      [Data_1Actions0]
-      CommandURL=nerd-dictation begin --timeout=10.0 --full-sentence --numbers-as-digits
-      Type=COMMAND_URL
-
-      [Data_1Conditions]
-      Comment=
-      ConditionsCount=0
-
-      [Data_1Triggers]
-      Comment=Simple_action
-      TriggersCount=1
-
-      [Data_1Triggers0]
-      Key=Meta+Shift+D
-      Type=SHORTCUT
-      Uuid={d03619b6-9b4c-4636-baf0-9e6f542bd100}
-
-      [Data_2]
-      Comment=Stop nerd-dictation
-      Enabled=true
-      Name=Stop Dictation
-      Type=SIMPLE_ACTION_DATA
-
-      [Data_2Actions]
-      ActionsCount=1
-
-      [Data_2Actions0]
-      CommandURL=nerd-dictation end
-      Type=COMMAND_URL
-
-      [Data_2Conditions]
-      Comment=
-      ConditionsCount=0
-
-      [Data_2Triggers]
-      Comment=Simple_action
-      TriggersCount=1
-
-      [Data_2Triggers0]
-      Key=Meta+Shift+S
-      Type=SHORTCUT
-      Uuid={d03619b6-9b4c-4636-baf0-9e6f542bd101}
-
-      [Data_3]
-      Comment=Cancel nerd-dictation
-      Enabled=true
-      Name=Cancel Dictation
-      Type=SIMPLE_ACTION_DATA
-
-      [Data_3Actions]
-      ActionsCount=1
-
-      [Data_3Actions0]
-      CommandURL=nerd-dictation cancel
-      Type=COMMAND_URL
-
-      [Data_3Conditions]
-      Comment=
-      ConditionsCount=0
-
-      [Data_3Triggers]
-      Comment=Simple_action
-      TriggersCount=1
-
-      [Data_3Triggers0]
-      Key=Meta+Shift+C
-      Type=SHORTCUT
-      Uuid={d03619b6-9b4c-4636-baf0-9e6f542bd102}
-
-      [Main]
-      AlreadyImported=defaults,kde32b1,konqueror_gestures_kde321
-      Disabled=false
-      Version=2
-    '';
-  };
 }

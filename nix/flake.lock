@@ -135,6 +135,29 @@
         "type": "github"
       }
     },
+    "dictation": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1713815446,
+        "narHash": "sha256-v6ifjX/NL8Z41cj2fMuh/mVi9S0btNTJybGDjKvQqCY=",
+        "owner": "jtara1",
+        "repo": "dictation",
+        "rev": "a67e577effba44689a497b99037f9e2bb52779f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jtara1",
+        "repo": "dictation",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -449,6 +472,7 @@
         "avante-nvim-nightly-flake": "avante-nvim-nightly-flake",
         "awesome-neovim-plugins": "awesome-neovim-plugins",
         "buffrs": "buffrs",
+        "dictation": "dictation",
         "flake-utils": "flake-utils_3",
         "home-manager": "home-manager",
         "nixneovimplugins": "nixneovimplugins",
