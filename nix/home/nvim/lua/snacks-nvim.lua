@@ -47,11 +47,13 @@ return {
             vim.api.nvim_create_autocmd("User", {
                 pattern = "VeryLazy",
                 callback = function()
-                    -- Setup which-key descriptions
-                    local wk = require("which-key")
-                    wk.add({
-                        { "<leader>s", group = "snacks" },
-                    })
+                    -- Setup which-key descriptions (optional)
+                    local wk_ok, wk = pcall(require, "which-key")
+                    if wk_ok then
+                        wk.add({
+                            { "<leader>s", group = "snacks" },
+                        })
+                    end
                 end,
             })
         end,
