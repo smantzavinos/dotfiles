@@ -1,6 +1,10 @@
 
 # Nix
 
+## General
+
+- fix any build warning (like nix-fmt)
+
 ## NeoVim
 
 ### Neovim Coding
@@ -40,10 +44,16 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
 
 ## zsh
 
+- slow startup time
+
 ### Starship prompt
 
 - [ ] darker colors
 - [ ] hostname instead of user name
+
+## tmux
+
+- catpuccin theme
 
 
 # Agents
@@ -53,5 +63,26 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
 
 
 - [ ] nix-config - don't commit?
+
+# Systems
+
+
+- server with 1 GB ethernet
+- server github action runner
+
+- boot server without external drives connected
+
+- nextcloud
+- nextcloud outside house
+- nextcloud S3 backup
+
+
+- home server nix cachce
+- cron nix flake update and build. user notification to switch on each system.
+
+- plex outside house
+
+
+
 
 
