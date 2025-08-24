@@ -137,6 +137,8 @@ in
       xdotool
       libnotify
       coreutils
+      dictationStart
+      dictationStop
     ];
 
     # Install launchers for KDE global shortcuts
