@@ -28,6 +28,7 @@
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
       ./apps/s3drive/s3drive.nix
+      ./modules/dictation.nix
     ];
 
 
@@ -748,10 +749,19 @@
     };
   };
 
-  # Dev mode notification
-  home.activation.devModeNotification = lib.mkIf flags.enableDevMode (lib.hm.dag.entryAfter ["writeBoundary"] ''
-    echo "🚀 Dev Mode Active: Neovim configs are symlinked for rapid iteration"
-    echo "   Config path: ~/.config/nvim/lua/plugins -> ~/dotfiles/nix/home/nvim/lua"
-    echo "   Edit files directly in ~/dotfiles/nix/home/nvim/lua/ for instant changes"
-  '');
+    # Dictation configuration
+    programs.dictation = {
+      enable = true;
+      model.url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.en.bin";
+      model.sha256 = "0mj3vbvaiyk5x2ids9zlp2g94a01l4qar9w109qcg3ikg0sfjdyc";
+      shortcuts.start = "Meta+V";
+      shortcuts.stop = "Meta+Shift+V";
+    };
+
+    # Dev mode notification
+    home.activation.devModeNotification = lib.mkIf flags.enableDevMode (lib.hm.dag.entryAfter ["writeBoundary"] ''
+      echo "🚀 Dev Mode Active: Neovim configs are symlinked for rapid iteration"
+      echo "   Config path: ~/.config/nvim/lua/plugins -> ~/dotfiles/nix/home/nvim/lua"
+      echo "   Edit files directly in ~/dotfiles/nix/home/nvim/lua/ for instant changes"
+    '');
 }
