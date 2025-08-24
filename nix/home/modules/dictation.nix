@@ -53,12 +53,13 @@ let
     fi
 
     # Transcribe with whisper.cpp (CPU), fully threaded + beam search for quality
-    OUT="$(${cfg.whisperPackage}/bin/whisper-cli \
+    # Use -ng to force CPU-only mode, -nt to disable timestamps, -np to reduce output
+    OUT="$(${cfg.whisperPackage}/bin/whisper-cpp \
       -m ${whisperModel} \
       -f "$WAVFILE" \
       -t "$(${pkgs.coreutils}/bin/nproc)" \
       -bs 5 \
-      -otxt -of - 2>/dev/null | sed -e 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+      -ng -nt -np 2>/dev/null | sed -e 's/^[[:space:]]*//; s/[[:space:]]*$//')"
 
     # Type into active X11 window (no clipboard)
     ${pkgs.xdotool}/bin/xdotool type --delay 0 --clearmodifiers -- "$OUT"
