@@ -43,17 +43,5 @@ return {
             -- Notification keymap
             { "<leader>sn", function() require("snacks").notifier.show_history() end, desc = "Show notification history" },
         },
-        init = function()
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "VeryLazy",
-                callback = function()
-                    -- Setup which-key descriptions
-                    local wk = require("which-key")
-                    wk.add({
-                        { "<leader>s", group = "snacks" },
-                    })
-                end,
-            })
-        end,
     }
 }
