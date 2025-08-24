@@ -753,8 +753,8 @@
     # Dictation configuration
     programs.dictation = {
       enable = true;
-      model.url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.en.bin";
-      model.sha256 = "0mj3vbvaiyk5x2ids9zlp2g94a01l4qar9w109qcg3ikg0sfjdyc";
+      model.url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin";
+      model.sha256 = "a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002";
       shortcuts.start = "Meta+V";
       shortcuts.stop = "Meta+Shift+V";
     };
