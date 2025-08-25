@@ -753,6 +753,9 @@
     # Dictation configuration
     programs.dictation = {
       enable = true;
+      useAPI = true;  # Enable fast API-based transcription
+      apiProvider = "openai";  # Use OpenAI Whisper API (change to "groq" for free alternative)
+      # Fallback local model (only used if useAPI = false)
       model.url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin";
       model.sha256 = "a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002";
       shortcuts.start = "Meta+V";
