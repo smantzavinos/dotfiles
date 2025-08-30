@@ -100,7 +100,7 @@
         pkgs.plandex
         pkgs.plandex-server
         # pkgs.aider-chat
-        pkgs_unstable.aider-chat-with-playwright
+        # pkgs_unstable.aider-chat-with-playwright
         # aider-flake.packages.x86_64-linux.default
         pkgs.tree-sitter
         pkgs.typescript-language-server
