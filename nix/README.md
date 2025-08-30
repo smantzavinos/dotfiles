@@ -97,6 +97,15 @@ nix-collect-garbage
 | `aider-openai`   | Run aider with OpenAI config                |
 | `aider-gemini`   | Run aider with Gemini config                |
 
+### Dictation (KDE X11)
+
+| Shortcut         | Description                                 |
+|------------------|---------------------------------------------|
+| `Meta+V`         | Start voice recording for dictation        |
+| `Meta+Shift+V`   | Stop recording and type transcribed text   |
+
+The dictation system uses whisper.cpp for speech-to-text transcription and types the result directly into the active window. See [README-dictation.md](README-dictation.md) for detailed setup and usage instructions.
+
 ### neovim
 
 | Action/Command                | Normal Mode      | Visual Mode      | Insert Mode      | Description                                         |

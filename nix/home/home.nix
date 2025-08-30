@@ -28,6 +28,7 @@
     imports = [
       # Note: Test on new system to confirm relative path does not cause issues
       ./apps/s3drive/s3drive.nix
+      ./modules/dictation.nix
     ];
 
 
@@ -435,6 +436,24 @@
             maintainers = [];
           };
         };
+
+        # Custom possession.nvim plugin since it's not in nixpkgs yet
+        possession-nvim = pkgs.vimUtils.buildVimPlugin {
+          pname = "possession-nvim";
+          version = "2025-01-24";
+          src = pkgs.fetchFromGitHub {
+            owner = "jedrzejboczar";
+            repo = "possession.nvim";
+            rev = "7e0abb58ccf1e7c03d9c80f9a2515ab9befb0d4d";
+            sha256 = "1llg58h5kq3x19jgmlkkvbdkcjq615kchv6yi5ik2hnqcpwlgf4g";
+          };
+          meta = with pkgs.lib; {
+            description = "Flexible session management for Neovim";
+            homepage = "https://github.com/jedrzejboczar/possession.nvim";
+            license = licenses.mit;
+            maintainers = [];
+          };
+        };
       in [
         pkgs.vimPlugins.autolist-nvim
         pkgs.vimPlugins.mini-move
@@ -454,6 +473,12 @@
 
         # Custom opencode.nvim plugin
         opencode-nvim
+
+        # Custom possession.nvim plugin
+        possession-nvim
+
+        # Alpha.nvim for startup screen
+        pkgs.vimPlugins.alpha-nvim
 
         pkgs.vimPlugins.lazy-nvim
         # Add required dependencies first
@@ -523,6 +548,7 @@
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
         pkgs_unstable.vimPlugins.snacks-nvim
+        pkgs.vimPlugins.which-key-nvim
         awesome-neovim-plugins.packages.${pkgs.system}.nvim-aider
         {
           plugin = pkgs.vimPlugins.vim-startify;
@@ -812,6 +838,5 @@
     Disabled=false
     Version=2
   '';
-
 
 }

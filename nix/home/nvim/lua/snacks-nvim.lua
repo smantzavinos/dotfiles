@@ -51,7 +51,7 @@ return {
                     local wk_ok, wk = pcall(require, "which-key")
                     if wk_ok then
                         wk.add({
-                            { "<leader>s", group = "snacks" },
+                            { "<leader>k", group = "snacks" },
                         })
                     end
                 end,
