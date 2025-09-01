@@ -58,7 +58,7 @@
         pkgs.vlc
         pkgs.ncdu
         pkgs.nixd
-        pkgs.nixfmt
+        pkgs.nixfmt-classic
         pkgs.usbutils
         pkgs.zoxide
         pkgs.pandoc

@@ -1,30 +1,26 @@
 
 # Nix
-
 ## General
-
-- fix any build warning (like nix-fmt)
-
+- [X] fix any build warning (like nix-fmt)
 ## NeoVim
-
 ### Neovim Coding
 
-- [ ] nerd dictation integration
-
+- nerd dictation integration
+  - keybindings are dictation-start=?? and dictations-stop?? 
+  - [ ] dication-stop not adding to clipboard
 
 - [ ] mcp systemd auto start with direnv
 - mcp servers
     - [ ] context7
     - [ ] consult7
 
-
+### Neovim Coding
 - [ ] vim sessions (https://github.com/jedrzejboczar/possession.nvim)
     - [ ] integrate with tmux resurrect
 - [ ] startup screen (alpha.nvim)
     - [ ] integrate with possession
 - [ ] neovim-project with neo-tree and barbar
 neovim-project will restore expanded/collapsed directories in neotree and tab order in barbar. barbar is a big improvement on tabs in neovim.
-
 
 - [ ] diffview shortcuts
     - [ ] Keyboard shortcut to show inline diff of current buffer
@@ -33,6 +29,7 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
 
 - markdown
     - [ ] shift left-right on enter insert mode
+    - [ ] shift left-right two spaces (not four)
 
 - [ ] alt-h/j/k/l for lists should work in insert mode
 - [ ] register " doesn't work for paste from system keyboard
@@ -40,20 +37,15 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
 - [ ] telescope <c-p/g/f> shortcuts
 - [ ] session management - possession
 - [ ] nvim-dap for sveltekit
-
-
 ## zsh
-
-- slow startup time
-
+- [ ] slow startup time
 ### Starship prompt
-
 - [ ] darker colors
 - [ ] hostname instead of user name
 
 ## tmux
 
-- catpuccin theme
+- [ ] catpuccin theme
 
 
 # Agents
