@@ -633,10 +633,8 @@
       zplug load
     '';
 
-    # Initialize Starship prompt
+    # Initialize shell customizations
     initExtra = ''
-      eval "$(starship init zsh)"
-
       # <C-backspace> binding
       bindkey '^H' backward-kill-word
 
@@ -663,6 +661,14 @@
         set-option -ga terminal-overrides ",alacritty:Tc"
         set-option -ga terminal-overrides ",xterm-256color:Tc"
         set-option -ga terminal-overrides ",tmux-256color:Tc"
+        set-option -ga terminal-overrides ",xterm-kitty:Tc"
+        
+        # Enable proper font rendering for powerline/nerd font glyphs
+        set-option -ga terminal-overrides ",*:U8=0"
+        
+        # Ensure UTF-8 support
+        set -gq utf8 on
+        set -gq status-utf8 on
 
         # # VI keys for movement, selection, and copying
         # setw -g mode-keys vi
@@ -691,19 +697,58 @@
     '';
     plugins = with pkgs.tmuxPlugins; [
       {
-        plugin = dracula;
+        plugin = catppuccin;
         extraConfig = ''
-            set -g @dracula-show-battery true
-            set -g @dracula-show-powerline true
-            set -g @dracula-refresh-rate 10
-            set -g @dracula-show-left-icon session
-
-            set -g @dracula-plugins "weather cpu-usage ram-usage battery"
-            set -g @dracula-cpu-usage-colors "yellow dark_gray"
-            set -g @dracula-cpu-usage-label "\uf4bc"
-            set -g @dracula-ram-usage-label "\ue266"
-            set -g @dracula-show-location false
+          # Catppuccin Config 3 settings with proper Nerd Font separators
+          set -g @catppuccin_window_left_separator ""
+          set -g @catppuccin_window_right_separator " "
+          set -g @catppuccin_window_middle_separator " "
+          set -g @catppuccin_window_number_position "right"
+          
+          # Enable window status icons and improve text
+          set -g @catppuccin_window_status_enable "yes"
+          set -g @catppuccin_window_status_icon_enable "yes"
+          
+          set -g @catppuccin_window_default_fill "number"
+          set -g @catppuccin_window_default_text "#{b:pane_current_path}"
+          
+          set -g @catppuccin_window_current_fill "number"
+          set -g @catppuccin_window_current_text "#{b:pane_current_path}"
+          
+          # Override window status icons for better visibility
+          set -g @catppuccin_icon_window_last "󰖰"
+          set -g @catppuccin_icon_window_current "󰖯"
+          set -g @catppuccin_icon_window_zoom "󰁌"
+          set -g @catppuccin_icon_window_mark "󰃀"
+          set -g @catppuccin_icon_window_silent "󰂛"
+          set -g @catppuccin_icon_window_activity "󰖲"
+          set -g @catppuccin_icon_window_bell "󰂞"
+          
+          set -g @catppuccin_status_modules_right "directory user host session battery cpu ram"
+          set -g @catppuccin_status_left_separator  ""
+          set -g @catppuccin_status_right_separator ""
+          set -g @catppuccin_status_right_separator_inverse "no"
+          set -g @catppuccin_status_fill "icon"
+          set -g @catppuccin_status_connect_separator "no"
+          
+          set -g @catppuccin_directory_text "#{pane_current_path}"
+          
+          # Set mocha flavor
+          set -g @catppuccin_flavour 'mocha'
+          
+          # Custom CPU and RAM labels to match your current setup
+          set -g @catppuccin_cpu_icon "\uf4bc"
+          set -g @catppuccin_ram_icon "\ue266"
         '';
+      }
+      {
+        plugin = battery;
+      }
+      {
+        plugin = cpu;
+      }
+      {
+        plugin = sysstat;
       }
       {
         plugin = tmux-fzf;
