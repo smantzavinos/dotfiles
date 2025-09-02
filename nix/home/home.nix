@@ -487,7 +487,7 @@
         pkgs.vimPlugins.telescope-nvim
         # Now list obsidian.nvim after its dependencies
         pkgs.vimPlugins.obsidian-nvim
-        pkgs.vimPlugins.nvim-tree-lua
+        pkgs.vimPlugins.neo-tree-nvim
         # {
         #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
         #   type = "lua";
