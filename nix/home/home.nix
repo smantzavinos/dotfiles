@@ -720,7 +720,7 @@
           set -g @catppuccin_window_current_fill "number"
           set -g @catppuccin_window_current_text "#{b:pane_current_path}"
           set -g @catppuccin_window_current_color "#f5c2e7"
-          set -g @catppuccin_window_current_background "#585b70"
+          set -g @catppuccin_window_current_background "#313244"
           
           # Override window status icons for better visibility
           set -g @catppuccin_icon_window_last "󰖰"
@@ -731,7 +731,7 @@
           set -g @catppuccin_icon_window_activity "󰖲"
           set -g @catppuccin_icon_window_bell "󰂞"
           
-          set -g @catppuccin_status_modules_right "directory user host session battery cpu ram"
+          set -g @catppuccin_status_modules_right "directory user host session battery cpu load"
           set -g @catppuccin_status_left_separator ""
           set -g @catppuccin_status_right_separator ""
           set -g @catppuccin_status_right_separator_inverse "no"
@@ -743,9 +743,16 @@
           # Set mocha flavor
           set -g @catppuccin_flavour 'mocha'
           
-          # Custom CPU and RAM labels to match your current setup
-          set -g @catppuccin_cpu_icon "\uf4bc"
-          set -g @catppuccin_ram_icon "\ue266"
+          # Configure CPU module to show only CPU
+          set -g @catppuccin_cpu_icon ""
+          set -g @catppuccin_cpu_text "#{cpu_percentage}"
+          
+          # Configure load module to show RAM instead of system load
+          set -g @catppuccin_load_icon "\ue266"
+          set -g @catppuccin_load_text "#{ram_percentage}"
+          set -g @catppuccin_load_color "#{ram_bg_color}"
+          
+
         '';
       }
       {
@@ -753,9 +760,22 @@
       }
       {
         plugin = cpu;
+        extraConfig = ''
+          # Initialize CPU plugin
+          run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux
+          
+          # Configure RAM colors to match CPU plugin's dynamic coloring
+          set -g @ram_low_bg_color "#f9e2af"     # yellow for low RAM usage
+          set -g @ram_medium_bg_color "#fab387"  # orange for medium RAM usage  
+          set -g @ram_high_bg_color "#f38ba8"    # red for high RAM usage
+        '';
       }
       {
         plugin = sysstat;
+        extraConfig = ''
+          # Initialize sysstat plugin  
+          run-shell ${pkgs.tmuxPlugins.sysstat}/share/tmux-plugins/sysstat/sysstat.tmux
+        '';
       }
       {
         plugin = tmux-fzf;
