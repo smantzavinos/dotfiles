@@ -266,7 +266,7 @@
     };
 
     programs.starship = {
-      enable = true;
+      enable = false;  # Disable automatic integration to avoid path issues
     };
 
     home.file.".config/starship.toml" = {
@@ -635,6 +635,11 @@
 
     # Initialize shell customizations
     initExtra = ''
+      # Initialize starship prompt with correct path
+      if [[ $TERM != "dumb" ]]; then
+        eval "$(${pkgs.starship}/bin/starship init zsh)"
+      fi
+
       # <C-backspace> binding
       bindkey '^H' backward-kill-word
 
@@ -703,7 +708,7 @@
           set -g @catppuccin_window_left_separator ""
           set -g @catppuccin_window_right_separator " "
           set -g @catppuccin_window_middle_separator " "
-          set -g @catppuccin_window_number_position "right"
+          set -g @catppuccin_window_number_position "left"
           
           # Enable window status icons and improve text
           set -g @catppuccin_window_status_enable "yes"
@@ -725,7 +730,7 @@
           set -g @catppuccin_icon_window_bell "󰂞"
           
           set -g @catppuccin_status_modules_right "directory user host session battery cpu ram"
-          set -g @catppuccin_status_left_separator  ""
+          set -g @catppuccin_status_left_separator ""
           set -g @catppuccin_status_right_separator ""
           set -g @catppuccin_status_right_separator_inverse "no"
           set -g @catppuccin_status_fill "icon"
