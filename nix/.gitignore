@@ -1,5 +1,6 @@
 # Nix build results
 result
+nix/result
 result-*
 
 # Temporary files
