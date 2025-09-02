@@ -705,9 +705,9 @@
         plugin = catppuccin;
         extraConfig = ''
           # Catppuccin Config 3 settings with proper Nerd Font separators
-          set -g @catppuccin_window_left_separator ""
+          set -g @catppuccin_window_left_separator "◖"
           set -g @catppuccin_window_right_separator " "
-          set -g @catppuccin_window_middle_separator " "
+          set -g @catppuccin_window_middle_separator "█ "
           set -g @catppuccin_window_number_position "left"
           
           # Enable window status icons and improve text
