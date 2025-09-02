@@ -719,6 +719,8 @@
           
           set -g @catppuccin_window_current_fill "number"
           set -g @catppuccin_window_current_text "#{b:pane_current_path}"
+          set -g @catppuccin_window_current_color "#f5c2e7"
+          set -g @catppuccin_window_current_background "#585b70"
           
           # Override window status icons for better visibility
           set -g @catppuccin_icon_window_last "󰖰"
