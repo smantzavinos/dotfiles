@@ -415,6 +415,10 @@
             -- keep indentation but turn off automatic list / comment continuation
             vim.opt_local.autoindent = true
             vim.opt_local.formatoptions:remove({ "r", "o", "n" })
+            
+            -- Enable line wrapping for markdown files
+            vim.opt_local.wrap = true
+            vim.opt_local.linebreak = true
           end,
         })
       '';
