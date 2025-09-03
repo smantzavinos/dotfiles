@@ -134,7 +134,11 @@ return {
                         nowait = true,
                     },
                     mappings = {
-                        -- Navigation
+                        -- Navigation - Tab to toggle folders, Enter to open files
+                        ["<tab>"] = { 
+                            "toggle_node", 
+                            nowait = false,
+                        },
                         ["<space>"] = { 
                             "toggle_node", 
                             nowait = false,
@@ -245,8 +249,8 @@ return {
                         },
                     },
                     follow_current_file = {
-                        enabled = false,
-                        leave_dirs_open = false,
+                        enabled = true,
+                        leave_dirs_open = true,
                     },
                     group_empty_dirs = false,
                     hijack_netrw_behavior = "open_default",
@@ -371,6 +375,13 @@ return {
             -- Quick reveal current file
             vim.keymap.set('n', '<Leader>tr', ':Neotree reveal<CR>', { 
                 desc = "Reveal current file in Neo-tree", 
+                noremap = true, 
+                silent = true 
+            })
+            
+            -- Follow current file (manual trigger)
+            vim.keymap.set('n', '<Leader>ff', ':Neotree reveal filesystem left<CR>', { 
+                desc = "Follow current file in Neo-tree", 
                 noremap = true, 
                 silent = true 
             })
