@@ -108,6 +108,16 @@ The dictation system uses whisper.cpp for speech-to-text transcription and types
 
 ### neovim
 
+#### Git Workflow
+The git integration provides a comprehensive workflow with multiple tools:
+
+- **Git Status**: `<leader>gs` opens the main git interface
+- **Diff Viewing**: `<leader>gd` shows detailed changes with diffview
+- **File History**: `<leader>gh` (all files) or `<leader>gH` (current file)
+- **Tree Integration**: `<leader>gt` for git status in tree view
+
+#### Keybindings
+
 | Action/Command                | Normal Mode      | Visual Mode      | Insert Mode      | Description                                         |
 |-------------------------------|------------------|------------------|------------------|-----------------------------------------------------|
 | Show diagnostics              | `<leader>d`      |                  |                  | Show diagnostics in floating window                 |
@@ -120,8 +130,13 @@ The dictation system uses whisper.cpp for speech-to-text transcription and types
 | Toggle CodeCompanion          | `<leader>cs`     |                  |                  |                                                     |
 | Toggle Aider                  | `<leader>a/`     |                  |                  |                                                     |
 | Send to Aider                 | `<leader>as`     | `<leader>as`     |                  |                                                     |
-| Open Neogit                   | `<leader>g`      |                  |                  |                                                     |
-| Toggle NvimTree file explorer | `<leader>e`      |                  |                  |                                                     |
+| Open Neogit                   | `<leader>gs`     |                  |                  | Git status and operations interface                 |
+| Open git diff view            | `<leader>gd`     |                  |                  | Show git changes with diffview                      |
+| Close git diff view           | `<leader>gD`     |                  |                  | Close diffview                                       |
+| Git file history              | `<leader>gh`     |                  |                  | Show git history for all files                      |
+| Current file git history      | `<leader>gH`     |                  |                  | Show git history for current file                   |
+| Refresh git diff view         | `<leader>gr`     |                  |                  | Refresh the diffview                                 |
+| Toggle Neo-tree file explorer | `<leader>e`      |                  |                  | Open/close filesystem tree view                     |
 | FZF: Find files               | `<C-p>`          |                  |                  |                                                     |
 | FZF: List buffers             | `<C-b>`          |                  |                  |                                                     |
 | FZF: Live grep                | `<C-g>`          |                  |                  |                                                     |

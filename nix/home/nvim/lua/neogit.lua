@@ -7,7 +7,12 @@ return {
       "ibhagwan/fzf-lua",
     },
     keys = {
-      { "<leader>g", ":Neogit<CR>", desc = "Open Neogit" },
+      { "<leader>gs", ":Neogit<CR>", desc = "Open Neogit" },
+      { "<leader>gd", ":DiffviewOpen<CR>", desc = "Open git diff view" },
+      { "<leader>gD", ":DiffviewClose<CR>", desc = "Close git diff view" },
+      { "<leader>gh", ":DiffviewFileHistory<CR>", desc = "Git file history" },
+      { "<leader>gH", ":DiffviewFileHistory %<CR>", desc = "Current file history" },
+      { "<leader>gr", ":DiffviewRefresh<CR>", desc = "Refresh diff view" },
     },
     config = function()
       require("neogit").setup({

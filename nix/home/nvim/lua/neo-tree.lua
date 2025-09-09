@@ -11,7 +11,7 @@ return {
             -- Main toggles
             { "<Leader>e", ":Neotree toggle filesystem left<CR>", desc = "Toggle Neo-tree filesystem", noremap = true, silent = true },
             { "<Leader>bf", ":Neotree toggle buffers left<CR>", desc = "Toggle Neo-tree buffers", noremap = true, silent = true },
-            { "<Leader>gs", ":Neotree toggle git_status left<CR>", desc = "Toggle Neo-tree git status", noremap = true, silent = true },
+            { "<Leader>gt", ":Neotree toggle git_status left<CR>", desc = "Toggle Neo-tree git status", noremap = true, silent = true },
             
             -- Quick navigation
             { "<Leader>gf", ":Neotree reveal filesystem left<CR>", desc = "Reveal current file in Neo-tree", noremap = true, silent = true },

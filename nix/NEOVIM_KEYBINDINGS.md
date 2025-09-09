@@ -10,7 +10,7 @@ Neo-tree is a modern file explorer for Neovim with enhanced features including g
 |------------|--------|-------------|
 | `<Leader>e` | Toggle filesystem | Open/close Neo-tree filesystem view |
 | `<Leader>bf` | Toggle buffers | Open/close Neo-tree buffer view |
-| `<Leader>gs` | Toggle git status | Open/close Neo-tree git status view |
+| `<Leader>gt` | Toggle git status | Open/close Neo-tree git status view |
 | `<Leader>gf` | Reveal current file | Show current file in Neo-tree |
 | `<Leader>ff` | Follow current file | Follow current file in Neo-tree |
 
@@ -162,7 +162,7 @@ Neo-tree displays git status using these symbols:
 ### Quick Workflow Examples
 
 1. **Basic file navigation:**
-   - `<Leader>e` - Open Neo-tree
+   - `<Leader>e` - Open Neo-tree filesystem
    - Navigate with arrow keys or `hjkl`
    - `<CR>` to open files
    - `<BS>` to go up directories
@@ -174,7 +174,7 @@ Neo-tree displays git status using these symbols:
    - `c` to copy, `m` to move
 
 3. **Git workflow:**
-   - `<Leader>gs` - Open git status view
+   - `<leader>gt` - Open git status tree view
    - `ga` to stage files
    - `gc` to commit
    - `gp` to push
@@ -207,3 +207,36 @@ If you're coming from nvim-tree, the main differences are:
 - **Advanced operations**: More file management capabilities
 
 The core navigation (`<Leader>e` to toggle) remains the same for a smooth transition.
+
+## Git Operations
+
+### Main Git Interface
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `<leader>gs` | Open Neogit | Git status and operations interface |
+
+### Diffview (Git Diff Viewer)
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `<leader>gd` | Open diff view | Show git diff of all changes |
+| `<leader>gD` | Close diff view | Close the diff view |
+| `<leader>gh` | Git file history | Show history for all files |
+| `<leader>gH` | Current file history | Show history for current file only |
+| `<leader>gr` | Refresh diff view | Refresh the diff view |
+
+### Git Workflow Examples
+
+1. **Quick git status:**
+   - `<leader>gs` - Open Neogit
+   - Stage, commit, push from within Neogit interface
+
+2. **View changes:**
+   - `<leader>gd` - See what files changed and their diffs
+   - `<leader>gH` - See history of current file
+   - `<leader>gD` - Close diff view when done
+
+3. **Neo-tree git integration:**
+   - `<leader>gt` - Git status in tree view
+   - `ga` to stage files, `gc` to commit within Neo-tree

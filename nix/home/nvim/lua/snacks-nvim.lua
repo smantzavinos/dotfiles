@@ -25,7 +25,7 @@ return {
             { "<leader>sg", function() require("snacks").lazygit() end, desc = "Open LazyGit" },
             
             -- Git browse keymaps
-            { "<leader>gb", function() require("snacks").gitbrowse() end, desc = "Git browse" },
+            { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git browse" },
             
             -- Scratch buffer keymaps
             { "<leader>ss", function() require("snacks").scratch() end, desc = "Open scratch buffer" },
