@@ -123,6 +123,18 @@ return {
                         vim.fn.setreg('+', filename, 'c')
                         print("Copied filename: " .. filename)
                     end,
+                    
+                    -- Custom command to open files or navigate into directories
+                    open_or_navigate = function(state)
+                        local node = state.tree:get_node()
+                        if node.type == "directory" then
+                            -- For directories, set as root
+                            require("neo-tree.sources.filesystem.commands").set_root(state)
+                        else
+                            -- For files, open normally
+                            require("neo-tree.sources.common.commands").open(state)
+                        end
+                    end,
                 },
                 
                 -- Window configuration
@@ -144,7 +156,7 @@ return {
                             nowait = false,
                         },
                         ["<2-LeftMouse>"] = "open",
-                        ["<cr>"] = "open",
+                        ["<cr>"] = "open_or_navigate",
                         ["<esc>"] = "cancel",
                         ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
                         ["l"] = "focus_preview",
