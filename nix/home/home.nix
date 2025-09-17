@@ -307,6 +307,7 @@
       withNodeJs = true;
       extraLuaConfig = ''
         vim.g.mapleader = "\\" -- Set leader key to backslash
+        vim.g.maplocalleader = "," -- Set local leader key to comma
         require("lazy").setup({
           performance = {
             reset_packpath = false,
