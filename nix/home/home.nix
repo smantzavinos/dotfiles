@@ -114,6 +114,7 @@
         pkgs.python313
         pkgs.uv
         pkgs.mkcert
+        pkgs.d2
 
         buffrs.packages.x86_64-linux.default
       ] else [];
