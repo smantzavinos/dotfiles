@@ -10,7 +10,8 @@ jobs:
       contains(github.event.comment.body, ' /oc') ||
       startsWith(github.event.comment.body, '/oc') ||
       contains(github.event.comment.body, ' /opencode') ||
-      startsWith(github.event.comment.body, '/opencode')
+      startsWith(github.event.comment.body, '/opencode') &&
+      (github.event.comment.user.login == 'smantzavinos')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,7 +23,7 @@ jobs:
       - name: Run opencode
         uses: sst/opencode/github@latest
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OATH_TOKEN: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
         with:
           model: anthropic/claude-sonnet-4-20250514
           share: false
