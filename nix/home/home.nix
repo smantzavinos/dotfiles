@@ -90,9 +90,6 @@
 
         # flakes passed in from top level flake.nix
         whisper-input.defaultPackage.x86_64-linux
-        
-        # dictation packages
-        (import ./apps/dictation.nix { inherit pkgs; })
       ];
 
       devToolPackages = if flags.enableDevTools then [
@@ -862,59 +859,37 @@
     echo "   Edit files directly in ~/dotfiles/nix/home/nvim/lua/ for instant changes"
   '');
 
-  # Dictation desktop app
-  xdg.desktopEntries.dictation = {
-    name = "Dictation";
-    exec = "${import ./apps/dictation.nix { inherit pkgs; }}/bin/dictation-toggle";
-    terminal = true;
-    comment = "Toggle speech-to-text dictation";
+  # Enable comprehensive dictation system
+  programs.dictation = {
+    enable = true;
+    useAPI = true;  # Use API instead of local whisper for better reliability
+    apiProvider = "openai";  # or "groq" if you prefer
+    hint = "Recording… press Meta+Shift+V to transcribe & type.";
+    shortcuts = {
+      start = "Meta+V";
+      stop = "Meta+Shift+V";
+    };
+    # Required even when using API (not actually used)
+    model.sha256 = "sha256-oDd5yG3zMjB19eeWyyzlAp8A7Ihp7uP9+4l6/jbG0AI=";
+  };
+
+  # Dictation desktop apps
+  xdg.desktopEntries.dictation-start = {
+    name = "Dictation Start";
+    exec = "dictation-start";
+    terminal = false;
+    comment = "Start speech-to-text recording";
     categories = [ "Utility" ];
     type = "Application";
   };
-
-
-
-  # KDE shortcuts for dictation
-  home.file.".config/kglobalshortcutsrc".text = lib.mkAfter ''
-    [dictation]
-    _k_friendly_name=Dictation
-    toggle=Meta+Shift+D,none,Toggle Dictation
-  '';
-
-  home.file.".config/khotkeysrc".text = lib.mkAfter ''
-    [Data]
-    DataCount=1
-
-    [Data_1]
-    Comment=Toggle dictation
-    Enabled=true
-    Name=Toggle Dictation
-    Type=SIMPLE_ACTION_DATA
-
-    [Data_1Actions]
-    ActionsCount=1
-
-    [Data_1Actions0]
-    CommandURL=${import ./apps/dictation.nix { inherit pkgs; }}/bin/dictation-toggle
-    Type=COMMAND_URL
-
-    [Data_1Conditions]
-    Comment=
-    ConditionsCount=0
-
-    [Data_1Triggers]
-    Comment=Simple_action
-    TriggersCount=1
-
-    [Data_1Triggers0]
-    Key=Meta+Shift+D
-    Type=SHORTCUT
-    Uuid={d03619b6-9b4c-4636-baf0-9e6f542bd100}
-
-    [Main]
-    AlreadyImported=defaults,kde32b1,konqueror_gestures_kde321
-    Disabled=false
-    Version=2
-  '';
+  
+  xdg.desktopEntries.dictation-stop = {
+    name = "Dictation Stop";
+    exec = "dictation-stop";
+    terminal = false;
+    comment = "Stop recording and transcribe to text";
+    categories = [ "Utility" ];
+    type = "Application";
+  };
 
 }
