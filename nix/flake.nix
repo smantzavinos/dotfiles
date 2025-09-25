@@ -90,7 +90,7 @@
             enableDevTools = false;
           };
           extraModules = [
-            ./systems/litellm-docker.nix
+            ./home/apps/litellm/litellm.nix
             /etc/nixos/configuration.nix
           ];
         };
