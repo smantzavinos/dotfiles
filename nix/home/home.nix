@@ -264,7 +264,8 @@
     };
 
     programs.starship = {
-      enable = false;  # Disable automatic integration to avoid path issues
+      enable = true;
+      enableZshIntegration = true;
     };
 
     home.file.".config/starship.toml" = {
