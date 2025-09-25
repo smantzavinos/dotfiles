@@ -266,10 +266,8 @@
     programs.starship = {
       enable = true;
       enableZshIntegration = true;
-    };
-
-    home.file.".config/starship.toml" = {
-      text = builtins.readFile ./starship.toml;
+      # Use the existing comprehensive starship.toml configuration
+      settings = builtins.fromTOML (builtins.readFile ./starship.toml);
     };
 
     programs = {
