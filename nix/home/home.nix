@@ -72,7 +72,6 @@
         pkgs.sesh
 
         # zsh
-        pkgs.starship
         pkgs.zplug
         pkgs.oh-my-zsh
         pkgs.fzf-zsh
@@ -637,11 +636,6 @@
 
     # Initialize shell customizations
     initExtra = ''
-      # Initialize starship prompt with correct path
-      if [[ $TERM != "dumb" ]]; then
-        eval "$(${pkgs.starship}/bin/starship init zsh)"
-      fi
-
       # <C-backspace> binding
       bindkey '^H' backward-kill-word
 
