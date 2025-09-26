@@ -371,6 +371,14 @@
         -- Tab management shortcuts
         vim.keymap.set('n', '<leader>Tn', ':tabnew<CR>', { desc = "New tab", noremap = true, silent = true })
         vim.keymap.set('n', '<leader>Tc', ':tabclose<CR>', { desc = "Close tab", noremap = true, silent = true })
+        
+        -- Tab navigation shortcuts
+        vim.keymap.set('n', '<M-m>', ':tabnext<CR>', { desc = "Next tab", noremap = true, silent = true })
+        vim.keymap.set('n', '<M-n>', ':tabprevious<CR>', { desc = "Previous tab", noremap = true, silent = true })
+        
+        -- Tab movement shortcuts
+        vim.keymap.set('n', '<M-S-m>', ':tabmove +1<CR>', { desc = "Move tab right", noremap = true, silent = true })
+        vim.keymap.set('n', '<M-S-n>', ':tabmove -1<CR>', { desc = "Move tab left", noremap = true, silent = true })
 
         -- Keymaps and settings for Markdown / Obsidian
         vim.api.nvim_create_autocmd("FileType", {
