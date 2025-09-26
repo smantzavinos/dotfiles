@@ -368,6 +368,10 @@
           print("Diagnostics copied to clipboard")
         end, { noremap = true, silent = true })
 
+        -- Tab management shortcuts
+        vim.keymap.set('n', '<leader>Tn', ':tabnew<CR>', { desc = "New tab", noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>Tc', ':tabclose<CR>', { desc = "Close tab", noremap = true, silent = true })
+
         -- Keymaps and settings for Markdown / Obsidian
         vim.api.nvim_create_autocmd("FileType", {
           pattern = "markdown",
