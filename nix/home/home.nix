@@ -302,7 +302,7 @@
       vimdiffAlias = true;
       withNodeJs = true;
       extraLuaConfig = ''
-        vim.g.mapleader = "\\" -- Set leader key to backslash
+        vim.g.mapleader = ";" -- Set leader key to semicolon
         vim.g.maplocalleader = "," -- Set local leader key to comma
         require("lazy").setup({
           performance = {
@@ -550,6 +550,7 @@
         pkgs.vimPlugins.nvim-dap-ui
         pkgs_unstable.vimPlugins.snacks-nvim
         pkgs.vimPlugins.which-key-nvim
+        pkgs.vimPlugins.hydra-nvim
         awesome-neovim-plugins.packages.${pkgs.system}.nvim-aider
         {
           plugin = pkgs.vimPlugins.vim-startify;
