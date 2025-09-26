@@ -9,7 +9,7 @@ return {
     keys = {
       { "<leader>gs", ":Neogit<CR>", desc = "Open Neogit" },
       { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Git diff (unstaged changes)" },
-      { "<leader>gdD", ":DiffviewClose<CR>", desc = "Close git diff view" },
+      { "<leader>gdc", ":DiffviewClose<CR>", desc = "Close git diff view" },
       { "<leader>gdh", ":DiffviewFileHistory<CR>", desc = "Git diff file history" },
       { "<leader>gdH", ":DiffviewFileHistory %<CR>", desc = "Git diff current file history" },
       { "<leader>gdr", ":DiffviewRefresh<CR>", desc = "Git diff refresh" },

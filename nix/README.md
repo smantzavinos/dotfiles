@@ -131,11 +131,11 @@ The git integration provides a comprehensive workflow with multiple tools:
 | Toggle Aider                  | `<leader>a/`     |                  |                  |                                                     |
 | Send to Aider                 | `<leader>as`     | `<leader>as`     |                  |                                                     |
 | Open Neogit                   | `<leader>gs`     |                  |                  | Git status and operations interface                 |
-| Open git diff view            | `<leader>gd`     |                  |                  | Show git changes with diffview                      |
-| Close git diff view           | `<leader>gD`     |                  |                  | Close diffview                                       |
-| Git file history              | `<leader>gh`     |                  |                  | Show git history for all files                      |
-| Current file git history      | `<leader>gH`     |                  |                  | Show git history for current file                   |
-| Refresh git diff view         | `<leader>gr`     |                  |                  | Refresh the diffview                                 |
+| Open git diff view            | `<leader>gdd`     |                  |                  | Show git changes with diffview                      |
+| Close git diff view           | `<leader>gdc`     |                  |                  | Close diffview                                       |
+| Git file history              | `<leader>gdh`     |                  |                  | Show git history for all files                      |
+| Current file git history      | `<leader>gdH`     |                  |                  | Show git history for current file                   |
+| Refresh git diff view         | `<leader>gdr`     |                  |                  | Refresh the diffview                                 |
 | Toggle Neo-tree file explorer | `<leader>e`      |                  |                  | Open/close filesystem tree view                     |
 | FZF: Find files               | `<C-p>`          |                  |                  |                                                     |
 | FZF: List buffers             | `<C-b>`          |                  |                  |                                                     |
