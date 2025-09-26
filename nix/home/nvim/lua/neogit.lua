@@ -8,19 +8,19 @@ return {
     },
     keys = {
       { "<leader>gs", ":Neogit<CR>", desc = "Open Neogit" },
-      { "<leader>gd", ":DiffviewOpen<CR>", desc = "Open git diff view" },
-      { "<leader>gD", ":DiffviewClose<CR>", desc = "Close git diff view" },
-      { "<leader>gh", ":DiffviewFileHistory<CR>", desc = "Git file history" },
-      { "<leader>gH", ":DiffviewFileHistory %<CR>", desc = "Current file history" },
-      { "<leader>gr", ":DiffviewRefresh<CR>", desc = "Refresh diff view" },
-      { "<leader>gm", ":DiffviewOpen main..HEAD<CR>", desc = "Diff against main branch" },
-      { "<leader>go", ":DiffviewOpen origin/main..HEAD<CR>", desc = "Diff against origin/main" },
-      { "<leader>gb", function()
+      { "<leader>gdd", ":DiffviewOpen<CR>", desc = "Git diff (unstaged changes)" },
+      { "<leader>gdD", ":DiffviewClose<CR>", desc = "Close git diff view" },
+      { "<leader>gdh", ":DiffviewFileHistory<CR>", desc = "Git diff file history" },
+      { "<leader>gdH", ":DiffviewFileHistory %<CR>", desc = "Git diff current file history" },
+      { "<leader>gdr", ":DiffviewRefresh<CR>", desc = "Git diff refresh" },
+      { "<leader>gdm", ":DiffviewOpen main..HEAD<CR>", desc = "Git diff main" },
+      { "<leader>gdo", ":DiffviewOpen origin/main..HEAD<CR>", desc = "Git diff origin/main" },
+      { "<leader>gdb", function()
           local branch = vim.fn.input("Compare against branch: ", "main")
           if branch ~= "" then
             vim.cmd("DiffviewOpen " .. branch .. "..HEAD")
           end
-        end, desc = "Diff against custom branch" },
+        end, desc = "Git diff branch (custom)" },
     },
     config = function()
       require("neogit").setup({
