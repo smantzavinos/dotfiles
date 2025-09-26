@@ -13,6 +13,14 @@ return {
       { "<leader>gh", ":DiffviewFileHistory<CR>", desc = "Git file history" },
       { "<leader>gH", ":DiffviewFileHistory %<CR>", desc = "Current file history" },
       { "<leader>gr", ":DiffviewRefresh<CR>", desc = "Refresh diff view" },
+      { "<leader>gm", ":DiffviewOpen main..HEAD<CR>", desc = "Diff against main branch" },
+      { "<leader>go", ":DiffviewOpen origin/main..HEAD<CR>", desc = "Diff against origin/main" },
+      { "<leader>gb", function()
+          local branch = vim.fn.input("Compare against branch: ", "main")
+          if branch ~= "" then
+            vim.cmd("DiffviewOpen " .. branch .. "..HEAD")
+          end
+        end, desc = "Diff against custom branch" },
     },
     config = function()
       require("neogit").setup({
