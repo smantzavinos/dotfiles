@@ -20,6 +20,21 @@ return {
             cwd = vim.fn.getcwd(),
           })
         end, { noremap = true, silent = true } },
+      -- Project root alternatives
+      { "<c-m-p>", function() 
+          local git_root = vim.fn.system("git rev-parse --show-toplevel 2>/dev/null"):gsub("\n", "")
+          local cwd = (git_root ~= "" and vim.v.shell_error == 0) and git_root or vim.fn.getcwd()
+          require('telescope.builtin').find_files({
+            cwd = cwd,
+          })
+        end, { noremap = true, silent = true } },
+      { "<c-m-g>", function() 
+          local git_root = vim.fn.system("git rev-parse --show-toplevel 2>/dev/null"):gsub("\n", "")
+          local cwd = (git_root ~= "" and vim.v.shell_error == 0) and git_root or vim.fn.getcwd()
+          require('telescope.builtin').live_grep({
+            cwd = cwd,
+          })
+        end, { noremap = true, silent = true } },
     },
     config = function()
       local telescope = require("telescope")
