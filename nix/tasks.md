@@ -1,121 +1,87 @@
-# Tasks
 
-## Completed Tasks
+# Nix
+## General
+- [X] fix any build warning (like nix-fmt)
 
-### KDE X11 Push-to-Talk Dictation Implementation ✅
-**Date**: 2025-08-23
+- [ ] Move all vim config to lua files outside of home.nix   <<<<<<<<<<<-------------------------------
 
-Implemented a complete dictation system for KDE Plasma on X11 using whisper.cpp:
+## NeoVim
+### Neovim Coding
 
-#### Core Implementation:
-- [x] Created `home/modules/dictation.nix` Home Manager module with full configuration options
-- [x] Fetched whisper model SHA256 hash: `0mj3vbvaiyk5x2ids9zlp2g94a01l4qar9w109qcg3ikg0sfjdyc`
-- [x] Integrated dictation module into `home.nix` with default configuration
-- [x] Built and validated configuration successfully
+- nerd dictation integration
+  - keybindings are dictation-start=?? and dictations-stop?? 
+  - [ ] dication-stop not adding to clipboard
 
-#### Features Delivered:
-- [x] **Push-to-talk functionality**: Meta+V to start, Meta+Shift+V to stop and transcribe
-- [x] **CPU-only whisper.cpp**: Uses nixpkgs prebuilt `openai-whisper-cpp` package
-- [x] **High-quality transcription**: Uses `ggml-medium.en.bin` model with beam search (bs=5)
-- [x] **Direct typing**: Uses `xdotool type --clearmodifiers` to inject text into active window
-- [x] **Audio recording**: 16 kHz mono WAV recording with sox for optimal Whisper compatibility
-- [x] **KDE integration**: Desktop files with X-KDE-Shortcuts for global hotkey support
-- [x] **Notifications**: Status updates via notify-send for user feedback
-- [x] **Error handling**: Graceful handling of recording states and audio capture issues
+- [ ] mcp systemd auto start with direnv
+- mcp servers
+    - [ ] context7
+    - [ ] consult7
 
-#### Documentation:
-- [x] Created comprehensive `README-dictation.md` with setup, usage, and troubleshooting
-- [x] Updated main `README.md` with dictation shortcuts reference
-- [x] Documented GPU acceleration roadmap with CUDA overlay example
+### Neovim General
+- [ ] obsidian like dataview task search   <<<<<<<<<<<-------------------------------
 
-#### Future GPU Support:
-- [x] Created `overlays/whisper-cuda.nix` overlay for NVIDIA GPU acceleration
-- [x] Documented GPU enablement process and expected performance improvements
-- [x] Provided runtime configuration for GPU offloading (`-ngl 99`)
+- [ ] vim sessions (https://github.com/jedrzejboczar/possession.nvim)
+    - [ ] integrate with tmux resurrect
+- [ ] startup screen (alpha.nvim)
+    - [ ] integrate with possession
+- [ ] neovim-project with neo-tree and barbar
+neovim-project will restore expanded/collapsed directories in neotree and tab order in barbar. barbar is a big improvement on tabs in neovim.
 
-#### Configuration Options:
-```nix
-programs.dictation = {
-  enable = true;
-  model.url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.en.bin";
-  model.sha256 = "0mj3vbvaiyk5x2ids9zlp2g94a01l4qar9w109qcg3ikg0sfjdyc";
-  shortcuts.start = "Meta+V";
-  shortcuts.stop = "Meta+Shift+V";
-  hint = "Recording… press Stop to transcribe & type.";
-  whisperPackage = pkgs.openai-whisper-cpp;
-};
-```
+- [x] diffview shortcuts
+    - [x] Keyboard shortcut to show inline diff of current buffer
+    - [x] diffview close should be <leader>gdc
 
-#### Build Validation:
-- [x] Home Manager configuration builds successfully
-- [x] Desktop files created with correct shortcuts
-- [x] Scripts generated with proper tool references
-- [x] Whisper model downloaded and referenced correctly
+- [x] neotree
 
-## Future Tasks
+- markdown
+    - [ ] shift left-right on enter insert mode
+    - [ ] shift left-right two spaces (not four)
 
-### GPU Acceleration Enhancement 🔄
-**Priority**: Medium
-**Estimated Effort**: 2-3 hours
+- [ ] alt-h/j/k/l for lists should work in insert mode
+- [ ] register " doesn't work for paste from system keyboard
 
-- [ ] Test CUDA overlay on systems with NVIDIA GPUs (t5600, x1, t7910)
-- [ ] Benchmark performance improvements with GPU acceleration
-- [ ] Create system-specific flag for GPU dictation (e.g., `enableDictationGPU`)
-- [ ] Document actual performance metrics and VRAM usage
+- [ ] telescope <c-p/g/f> shortcuts
+    - [x] grep doesn't find all files (search "neogit" for example)
+    - [ ] <c-alt-g/p> to run the commands from the repo root instead of current directory   <<<<<<<<<<<-------------------------------
 
-### Model Selection Improvements 🔄
-**Priority**: Low
-**Estimated Effort**: 1-2 hours
+- [ ] nvim-dap for sveltekit
+## zsh
+- [ ] slow startup time
+- [ ] replace opencode executable with "nix run ..." shortcut   <<<<<<<<<<<-------------------------------
+### Starship prompt
+- [ ] darker colors
+- [ ] hostname instead of user name
 
-- [ ] Add helper function to automatically fetch SHA256 for different models
-- [ ] Create predefined model configurations (tiny, base, small, medium, large)
-- [ ] Add model size and performance comparison documentation
-- [ ] Consider automatic model selection based on system capabilities
+## tmux
 
-### Advanced Features 🔄
-**Priority**: Low
-**Estimated Effort**: 3-4 hours
+- [x] catpuccin theme
 
-- [ ] Add language detection and multi-language support
-- [ ] Implement custom vocabulary/context injection for better accuracy
-- [ ] Add audio preprocessing options (noise reduction, gain control)
-- [ ] Create dictation history and correction interface
-- [ ] Add support for punctuation commands ("period", "comma", etc.)
 
-### Integration Enhancements 🔄
-**Priority**: Low
-**Estimated Effort**: 2-3 hours
+# Agents
+# nix-config
 
-- [ ] Add Wayland support using wtype instead of xdotool
-- [ ] Create clipboard fallback option for applications that don't accept synthetic typing
-- [ ] Add application-specific behavior configuration
-- [ ] Integrate with system-wide spell checking
+- [ ] prefer plugins from https://github.com/NixNeovim/NixNeovimPlugins
 
-### Testing and Quality Assurance 🔄
-**Priority**: Medium
-**Estimated Effort**: 2-3 hours
+- [ ] nix-config - don't commit?
 
-- [ ] Create automated tests for dictation module
-- [ ] Test on all target systems (nixos, x1, t5600, t7910, msi_gs66, msi_ms16, vbox)
-- [ ] Validate audio device compatibility across different hardware
-- [ ] Performance testing with different model sizes
+# Systems
 
-## Notes
+- server with 1 GB ethernet
+- server github action runner
 
-### Implementation Decisions:
-- **CPU-first approach**: Prioritized compatibility and ease of setup over performance
-- **Direct typing**: Chose xdotool over clipboard to avoid interference with user's clipboard
-- **Medium model default**: Balanced accuracy vs. speed for general use
-- **KDE-specific**: Focused on X11/KDE integration as specified in requirements
+- boot server without external drives connected
 
-### Technical Considerations:
-- **String interpolation**: Fixed Nix string interpolation issues in shell scripts
-- **Runtime directory**: Uses XDG_RUNTIME_DIR with fallback to /tmp for temporary files
-- **Process management**: Graceful recording termination with SIGINT and timeout handling
-- **Error handling**: Comprehensive error checking and user feedback via notifications
+- nextcloud
+- nextcloud outside house
+- nextcloud S3 backup
 
-### Architecture Benefits:
-- **Declarative**: Fully reproducible configuration via Nix
-- **Modular**: Self-contained module that can be easily enabled/disabled
-- **Configurable**: Extensive options for customization without code changes
-- **Maintainable**: Clear separation of concerns and well-documented code
+
+- home server nix cachce
+- cron nix flake update and build. user notification to switch on each system.
+
+- [ ] plex outside house
+
+
+
+
+
