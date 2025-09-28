@@ -458,7 +458,7 @@
     } else {
       # Production mode: copy to nix store
       "nvim" = {
-        source = /home/spiros/dotfiles/nix/home/nvim;
+        source = ./nvim;
         recursive = true;
       };
     };
