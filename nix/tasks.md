@@ -5,6 +5,7 @@
 
 - [ ] Move all vim config to lua files outside of home.nix   <<<<<<<<<<<-------------------------------
 
+- [ ] dev mode w/ symlinks   <<<<<<<<<<<-------------------------------
 
 - [ ] dim inactive tmux windows   <<<<<<<<<<<-------------------------------
 - [ ] dim inactive nvim windows   <<<<<<<<<<<-------------------------------

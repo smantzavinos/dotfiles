@@ -289,14 +289,7 @@
       ];
     };
 
-    xdg.configFile."nvim/lua/plugins" = if flags.enableDevMode then {
-      # In dev mode, create symlinks to the source files for rapid iteration
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nix/home/nvim/lua";
-    } else {
-      # In normal mode, copy files to nix store
-      recursive = true;
-      source = ./nvim/lua;
-    };
+
 
     programs.neovim = {
       enable = true;
@@ -304,134 +297,45 @@
       vimdiffAlias = true;
       withNodeJs = true;
       extraLuaConfig = ''
-        vim.g.mapleader = ";" -- Set leader key to semicolon
-        vim.g.maplocalleader = "," -- Set local leader key to comma
+        -- Set leader keys early (before any plugin loading)
+        vim.g.mapleader = ";"
+        vim.g.maplocalleader = ","
+        
+        -- Lazy.nvim setup with Nix integration
         require("lazy").setup({
+          spec = {
+            { import = "plugins" },
+          },
+          
+          -- Nix integration settings
           performance = {
-            reset_packpath = false,
-            rtp = {
-                reset = false,
-              }
-            },
+            reset_packpath = false,  -- Don't interfere with Nix paths
+            rtp = { reset = false }, -- Preserve runtime path
+          },
+          
           dev = {
             path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
             patterns = {""},
+            fallback = false,
           },
-          install = {
-            -- Safeguard in case we forget to install a plugin with Nix
-            missing = false,
+          
+          -- Disable installation features (Nix handles this)
+          install = { missing = false },    -- Never install plugins
+          checker = { enabled = false },    -- No update checking
+          change_detection = { enabled = false }, -- No file watching
+          
+          -- UI settings
+          ui = {
+            border = "rounded",
+            title = "Plugin Manager",
+            backdrop = 60,
           },
-          spec = {
-            { import = "plugins" },
-            -- Add other plugins here
-          }
         })
-
-
-
-
-
-        vim.wo.number = true
-
-        vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>', {noremap = true, silent = true})
-        vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>', {noremap = true, silent = true})
-
-        vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
-
-
-
-        -- Replace tabs with spaces
-        vim.opt.tabstop = 4
-        vim.opt.shiftwidth = 4
-        vim.opt.expandtab = true
-
-        -- Enable autoread and set up autocommand for auto-reloading buffers
-        vim.opt.autoread = true
-        vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
-          command = "checktime"
-        })
-
-        -- Add keybinding to show diagnostics in a floating window
-        vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
-
-        vim.keymap.set("n", "<leader>id", function()
-          vim.api.nvim_put({ os.date("%Y-%m-%d") }, "c", true, true)
-        end, { desc = "Insert date" })
         
-        -- Add keybinding to copy all diagnostics to clipboard
-        vim.keymap.set('n', '<leader>D', function()
-          local diagnostics = vim.diagnostic.get(0)
-          local lines = {}
-          for _, d in ipairs(diagnostics) do
-            table.insert(lines, string.format("[%s] %s (line %d)", d.severity, d.message, d.lnum + 1))
-          end
-          local text = table.concat(lines, '\n')
-          vim.fn.setreg('+', text) -- Copy to system clipboard
-          print("Diagnostics copied to clipboard")
-        end, { noremap = true, silent = true })
-
-        -- Tab management shortcuts
-        vim.keymap.set('n', '<leader>Tn', ':tabnew<CR>', { desc = "New tab", noremap = true, silent = true })
-        vim.keymap.set('n', '<leader>Tc', ':tabclose<CR>', { desc = "Close tab", noremap = true, silent = true })
-        
-        -- Tab navigation shortcuts
-        vim.keymap.set('n', '<M-m>', ':tabnext<CR>', { desc = "Next tab", noremap = true, silent = true })
-        vim.keymap.set('n', '<M-n>', ':tabprevious<CR>', { desc = "Previous tab", noremap = true, silent = true })
-        
-        -- Tab movement shortcuts
-        vim.keymap.set('n', '<M-S-m>', ':tabmove +1<CR>', { desc = "Move tab right", noremap = true, silent = true })
-        vim.keymap.set('n', '<M-S-n>', ':tabmove -1<CR>', { desc = "Move tab left", noremap = true, silent = true })
-
-        -- Keymaps and settings for Markdown / Obsidian
-        vim.api.nvim_create_autocmd("FileType", {
-          pattern = "markdown",
-          callback = function()
-            local map = function(mode, lhs, rhs, opts)
-              opts = opts or {}
-              opts.buffer = true
-              vim.keymap.set(mode, lhs, rhs, opts)
-            end
-
-            -- Function to cycle bullet points
-            local function cycle_bullet()
-              local line = vim.api.nvim_get_current_line()
-              local bullets = { "-", "*", "+" }
-              local new_line, found = line:gsub(
-                "^%s*([%-%*%+])", -- Match leading whitespace and one of the bullet characters
-                function(bullet)
-                  for i, b in ipairs(bullets) do
-                    if b == bullet then
-                      -- Cycle to the next bullet
-                      local next_bullet_index = (i % #bullets) + 1
-                      return bullets[next_bullet_index]
-                    end
-                  end
-                end,
-                1 -- Only replace the first occurrence
-              )
-              if found > 0 then
-                vim.api.nvim_set_current_line(new_line)
-              end
-            end
-
-            -- Cycle checkbox states for obsidian.nvim
-            map("n", "<leader>x", "<cmd>ObsidianCycleCheckbox<CR>", { silent = true, desc = "Cycle Checkbox" })
-
-            -- Create new list items
-            map("n", "<S-CR>", "o[ ] <Esc>", { silent = true, desc = "New TODO Item" })
-
-            -- Cycle bullet type
-            map("n", "<C-t>", cycle_bullet, { silent = true, desc = "Cycle Bullet Type" })
-            
-            -- keep indentation but turn off automatic list / comment continuation
-            vim.opt_local.autoindent = true
-            vim.opt_local.formatoptions:remove({ "r", "o", "n" })
-            
-            -- Enable line wrapping for markdown files
-            vim.opt_local.wrap = true
-            vim.opt_local.linebreak = true
-          end,
-        })
+        -- Load core Neovim configuration
+        require("config.options")    -- Vim settings
+        require("config.keymaps")    -- Core keybindings
+        require("config.autocmds")   -- Autocommands
       '';
       plugins = let
         # Custom opencode.nvim plugin since it's not in nixpkgs yet
@@ -484,7 +388,7 @@
         pkgs_unstable.vimPlugins.avante-nvim
 
         # pkgs_unstable.vimPlugins.codecompanion-nvim
-        nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
+        # nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim  # Requires Neovim 0.11+
 
         # Custom opencode.nvim plugin
         opencode-nvim
@@ -526,35 +430,7 @@
         #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
         #   '';
         # }
-        {
-          plugin = pkgs.vimPlugins.nvim-treesitter;
-          type = "lua";
-          config = ''
-            -- Set custom parser install location in writable path
-            local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
-            vim.fn.mkdir(parser_install_dir, "p")  -- Create directory if it doesn't exist
-            
-            vim.opt.runtimepath:append(parser_install_dir)
-            
-            require("nvim-treesitter.configs").setup({
-              highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-              },
-              parser_install_dir = parser_install_dir,
-              ensure_installed = {
-                "svelte", 
-                "typescript", 
-                "html",
-                "javascript",
-                "json",
-                "lua",
-                "nix",
-                "yaml",
-              },
-            })
-          '';
-        }
+        pkgs.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
         pkgs.vimPlugins.neogit
@@ -566,44 +442,31 @@
         pkgs.vimPlugins.which-key-nvim
         pkgs.vimPlugins.hydra-nvim
         awesome-neovim-plugins.packages.${pkgs.system}.nvim-aider
-        {
-          plugin = pkgs.vimPlugins.vim-startify;
-          config = ''
-            function! StartifyEntryFormat() abort
-              return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
-            endfunction
-          '';
-        }
+        pkgs.vimPlugins.vim-startify
         pkgs.vimPlugins.vim-fugitive
         pkgs.vimPlugins.indentLine
         pkgs.vimPlugins.luasnip
         pkgs_unstable.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
         pkgs.vimPlugins.nvim-lspconfig
-        {
-          plugin = pkgs.vimPlugins.nvim-surround;
-          type = "lua";
-          config = ''
-            require('nvim-surround').setup()
-          '';
-        }
+        pkgs.vimPlugins.nvim-surround
 
-        {
-          plugin = pkgs.vimPlugins.lualine-nvim;
-          type = "lua";
-          config = ''
-            require('lualine').setup({
-              options = {
-                theme = 'ayu_mirage',
-              },
-            })
-            vim.opt.showmode = false
-          '';
-        }
-        {
-          plugin = pkgs.vimPlugins.vim-tmux-navigator;
-        }
+        pkgs.vimPlugins.lualine-nvim
+        pkgs.vimPlugins.vim-tmux-navigator
       ];
+    };
+
+    # Neovim configuration files
+    xdg.configFile = if flags.enableDevMode then {
+      # Dev mode: symlink for live editing
+      "nvim".source = config.lib.file.mkOutOfStoreSymlink 
+        "${config.home.homeDirectory}/dotfiles/nix/home/nvim";
+    } else {
+      # Production mode: copy to nix store
+      "nvim" = {
+        source = /home/spiros/dotfiles/nix/home/nvim;
+        recursive = true;
+      };
     };
 
     programs.emacs = {

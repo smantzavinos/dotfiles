@@ -1,0 +1,7 @@
+-- init.lua
+-- All configuration is handled by extraLuaConfig in home.nix
+-- This ensures proper loading order:
+-- 1. Leader keys
+-- 2. Lazy.nvim setup 
+-- 3. Config files loading
+-- 4. Plugin configurations
