@@ -5,6 +5,10 @@
 
 - [ ] Move all vim config to lua files outside of home.nix   <<<<<<<<<<<-------------------------------
 
+
+- [ ] dim inactive tmux windows   <<<<<<<<<<<-------------------------------
+- [ ] dim inactive nvim windows   <<<<<<<<<<<-------------------------------
+
 ## NeoVim
 ### Neovim Coding
 
@@ -19,6 +23,7 @@
 
 ### Neovim General
 - [ ] obsidian like dataview task search   <<<<<<<<<<<-------------------------------
+- [ ] mark tasks as "ready" and have github action cron job to create a PR for the ready tasks
 
 - [ ] vim sessions (https://github.com/jedrzejboczar/possession.nvim)
     - [ ] integrate with tmux resurrect
@@ -29,9 +34,11 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
 
 - [x] diffview shortcuts
     - [x] Keyboard shortcut to show inline diff of current buffer
-    - [x] diffview close should be <leader>gdc
+    - [ ] diffview close should be <leader>gdc     <<<<<<<<<<<<<<<<<<<<<-----------------------------
 
 - [x] neotree
+
+- [ ] starship linux icon
 
 - markdown
     - [ ] shift left-right on enter insert mode
@@ -45,9 +52,12 @@ neovim-project will restore expanded/collapsed directories in neotree and tab or
     - [ ] <c-alt-g/p> to run the commands from the repo root instead of current directory   <<<<<<<<<<<-------------------------------
 
 - [ ] nvim-dap for sveltekit
+
+Snippets
+- [ ] luasnip
 ## zsh
 - [ ] slow startup time
-- [ ] replace opencode executable with "nix run ..." shortcut   <<<<<<<<<<<-------------------------------
+- [x] replace opencode executable with "nix run ..." shortcut   <<<<<<<<<<<-------------------------------
 ### Starship prompt
 - [ ] darker colors
 - [ ] hostname instead of user name
