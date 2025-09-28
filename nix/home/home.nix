@@ -106,7 +106,6 @@
         pkgs.lua-language-server
         pkgs_unstable.supabase-cli
         # pkgs_unstable.claude-code
-        pkgs_unstable.opencode
         pkgs.python313
         pkgs.uv
         pkgs.mkcert
@@ -206,6 +205,9 @@
       # Aider configuration aliases
       aider-openai = "AIDER_CONFIG=$HOME/.aider-openai.yml aider \"$@\"";
       aider-gemini = "AIDER_CONFIG=$HOME/.aider-gemini.yml aider \"$@\"";
+      
+      # OpenCode flake shortcut
+      opencode = "nix run github:AodhanHayter/opencode-flake";
     };
 
     programs.git = {
