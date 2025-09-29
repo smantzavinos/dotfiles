@@ -29,4 +29,4 @@ jobs:
         env:
           CLAUDE_CODE_OATH_TOKEN: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
         with:
-          model: anthropic/claude-3-5-sonnet-4-20250514
+          model: anthropic/claude-sonnet-4-20250514
