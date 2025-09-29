@@ -27,6 +27,6 @@ jobs:
       - name: Run opencode
         uses: sst/opencode/github@latest
         env:
-          CLAUDE_CODE_OATH_TOKEN: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode/sonic
