@@ -5,17 +5,10 @@ on:
     types: [created]
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug comment event
-        run: |
-          echo "Comment body: ${{ github.event.comment.body }}"
-          echo "Issue URL: ${{ github.event.issue.html_url }}"
-          echo "Is PR: ${{ github.event.issue.pull_request != null }}"
-  
   opencode:
-    if: contains(github.event.comment.body, ' /oc') || contains(github.event.comment.body, ' /opencode')
+    if: |
+      contains(github.event.comment.body, ' /oc') ||
+      contains(github.event.comment.body, ' /opencode')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -25,11 +18,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Run opencode
         uses: sst/opencode/github@latest
         env:
           CLAUDE_CODE_OATH_TOKEN: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
         with:
-          model: anthropic/claude-sonnet-4-20250514
-          share: false
+          model: opencode/sonic
