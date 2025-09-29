@@ -111,6 +111,10 @@
         pkgs.uv
         pkgs.mkcert
         pkgs.d2
+        
+        # Rust toolchain for blink.cmp compilation (needs newer version)
+        pkgs_unstable.rustc
+        pkgs_unstable.cargo
 
         buffrs.packages.x86_64-linux.default
       ] else [];
@@ -294,10 +298,10 @@
 
     programs.neovim = {
       enable = true;
+      package = pkgs_unstable.neovim-unwrapped; # Use newer version from unstable
       vimAlias = true;
       vimdiffAlias = true;
       withNodeJs = true;
-
       plugins = let
         # Custom opencode.nvim plugin since it's not in nixpkgs yet
         opencode-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -337,6 +341,7 @@
       in [
         pkgs.vimPlugins.autolist-nvim
         pkgs.vimPlugins.mini-move
+        pkgs.vimPlugins.mini-pick
         pkgs.vimPlugins.dial-nvim
         pkgs.vimPlugins.img-clip-nvim
         pkgs.vimPlugins.render-markdown-nvim
@@ -344,12 +349,7 @@
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.nui-nvim
         pkgs_unstable.vimPlugins.blink-cmp-avante
-        # Nightly flake wasn't working. Commands were mising.
-        # avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs_unstable.vimPlugins.avante-nvim
-
-        # pkgs_unstable.vimPlugins.codecompanion-nvim
-        # nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim  # Requires Neovim 0.11+
 
         # Custom opencode.nvim plugin
         opencode-nvim
@@ -361,41 +361,18 @@
         pkgs.vimPlugins.alpha-nvim
 
         pkgs.vimPlugins.lazy-nvim
-        # Add required dependencies first
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.nvim-cmp
-        pkgs.vimPlugins.telescope-nvim
-        # Now list obsidian.nvim after its dependencies
+        pkgs_unstable.vimPlugins.telescope-nvim
+        pkgs.vimPlugins.telescope-fzf-native-nvim
+        pkgs.vimPlugins.copilot-lua
         pkgs.vimPlugins.obsidian-nvim
         pkgs.vimPlugins.neo-tree-nvim
-        # {
-        #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
-        #   type = "lua";
-        #   config = ''
-        #     require("codecompanion").setup({
-        #       adapters = {
-        #         anthropic = {
-        #           api_key = os.getenv("ANTHROPIC_API_KEY")
-        #         }
-        #       },
-        #       default_adapter = "anthropic",
-        #       size = {
-        #         width = "40%",
-        #         height = "60%"
-        #       },
-        #     })
-        #
-        #     -- Key mappings for CodeCompanion
-        #     vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-        #     vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
-        #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
-        #   '';
-        # }
-        pkgs.vimPlugins.nvim-treesitter
+        pkgs_unstable.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
-        pkgs.vimPlugins.neogit
-        pkgs.vimPlugins.diffview-nvim
+        pkgs_unstable.vimPlugins.neogit
+        pkgs_unstable.vimPlugins.diffview-nvim
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
@@ -409,9 +386,8 @@
         pkgs.vimPlugins.luasnip
         pkgs_unstable.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
-        pkgs.vimPlugins.nvim-lspconfig
+        pkgs_unstable.vimPlugins.nvim-lspconfig
         pkgs.vimPlugins.nvim-surround
-
         pkgs.vimPlugins.lualine-nvim
         pkgs.vimPlugins.vim-tmux-navigator
       ];
