@@ -390,6 +390,7 @@
         pkgs.vimPlugins.nvim-surround
         pkgs.vimPlugins.lualine-nvim
         pkgs.vimPlugins.vim-tmux-navigator
+        pkgs.vimPlugins.codewindow-nvim
       ];
     };
 
