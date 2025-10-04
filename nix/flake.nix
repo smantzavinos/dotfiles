@@ -185,7 +185,7 @@
         (name: cfg:
           nixpkgs.lib.nixosSystem {
             inherit system;
-            specialArgs = { flags = cfg.flags; };
+            specialArgs = { flags = cfg.flags; inherit pkgs_unstable; };
             modules = [
               ./system_shared.nix
               inputs.sops-nix.nixosModules.sops

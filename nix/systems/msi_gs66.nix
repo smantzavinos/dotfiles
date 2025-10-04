@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, pkgs_unstable, modulesPath, ... }:
 
 let
   # Plex TCP ports. 32400 for accees from web clients
@@ -256,6 +256,7 @@ in {
     openFirewall = true;
     user = "spiros";
     dataDir = "/mnt/raid1/PlexMediaServer";
+    package = pkgs_unstable.plex;
   };
 
   networking.firewall = {
