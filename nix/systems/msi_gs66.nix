@@ -315,6 +315,32 @@ in {
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Declarative ethernet connection with auto-negotiation enabled for gigabit speeds
+  # This ensures the connection is properly configured even after system reinstalls
+  # Root cause: NetworkManager auto-generated profile had auto-negotiate disabled,
+  # causing the interface to fall back to 100 Mbps instead of negotiating 1000 Mbps
+  networking.networkmanager.ensureProfiles.profiles = {
+    "ethernet-enp61s0" = {
+      connection = {
+        id = "Wired Ethernet";
+        type = "ethernet";
+        interface-name = "enp61s0";
+        autoconnect = true;
+        autoconnect-priority = 100;
+      };
+      ethernet = {
+        auto-negotiate = true;
+      };
+      ipv4 = {
+        method = "auto";
+      };
+      ipv6 = {
+        method = "auto";
+        addr-gen-mode = "stable-privacy";
+      };
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -431,10 +457,12 @@ in {
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   boot.initrd.kernelModules = [ ];
-  # Add IGC network driver configuration
+  # IGC network driver configuration
+  # Note: max_speed parameter removed - it's not a valid IGC driver parameter
+  # and was part of troubleshooting the 100 Mbps issue (actual cause was NetworkManager
+  # auto-negotiation being disabled, now fixed declaratively above)
   boot.extraModprobeConfig = ''
-    options igc InterruptThrottleRate=3000,3000,3000,3000 
-    options igc max_speed=2500
+    options igc InterruptThrottleRate=3000,3000,3000,3000
   '';
 
   # Ensure the IGC module is loaded

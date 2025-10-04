@@ -10,6 +10,9 @@ return {
     config = function()
       local luasnip = require("luasnip")
       require("blink.cmp").setup({
+        fuzzy = {
+          implementation = "lua", -- Use Lua implementation (more reliable)
+        },
         keymap = {
           preset = 'default',
           ['<Tab>'] = {

@@ -1,6 +1,7 @@
 return {
     {
         "folke/snacks.nvim",
+        enabled = nixCats and nixCats('plugins.snacks') or true,
         priority = 1000,
         lazy = false,
         opts = {

@@ -9,7 +9,6 @@
 , flags
 , nixneovimplugins
 , awesome-neovim-plugins
-, nixCats
 , ...
 }:
 
@@ -111,10 +110,6 @@
         pkgs.uv
         pkgs.mkcert
         pkgs.d2
-        
-        # Rust toolchain for blink.cmp compilation (needs newer version)
-        pkgs_unstable.rustc
-        pkgs_unstable.cargo
 
         buffrs.packages.x86_64-linux.default
       ] else [];
@@ -294,14 +289,150 @@
       ];
     };
 
-
+    xdg.configFile."nvim" = if flags.enableDevMode then {
+      # In dev mode, create symlinks to the source files for rapid iteration
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nix/home/nvim";
+    } else {
+      # In normal mode, copy files to nix store
+      recursive = true;
+      source = ./nvim;
+    };
 
     programs.neovim = {
       enable = true;
-      package = pkgs_unstable.neovim-unwrapped; # Use newer version from unstable
       vimAlias = true;
       vimdiffAlias = true;
       withNodeJs = true;
+      extraLuaConfig = ''
+        vim.g.mapleader = ";" -- Set leader key to semicolon
+        vim.g.maplocalleader = "," -- Set local leader key to comma
+        require("lazy").setup({
+          performance = {
+            reset_packpath = false,
+            rtp = {
+                reset = false,
+              }
+            },
+          dev = {
+            path = "${pkgs.vimUtils.packDir config.programs.neovim.finalPackage.passthru.packpathDirs}/pack/myNeovimPackages/start",
+            patterns = {""},
+          },
+          install = {
+            -- Safeguard in case we forget to install a plugin with Nix
+            missing = false,
+          },
+          spec = {
+            { import = "plugins" },
+            -- Add other plugins here
+          }
+        })
+
+
+
+
+
+        vim.wo.number = true
+
+        vim.api.nvim_set_keymap('n', '<C-m>', ':tabnext<CR>', {noremap = true, silent = true})
+        vim.api.nvim_set_keymap('n', '<C-n>', ':tabprevious<CR>', {noremap = true, silent = true})
+
+        vim.api.nvim_set_keymap('n', 'Y', 'yy', { noremap = true, silent = true })
+
+
+
+        -- Replace tabs with spaces
+        vim.opt.tabstop = 4
+        vim.opt.shiftwidth = 4
+        vim.opt.expandtab = true
+
+        -- Enable autoread and set up autocommand for auto-reloading buffers
+        vim.opt.autoread = true
+        vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+          command = "checktime"
+        })
+
+        -- Add keybinding to show diagnostics in a floating window
+        vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+
+        vim.keymap.set("n", "<leader>id", function()
+          vim.api.nvim_put({ os.date("%Y-%m-%d") }, "c", true, true)
+        end, { desc = "Insert date" })
+        
+        -- Add keybinding to copy all diagnostics to clipboard
+        vim.keymap.set('n', '<leader>D', function()
+          local diagnostics = vim.diagnostic.get(0)
+          local lines = {}
+          for _, d in ipairs(diagnostics) do
+            table.insert(lines, string.format("[%s] %s (line %d)", d.severity, d.message, d.lnum + 1))
+          end
+          local text = table.concat(lines, '\n')
+          vim.fn.setreg('+', text) -- Copy to system clipboard
+          print("Diagnostics copied to clipboard")
+        end, { noremap = true, silent = true })
+
+        -- Tab management shortcuts
+        vim.keymap.set('n', '<leader>Tn', ':tabnew<CR>', { desc = "New tab", noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>Tc', ':tabclose<CR>', { desc = "Close tab", noremap = true, silent = true })
+        
+        -- Tab navigation shortcuts
+        vim.keymap.set('n', '<M-m>', ':tabnext<CR>', { desc = "Next tab", noremap = true, silent = true })
+        vim.keymap.set('n', '<M-n>', ':tabprevious<CR>', { desc = "Previous tab", noremap = true, silent = true })
+        
+        -- Tab movement shortcuts
+        vim.keymap.set('n', '<M-S-m>', ':tabmove +1<CR>', { desc = "Move tab right", noremap = true, silent = true })
+        vim.keymap.set('n', '<M-S-n>', ':tabmove -1<CR>', { desc = "Move tab left", noremap = true, silent = true })
+
+        -- Keymaps and settings for Markdown / Obsidian
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "markdown",
+          callback = function()
+            local map = function(mode, lhs, rhs, opts)
+              opts = opts or {}
+              opts.buffer = true
+              vim.keymap.set(mode, lhs, rhs, opts)
+            end
+
+            -- Function to cycle bullet points
+            local function cycle_bullet()
+              local line = vim.api.nvim_get_current_line()
+              local bullets = { "-", "*", "+" }
+              local new_line, found = line:gsub(
+                "^%s*([%-%*%+])", -- Match leading whitespace and one of the bullet characters
+                function(bullet)
+                  for i, b in ipairs(bullets) do
+                    if b == bullet then
+                      -- Cycle to the next bullet
+                      local next_bullet_index = (i % #bullets) + 1
+                      return bullets[next_bullet_index]
+                    end
+                  end
+                end,
+                1 -- Only replace the first occurrence
+              )
+              if found > 0 then
+                vim.api.nvim_set_current_line(new_line)
+              end
+            end
+
+            -- Cycle checkbox states for obsidian.nvim
+            map("n", "<leader>x", "<cmd>ObsidianCycleCheckbox<CR>", { silent = true, desc = "Cycle Checkbox" })
+
+            -- Create new list items
+            map("n", "<S-CR>", "o[ ] <Esc>", { silent = true, desc = "New TODO Item" })
+
+            -- Cycle bullet type
+            map("n", "<C-t>", cycle_bullet, { silent = true, desc = "Cycle Bullet Type" })
+            
+            -- keep indentation but turn off automatic list / comment continuation
+            vim.opt_local.autoindent = true
+            vim.opt_local.formatoptions:remove({ "r", "o", "n" })
+            
+            -- Enable line wrapping for markdown files
+            vim.opt_local.wrap = true
+            vim.opt_local.linebreak = true
+          end,
+        })
+      '';
       plugins = let
         # Custom opencode.nvim plugin since it's not in nixpkgs yet
         opencode-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -341,7 +472,6 @@
       in [
         pkgs.vimPlugins.autolist-nvim
         pkgs.vimPlugins.mini-move
-        pkgs.vimPlugins.mini-pick
         pkgs.vimPlugins.dial-nvim
         pkgs.vimPlugins.img-clip-nvim
         pkgs.vimPlugins.render-markdown-nvim
@@ -349,7 +479,12 @@
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.nui-nvim
         pkgs_unstable.vimPlugins.blink-cmp-avante
+        # Nightly flake wasn't working. Commands were mising.
+        # avante-nvim-nightly-flake.packages.${pkgs.system}.default
         pkgs_unstable.vimPlugins.avante-nvim
+
+        # pkgs_unstable.vimPlugins.codecompanion-nvim
+        nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim
 
         # Custom opencode.nvim plugin
         opencode-nvim
@@ -361,18 +496,41 @@
         pkgs.vimPlugins.alpha-nvim
 
         pkgs.vimPlugins.lazy-nvim
+        # Add required dependencies first
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.nvim-cmp
-        pkgs_unstable.vimPlugins.telescope-nvim
-        pkgs.vimPlugins.telescope-fzf-native-nvim
-        pkgs.vimPlugins.copilot-lua
+        pkgs.vimPlugins.telescope-nvim
+        # Now list obsidian.nvim after its dependencies
         pkgs.vimPlugins.obsidian-nvim
         pkgs.vimPlugins.neo-tree-nvim
-        pkgs_unstable.vimPlugins.nvim-treesitter
+        # {
+        #   plugin = nixneovimplugins.packages.${pkgs.system}.codecompanion-nvim;
+        #   type = "lua";
+        #   config = ''
+        #     require("codecompanion").setup({
+        #       adapters = {
+        #         anthropic = {
+        #           api_key = os.getenv("ANTHROPIC_API_KEY")
+        #         }
+        #       },
+        #       default_adapter = "anthropic",
+        #       size = {
+        #         width = "40%",
+        #         height = "60%"
+        #       },
+        #     })
+        #
+        #     -- Key mappings for CodeCompanion
+        #     vim.keymap.set('n', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('v', '<leader>cc', ':CodeCompanion<CR>', { noremap = true, silent = true })
+        #     vim.keymap.set('n', '<leader>cs', ':CodeCompanionToggle<CR>', { noremap = true, silent = true })
+        #   '';
+        # }
+        pkgs.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.fzf-lua
         pkgs.vimPlugins.neovim-ayu
-        pkgs_unstable.vimPlugins.neogit
-        pkgs_unstable.vimPlugins.diffview-nvim
+        pkgs.vimPlugins.neogit
+        pkgs.vimPlugins.diffview-nvim
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
@@ -386,25 +544,12 @@
         pkgs.vimPlugins.luasnip
         pkgs_unstable.vimPlugins.blink-cmp
         pkgs.vimPlugins.friendly-snippets
-        pkgs_unstable.vimPlugins.nvim-lspconfig
+        pkgs.vimPlugins.nvim-lspconfig
         pkgs.vimPlugins.nvim-surround
+
         pkgs.vimPlugins.lualine-nvim
         pkgs.vimPlugins.vim-tmux-navigator
-        pkgs.vimPlugins.codewindow-nvim
       ];
-    };
-
-    # Neovim configuration files
-    xdg.configFile = if flags.enableDevMode then {
-      # Dev mode: symlink for live editing
-      "nvim".source = config.lib.file.mkOutOfStoreSymlink 
-        "${config.home.homeDirectory}/dotfiles/nix/home/nvim";
-    } else {
-      # Production mode: copy to nix store
-      "nvim" = {
-        source = ./nvim;
-        recursive = true;
-      };
     };
 
     programs.emacs = {

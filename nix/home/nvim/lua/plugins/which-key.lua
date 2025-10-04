@@ -138,6 +138,7 @@ return {
                 { "<leader>f", group = "find/file" },
                 { "<leader>g", group = "git" },
                 { "<leader>l", group = "lsp" },
+                { "<leader>m", group = "minimap" },
                 { "<leader>t", group = "toggle" },
                 { "<leader>w", group = "window" },
                 { "<leader>b", group = "buffer" },
